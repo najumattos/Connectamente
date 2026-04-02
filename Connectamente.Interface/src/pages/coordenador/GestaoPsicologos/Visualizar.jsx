@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import PsicologoService from "../../services/PsicologoService"
+import PsicologoService from "../../../services/PsicologoService"
 //TODO: Ajeitar pra apareccer o mesmo layout de dashboard psicologo, a barra lateral
 function DetalhesPsicologo() {
   const { id } = useParams();
@@ -39,4 +39,3 @@ function DetalhesPsicologo() {
     );
 }
 export default DetalhesPsicologo;
-

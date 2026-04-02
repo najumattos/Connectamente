@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import DashboardLayout from "../layouts/DashboardLayout"
-import { AuthContext } from "../context/AuthContext"
+import DashboardLayout from "../../layouts/DashboardLayout"
+import { AuthContext } from "../../context/AuthContext"
 
 function PerfilPsicologo() {
 

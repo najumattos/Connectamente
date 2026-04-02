@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import PsicologoService from "../../services/PsicologoService"
+import PsicologoService from "../../../services/PsicologoService"
 import { Link } from "react-router-dom";
 
-function Index() {
+function index() {
     // Estado para armazenar a lista que vem da API
    const [psicologos, setPsicologos] = useState([]);
                                         
@@ -19,8 +19,7 @@ function Index() {
             }
         };
 
-        carregarPsicologos(); // TODO: acredito que daqui pra cima voce nao precisa mexer, só no retorno mesmo. 
-        // TODO: e apaga esses comentarios depois pfv 
+        carregarPsicologos(); 
     }, []);
 
     return (
@@ -30,18 +29,17 @@ function Index() {
                 
                 <div className="psicologos-container" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                     {psicologos.length > 0 ? (
-                        /* TODO: aqui vao os dados do FichaUsuarioDto(eu faria um componente reutilizavel que recebe o idUsuario ja que a lista contem os mesmos dados pra a index paciente tbm mas voce que manda trufinha, isso aqui eu fiz de qualquer jeito com IA só pra configurar a chamada) */
                         psicologos.map((psicologo) => (
                            <Link 
         key={psicologo.usuarioId} 
         to={`/detalhes-psicologo/${psicologo.usuarioId}`}
-        style={{ textDecoration: 'none', color: 'inherit' }} // Remove o estilo padrão de link (azul/sublinhado)
+        style={{ textDecoration: 'none', color: 'inherit' }} 
     >
         <div style={{ 
             border: '1px solid #ccc', 
             padding: '10px', 
             borderRadius: '8px',
-            cursor: 'pointer', // Indica que é clicável
+            cursor: 'pointer',
             transition: 'background 0.2s'
         }}
         onMouseEnter={(e) => e.currentTarget.style.background = '#f9f9f9'}
@@ -60,4 +58,4 @@ function Index() {
     );
 }
 
-export default Index;
+export default index;

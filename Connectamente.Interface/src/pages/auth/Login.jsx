@@ -1,6 +1,6 @@
 import { useState, useContext } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { AuthContext } from "../context/AuthContext"
+import { AuthContext } from "../../context/AuthContext"
 import "./auth.css"
 
 function Login() {
@@ -18,10 +18,10 @@ function Login() {
     if (sucesso) {
       const usuario = JSON.parse(localStorage.getItem("usuarioLogado"))
 
-      if (usuario.tipo === "psicologo") {
-        navigate("/dashboard-psicologo")
+      if (usuario.tipo === "coordenador") {
+        navigate("/dashboard-coordenador")
       } else {
-        navigate("/dashboard-paciente")
+        navigate("/dashboard-aluno")
       }
     } else {
       alert("Email ou senha inválidos")

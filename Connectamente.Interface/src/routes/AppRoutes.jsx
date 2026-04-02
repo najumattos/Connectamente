@@ -1,80 +1,44 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Login from "../pages/Login"
-import Cadastro from "../pages/Cadastro"
-import DashboardPaciente from "../pages/paciente/DashboardPaciente"
-import DashboardPsicologo from "../pages/psicologo/DashboardPsicologo"
-import PrivateRoute from "./PrivateRoute"
-import Home from "../pages/Home"
-import PerfilPaciente from "../pages/PerfilPaciente"
-import PerfilPsicologo from "../pages/PerfilPsicologo"
-import DetalhesPsicologo from "../pages/psicologo/DetalhesPsicologo"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Import das páginas comuns
+import Home from "../pages/Home";
+import Login from "../pages/auth/Login";
+import Cadastro from "../pages/auth/Cadastro";
+import Perfil from "../pages/auth/Perfil";
+
+// Import dos componentes de proteção
+import PrivateRoute from "./PrivateRoute";
+
+// Import dos módulos de rotas que eu criei
+import { CoordenadorRoutes } from "./CoordenadorRoutes";
+import { AlunoRoutes } from "./AlunoRoutes";
 
 function AppRoutes() {
   return (
-    //TODO: isso aqui vai crescer bastante, eu acho melhor separar os arquivos como esta no services
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* --- ROTAS PÚBLICAS --- */}
+        <Route path="/" element={<Home />} /> {/*A home deveria ser a tela de login mas nao mexi nisso */}
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
-      
-      {/*PsicologoRoute.jsx*/}
-        <Route path="/detalhes-psicologo/:id" element={<DetalhesPsicologo />} />
 
+        {/* --- MÓDULO DO COORDENADOR --- */}
+        {/* Envolvemos o módulo inteiro na proteção de tipo "coordenador" */}
+        <Route element={<PrivateRoute tipoPermitido="coordenador" />}>
+          {CoordenadorRoutes}
+        </Route>
 
-        <Route
-          path="/dashboard-paciente"
-          element={
-            <PrivateRoute tipoPermitido="paciente">
-              <DashboardPaciente />
-            </PrivateRoute>
-          }
-        />
+        {/* --- MÓDULO DO ALUNO --- */}
+        {/* Envolvemos o módulo inteiro na proteção de tipo "aluno" */}
+        <Route element={<PrivateRoute tipoPermitido="aluno" />}>
+          {AlunoRoutes}
+        </Route>        
 
-        <Route
-          path="/perfil-paciente"
-          element={
-            <PrivateRoute tipoPermitido="paciente">
-              <PerfilPaciente />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/dashboard-psicologo"
-          element={
-            <PrivateRoute tipoPermitido="psicologo">
-              <DashboardPsicologo />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/perfil-paciente"
-          element={
-            <PrivateRoute tipoPermitido="paciente">
-              <PerfilPaciente />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/perfil-psicologo"
-          element={
-            <PrivateRoute tipoPermitido="psicologo">
-              <PerfilPsicologo />
-            </PrivateRoute>
-          }
-        />
-
-        
-
+        {/* Rota para 404 */}
+        <Route path="*" element={<div>Página não encontrada</div>} />
       </Routes>
-
-
-
     </BrowserRouter>
-  )
+  );
 }
 
-export default AppRoutes
+export default AppRoutes;

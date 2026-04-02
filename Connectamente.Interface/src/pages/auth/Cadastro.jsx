@@ -24,8 +24,8 @@ function Cadastro() {
       email,
       senha,
       tipo,
-      ...(tipo === "paciente" && { idade, telefone }),
-      ...(tipo === "psicologo" && { crp, especialidade })
+      ...(tipo === "aluno" && { idade, telefone }),
+      ...(tipo === "coordenador" && { crp, especialidade })
     }
 
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
@@ -76,11 +76,11 @@ function Cadastro() {
             required
           >
             <option value="">Tipo de usuário</option>
-            <option value="paciente">Paciente</option>
-            <option value="psicologo">Psicólogo</option>
+            <option value="aluno">Aluno</option>
+            <option value="coordenador">Coordenador</option>
           </select>
 
-          {tipo === "paciente" && (
+          {tipo === "aluno" && (
             <>
               <input
                 type="number"
@@ -100,7 +100,7 @@ function Cadastro() {
             </>
           )}
 
-          {tipo === "psicologo" && (
+          {tipo === "coordenador" && (
             <>
               <input
                 type="text"
