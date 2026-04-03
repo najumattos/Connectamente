@@ -32,7 +32,7 @@ function index() {
                         psicologos.map((psicologo) => (
                            <Link 
         key={psicologo.usuarioId} 
-        to={`/detalhes-psicologo/${psicologo.usuarioId}`}
+        to={`visualizar/${psicologo.usuarioId}`}
         style={{ textDecoration: 'none', color: 'inherit' }} 
     >
         <div style={{ 

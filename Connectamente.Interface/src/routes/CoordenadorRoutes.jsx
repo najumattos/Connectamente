@@ -23,46 +23,46 @@ import IndexConsultas from "../pages/coordenador/GestaoConsultas/index"
 import IndexProntuarios from "../pages/coordenador/GestaoProntuarios/index"
 
 export const CoordenadorRoutes = (
-  <Route path="/coordenador" element={<DashboardCoordenador />}>
+  <Route path="" element={<DashboardCoordenador />}>
 
     {/* Home do Dashboard */}
     <Route index element={<div>Home do Coordenador</div>} />
 
     {/* Gestão de Pacientes */}
-    <Route path="GestaoPacientes">
+    <Route path="gestao-pacientes">
         <Route index element={<IndexPacientes />} />
-        <Route path="Visualizar/:id" element={<VisualizarPaciente />} />        
-        <Route path="Criar" element={<CriarPaciente />} />
-        <Route path="Editar/:id" element={<EditarPaciente />} />    
-        <Route path="Arquivados" element={<PacientesArquivados />} />
+        <Route path="visualizar/:id" element={<VisualizarPaciente />} />        
+        <Route path="criar" element={<CriarPaciente />} />
+        <Route path="editar/:id" element={<EditarPaciente />} />    
+        <Route path="arquivados" element={<PacientesArquivados />} />
     </Route>
 
     {/* Gestão de Consultas */}
-    <Route path="GestaoConsultas">
+    <Route path="gestao-consultas">
       <Route index element={<IndexConsultas />} />
-      <Route path="Visualizar/:id" element={<VisualizarConsulta />} />        
-      <Route path="Criar" element={<CriarConsulta />} />
-      <Route path="Editar/:id" element={<EditarConsulta />} />    
-      <Route path="Arquivados/" element={< ConsultasArquivadas />} />
+      <Route path="visualizar/:id" element={<VisualizarConsulta />} />        
+      <Route path="criar" element={<CriarConsulta />} />
+      <Route path="editar/:id" element={<EditarConsulta />} />    
+      <Route path="arquivados/" element={< ConsultasArquivadas />} />
     </Route>
 
     {/* Gestão de Prontuarios */}
-    <Route path="GestaoProntuarios">
+    <Route path="gestao-prontuarios">
       <Route index element={<IndexProntuarios />} />
-      <Route path="Visualizar/:id" element={<VisualizarProntuario />} />        
-      <Route path="Criar" element={<CriarProntuario />} />
-      <Route path="Editar/:id" element={<EditarProntuario />} />    
-      <Route path="Arquivados" element={< ProntuariosArquivados />} />
+      <Route path="visualizar/:id" element={<VisualizarProntuario />} />        
+      <Route path="criar" element={<CriarProntuario />} />
+      <Route path="editar/:id" element={<EditarProntuario />} />    
+      <Route path="arquivados" element={< ProntuariosArquivados />} />
     </Route>
 
 
     {/* Gestão de Psicologos */}
-    <Route path="GestaoPsicologos">
+    <Route path="gestao-psicologos">
       <Route index element={<IndexPsicologos />} />
-      <Route path="Visualizar/:id" element={<VisualizarPsicologo />} />        
-      <Route path="Criar" element={<CriarPsicologo />} />
-      <Route path="Editar/:id" element={<EditarPsicologo />} />    
-      <Route path="Desativados" element={< PsicologosDesativados />} />
+      <Route path="visualizar/:id" element={<VisualizarPsicologo />} />        
+      <Route path="criar" element={<CriarPsicologo />} />
+      <Route path="editar/:id" element={<EditarPsicologo />} />    
+      <Route path="desativados" element={< PsicologosDesativados />} />
     </Route>
   </Route>
 );

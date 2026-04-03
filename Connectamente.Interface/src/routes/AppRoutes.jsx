@@ -24,13 +24,13 @@ function AppRoutes() {
 
         {/* --- MÓDULO DO COORDENADOR --- */}
         {/* Envolvemos o módulo inteiro na proteção de tipo "coordenador" */}
-        <Route element={<PrivateRoute tipoPermitido="coordenador" />}>
+        <Route path="coordenador" element={<PrivateRoute tipoPermitido="coordenador" />}>
           {CoordenadorRoutes}
         </Route>
 
         {/* --- MÓDULO DO ALUNO --- */}
         {/* Envolvemos o módulo inteiro na proteção de tipo "aluno" */}
-        <Route element={<PrivateRoute tipoPermitido="aluno" />}>
+        <Route path="aluno" element={<PrivateRoute tipoPermitido="aluno" />}>
           {AlunoRoutes}
         </Route>        
 

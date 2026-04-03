@@ -8,21 +8,24 @@ function DashboardCoordenador() {
 
  const menuItems = [
     { id: "home", label: "Home", path: "/coordenador" },
-    { id: "prontuarios", label: "Prontuários", path: "/coordenador/Gestaoprontuarios" },
-    { id: "pacientes", label: "Pacientes", path: "/coordenador/Gestaopacientes" },
-    { id: "consultas", label: "Consultas", path: "/coordenador/Gestaoconsultas" },
-    { id: "psicologos", label: "Psicólogos", path: "/coordenador/Gestaopsicologos" }
+    { id: "prontuarios", label: "Prontuários", path: "/coordenador/gestao-prontuarios" },
+    { id: "pacientes", label: "Pacientes", path: "/coordenador/gestao-pacientes" },
+    { id: "consultas", label: "Consultas", path: "/coordenador/gestao-consultas" },
+    { id: "psicologos", label: "Psicólogos", path: "/coordenador/gestao-psicologos" }
   ];
 
   return (
-    <DashboardLayout 
+  <DashboardLayout 
       menuItems={menuItems} 
-      titulo={`Painel de Controle Coordenador - ${usuario?.nome}`}
+      titulo={`Painel Coordenador - ${usuario?.nome}`}
     >
-      {/* O Outlet é onde o React Router vai renderizar a página filha baseada na URL */}
-      <div className="dashboard-content">
-        <Outlet /> 
-      </div>
+      {/* 1. Transforme em função recebendo o activeItem */}
+      {(activeItem) => (
+        <div className="dashboard-content">
+          {/* 2. O Outlet renderiza as rotas filhas (Pacientes, Consultas, etc) */}
+          <Outlet /> 
+        </div>
+      )}
     </DashboardLayout>
   )
 }

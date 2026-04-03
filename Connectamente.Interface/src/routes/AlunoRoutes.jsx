@@ -15,33 +15,33 @@ import IndexConsultas from "../pages/aluno/MinhasConsultas/index"
 import IndexProntuarios from "../pages/aluno/MeusProntuarios/index"
 
 export const AlunoRoutes = (
-  <Route path="/aluno" element={<DashboardAluno />}>
+  <Route path="" element={<DashboardAluno />}>
 
     {/* Home do Dashboard */}
     <Route index element={<div>Home do Aluno</div>} />
 
     {/* Meus Pacientes */}
-    <Route path="MeusPacientes">
+    <Route path="meus-pacientes">
         <Route index element={<IndexPacientes />} />
-        <Route path="Visualizar/:id" element={<VisualizarPaciente />} />        
-        <Route path="Criar" element={<CriarPaciente />} />
-        <Route path="Editar/:id" element={<EditarPaciente />} />    
+        <Route path="visualizar/:id" element={<VisualizarPaciente />} />        
+        <Route path="criar" element={<CriarPaciente />} />
+        <Route path="editar/:id" element={<EditarPaciente />} />    
     </Route>
 
     {/* Minhas Consultas */}
-    <Route path="MinhasConsultas">
+    <Route path="minhas-consultas">
       <Route index element={<IndexConsultas />} />
-      <Route path="Visualizar/:id" element={<VisualizarConsulta />} />        
-      <Route path="Criar" element={<CriarConsulta />} />
-      <Route path="Editar/:id" element={<EditarConsulta />} />    
+      <Route path="visualizar/:id" element={<VisualizarConsulta />} />        
+      <Route path="criar" element={<CriarConsulta />} />
+      <Route path="editar/:id" element={<EditarConsulta />} />    
     </Route>
 
     {/* Meus Prontuarios */}
-    <Route path="MeusProntuarios">
+    <Route path="meus-prontuarios">
       <Route index element={<IndexProntuarios />} />
-      <Route path="Visualizar/:id" element={<VisualizarProntuario />} />        
-      <Route path="Criar" element={<CriarProntuario />} />
-      <Route path="Editar/:id" element={<EditarProntuario />} />    
+      <Route path="visualizar/:id" element={<VisualizarProntuario />} />        
+      <Route path="criar" element={<CriarProntuario />} />
+      <Route path="editar/:id" element={<EditarProntuario />} />    
     </Route>  
   </Route>
 );

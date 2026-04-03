@@ -17,11 +17,12 @@ function Login() {
 
     if (sucesso) {
       const usuario = JSON.parse(localStorage.getItem("usuarioLogado"))
-
+// A barra "/" resetar o caminho da URL
       if (usuario.tipo === "coordenador") {
-        navigate("/dashboard-coordenador")
+        navigate("/coordenador")
       } else {
-        navigate("/dashboard-aluno")
+        // Com "/" -> caminho em absoluto(do inicio) Sem "/" caminho relativo(da onde está)
+        navigate("/aluno")
       }
     } else {
       alert("Email ou senha inválidos")

@@ -8,9 +8,9 @@ function DashboardAluno() {
 
  const menuItems = [
     { id: "home", label: "Home", path: "/aluno" },
-    { id: "prontuarios", label: "Prontuários", path: "/aluno/Meusprontuarios" },    
-    { id: "pacientes", label: "Pacientes", path: "/aluno/Meuspacientes" },   
-    { id: "consultas", label: "Consultas", path: "/aluno/Minhasconsultas" }
+    { id: "prontuarios", label: "Prontuários", path: "/aluno/meus-prontuarios" },    
+    { id: "pacientes", label: "Pacientes", path: "/aluno/meus-pacientes" },   
+    { id: "consultas", label: "Consultas", path: "/aluno/minhas-consultas" }
   ];
 
   return (

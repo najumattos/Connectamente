@@ -1,13 +1,20 @@
-import { useState, useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useContext, useEffect } from "react" 
+import { useNavigate, useLocation } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
 import "./dashboard.css"
 
 function DashboardLayout({ menuItems, children, titulo }) {
   const { usuario, logout } = useContext(AuthContext)
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [paginaAtiva, setPaginaAtiva] = useState("home")
+  useEffect(() => {
+    const itemAtual = menuItems.find(item => location.pathname === item.path);
+    if (itemAtual) {
+      setPaginaAtiva(itemAtual.id);
+    }
+  }, [location.pathname, menuItems]);
   const [menuAberto, setMenuAberto] = useState(false)
 
   return (
@@ -17,17 +24,19 @@ function DashboardLayout({ menuItems, children, titulo }) {
       <aside className="sidebar">
         <h3 className="logo">ConnectaMente</h3>
 
-        <nav>
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              className={`menu-item ${paginaAtiva === item.id ? "ativo" : ""}`}
-              onClick={() => setPaginaAtiva(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
+<nav>
+  {menuItems.map((item) => (
+    <button
+      key={item.id}
+      className={`menu-item ${paginaAtiva === item.id ? "ativo" : ""}`}
+      onClick={() => {
+        navigate(item.path);    // FAZ A NAVEGAÇÃO REAL
+      }}
+    >
+      {item.label}
+    </button>
+  ))}
+</nav>
       </aside>
 
       {/* CONTEÚDO */}
