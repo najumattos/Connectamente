@@ -9,7 +9,7 @@ using Connectamente.API.DTOs.UsersDTOs;
 
 namespace Connectamente.API.Controllers;
 
-public class PsicologosController(IPsicologoService service) : MainController
+public class PsicologosController() : MainController
 {
 
     /// <summary>
@@ -23,8 +23,8 @@ public class PsicologosController(IPsicologoService service) : MainController
       
         var mockLista = new List<FichaUsuarioDto>
        {
-           new() { UsuarioId = "1", NomeCompleto = "Ana Julia (Mock)" },
-           new() { UsuarioId = "2", NomeCompleto = "Tainara Vitoria(Mock)"}
+           new() { Id = "1", NomeCompleto = "Ana Julia (Mock)" },
+           new() { Id = "2", NomeCompleto = "Tainara Vitoria(Mock)"}
        };        
         await Task.Delay(500); // Simula um delay de rede
 
@@ -40,10 +40,9 @@ public class PsicologosController(IPsicologoService service) : MainController
     {      
         Console.WriteLine($"Buscando detalhes do ID: {id}");
         var mockDetalhe = new PsicologoDto
-        {
+        {            
             NomeCompleto = id == "1" ? "Ana Julia (Mock)" : "Tainara Vitoria(Mock)",
-            CRP = "12/34567",
-            Descricao = "Especialista em Terapia Cognitivo-Comportamental com foco em ansiedade.",
+            CRP = id == "1" ? "1" : "2",
         };
 
         await Task.Delay(500); // Simula o tempo de resposta do banco

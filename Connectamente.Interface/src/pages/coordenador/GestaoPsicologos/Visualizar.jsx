@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import PsicologoService from "../../../services/PsicologoService"
-//TODO: Ajeitar pra apareccer o mesmo layout de dashboard psicologo, a barra lateral
+
 function DetalhesPsicologo() {
   const { id } = useParams();
     const [psicologo, setPsicologo] = useState(null);
@@ -14,7 +14,7 @@ function DetalhesPsicologo() {
                               const data = await PsicologoService.buscarPorId(id);
                               setPsicologo(data);
             } catch (error) {
-                console.error("Erro ao carregar detalhes:", error);
+                console.error("Erro ao carregar detalhes do psicologo:", error);
             } finally {
                 setCarregando(false);
             }
@@ -29,12 +29,7 @@ function DetalhesPsicologo() {
     
     <section style={{ padding: '20px' }}>
             <h1>Perfil de {psicologo.nomeCompleto}</h1>
-            <p><strong>ID do Usuário:</strong> {psicologo.usuarioId}</p>
-            <p><strong>CRP:</strong> {psicologo.crp}</p>
-            <div style={{ marginTop: '15px' }}>
-                <h3>Sobre</h3>
-                <p>{psicologo.descricao}</p>
-            </div>
+            <p><strong>ID do Usuário:</strong> {psicologo.id}</p>        
         </section>
     );
 }

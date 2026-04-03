@@ -19,8 +19,8 @@ public class PacientesController(IPacienteService service) : MainController
 
         var mockLista = new List<FichaUsuarioDto>
        {
-           new() { UsuarioId = "1", NomeCompleto = "Ana Julia (Mock)" },
-           new() { UsuarioId = "2", NomeCompleto = "Tainara Vitoria(Mock)"}
+           new() { Id = "1", NomeCompleto = "Ana Julia (Mock)" },
+           new() { Id = "2", NomeCompleto = "Tainara Vitoria(Mock)"}
        };
         await Task.Delay(500); // Simula um delay de rede
 
@@ -39,8 +39,7 @@ public class PacientesController(IPacienteService service) : MainController
         var mockDetalhe = new PacienteDto
         {
             NomeCompleto = id == "1" ? "Ana Julia (Mock)" : "Tainara Vitoria(Mock)",
-            ContatoEmergencia = "40028922",
-            Historico = "Historico em se meter em encrenca",
+            Id = id == "1" ? "1" : "2",
         };
 
         await Task.Delay(500); // Simula o tempo de resposta do banco
