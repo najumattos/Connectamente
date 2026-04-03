@@ -45,9 +45,9 @@ function index() {
         onMouseEnter={(e) => e.currentTarget.style.background = '#f9f9f9'}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
         >
-            {/**TODO: ao inves dessas informações, dava pa fazer um componente pra receber FichaUsuarioDto (que eu disse no whatsapp) */}
+            {/**TODO:1 ao inves dessas informações, dava pa fazer um componente pra receber FichaUsuarioDto (que eu disse no whatsapp) */}
            <h3>{psicologo.nomeCompleto}</h3>
-           <Text>{psicologo.id}</Text>
+           <p>{psicologo.id}</p>
            <small>Clique para ver perfil completo</small>
         </div>
     </Link>

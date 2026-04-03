@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import PsicologoService from "../../../services/PsicologoService"
 
-function DetalhesPsicologo() {
+function Visualizar() {
   const { id } = useParams();
     const [psicologo, setPsicologo] = useState(null);
     const [carregando, setCarregando] = useState(true);
@@ -28,9 +28,10 @@ function DetalhesPsicologo() {
    return ( 
     
     <section style={{ padding: '20px' }}>
+        {/**tanto aqui quanto na parte de visualizar dados  */}
             <h1>Perfil de {psicologo.nomeCompleto}</h1>
-            <p><strong>ID do Usuário:</strong> {psicologo.id}</p>        
+            <p><strong>ID do Usuário:</strong> {psicologo.crp}</p>        
         </section>
     );
 }
-export default DetalhesPsicologo;
+export default Visualizar;
