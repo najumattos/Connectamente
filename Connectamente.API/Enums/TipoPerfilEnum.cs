@@ -3,8 +3,8 @@
     public enum TipoPerfilEnum
     {
         Coordenador = 1,
-        Estudante = 2, 
-        Clinica = 3,
+        Aluno = 2, 
+        ClinicaParticular = 3,
         Desativado = 9
     }
 }

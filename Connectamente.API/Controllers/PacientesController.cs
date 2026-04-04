@@ -5,10 +5,12 @@ using Connectamente.API.DTOs.UsersDTOs;
 using System;
 using Connectamente.API.Enums;
 using Connectamente.API.Services;
+using Connectamente.API.Models.ViewModel;
+using Connectamente.API.Domain;
 
 namespace Connectamente.API.Controllers;
 
-public class PacientesController(IPsicologiaService psicologiaService) : MainController
+public class PacientesController(IPacienteService pacienteService) : MainController
 {
 
     /// <summary>
@@ -16,44 +18,15 @@ public class PacientesController(IPsicologiaService psicologiaService) : MainCon
     /// </summary>
     [ProducesResponseType(typeof(IEnumerable<FichaUsuarioDto>), StatusCodes.Status200OK)]
     [HttpGet("Buscar")]
-    //[autorizado: TipoModuloEnum.Psicologia]
-    public async Task<ActionResult<IEnumerable<FichaUsuarioDto>>> GetPacientes(authAcessoDto(tipoPerfilEnum tipoPerfil))
+    public async Task<ActionResult<IEnumerable<FichaUsuarioDto>>> GetPacientes(AuthAcessoDto authAcessoDto)
     {
-        var pacientes = await psicologiaService.BuscarPacientesPorPerfil("authAcessoDto");
+        var resposta = await pacienteService.BuscarPacientes(authAcessoDto);
 
-        if (pacientes == null || !pacientes.Any())
-            return NotFound("Nenhum paciente encontrado para este perfil.");
-
-        return Ok(pacientes);
-        /* #1
-         IPsicologiaService.BuscarPacientes(authAcessoDto(tipoPerfil.ClinicaParticular || tipoPerfi.Coordenador || tipoPerfil.Aluno))
-         */
-
-
-        /*   #2
-            PsicologiaService.BuscarPacientes(authAcessoDto(tipoPerfil)){
-        
-        se authAcessoDto.tipoPerfil.ClinicaParticular -> IClinicaParticularService.BuscarPacientes(authAcessoDto(idPsicologo)) -> CoordenadorService.BuscarPacientes(procura todos paciente por tipoModulo.ClinicaParticular && idPsicologoVinculado)
-        se authAcessoDto.tipoPerfil.Coordenador -> ICoordenadorService.BuscarPacientes(authAcessoDto(idPsicologo)) -> CoordenadorService.BuscarPacientes(procura todos paciente por tipoModulo.Academico)
-        se authAcessoDto.tipoPerfil.Aluno -> IAlunoService.BuscarPacientes(authAcessoDto(idPsicologo)) -> AlunoService.BuscarPacientes(procura todos paciente vinculados a idPsicologoVinculado)
+        if (!resposta.IsSuccess)
+        {
+            return NotFound(resposta);
         }
-         
-         */
-
-
-
-    }
-
-    /// <summary>
-    /// Busca Todos Pacientes por Psicologo
-    /// </summary>
-    [ProducesResponseType(typeof(IEnumerable<FichaUsuarioDto>), StatusCodes.Status200OK)]
-    [HttpGet("Buscar")]
-    public async Task<ActionResult<IEnumerable<FichaUsuarioDto>>> GetPacientesPorPsicologo()
-    {
-        // acesso 
-        // rota coordenador 
-        //rota aluno        
+        return Ok(resposta);
 
     }
 
@@ -62,9 +35,15 @@ public class PacientesController(IPsicologiaService psicologiaService) : MainCon
     /// </summary>     
     [ProducesResponseType(typeof(PacienteDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<PacienteDto>> GetPaciente(string id)
+    public async Task<ActionResult<PacienteDto>> GetPaciente(AuthAcessoDto authAcessoDto, string id)
     {
-      
+        var resposta = await pacienteService.BuscarPacientePorId(authAcessoDto, id);
+
+        if (!resposta.IsSuccess)
+        {
+            return NotFound(resposta);
+        }
+        return Ok(resposta);
     }
 
 }

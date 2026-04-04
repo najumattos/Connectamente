@@ -2,9 +2,7 @@
 {
     public enum TipoModuloEnum
     {
-        Psicologia = 1,
-        Musculacao = 2,
-        Sistema = 8,
-        Desativado = 9
+        Academico = 1,
+        ClinicaParticular = 2        
     }
 }
