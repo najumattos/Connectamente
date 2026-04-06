@@ -2,5 +2,6 @@
 {
     public class PsicologoDto
     {
+        public string PsicologoId { get; set; }
     }
 }

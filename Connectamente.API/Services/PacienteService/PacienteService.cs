@@ -27,10 +27,10 @@ public class PacienteService(IPacienteRepository repository) : IPacienteService
 
         if (!resposta.IsSuccess)
         {
-            return resposta;//TODO:Testar Result<UsuarioListaDto>.Failure("Perfil não identificado ou sem permissão.")
+            return Result<IEnumerable<UsuarioListaDto>>.Failure(resposta.Error);
         }
 
-        return resposta; //TODO:Testar Result<UsuarioListaDto>.IsSucess(resposta.Value)
+        return Result<IEnumerable<UsuarioListaDto>>.Success(resposta.Value); 
 
     }
 

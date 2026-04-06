@@ -5,7 +5,7 @@ namespace Connectamente.API.Services.PsicologoService;
 
 public interface IPsicologoService
 {
-    public Task<Result<UsuarioListaDto>> BuscarTodosPsicologos();
-    public Task<Result<PsicologoDto>> BuscarPsicologoPorId(string idPsicologo);
+    public Task<Result<IEnumerable<UsuarioListaDto>>> BuscarTodosPsicologos(AuthAcessoDto authAcessoDto);
+    public Task<Result<PsicologoDto>> BuscarPsicologoPorId(AuthAcessoDto authAcessoDto, string idPsicologo);
 
 }

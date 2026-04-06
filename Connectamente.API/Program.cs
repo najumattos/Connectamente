@@ -14,6 +14,7 @@ using Connectamente.API.Usuario;
 using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.PsicologoService;
 using Connectamente.API.Data.Repositories.PacienteRepository;
+using Connectamente.API.Data.Repositories.PsicologoRepository;
 
 DotEnv.Load();                            //Lê o arquivo .env
 // Procura por todas as classes que herdam de 'Profile' no projeto
@@ -110,6 +111,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 
 // Registro dos Serviços Customizados
 builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+builder.Services.AddScoped<IPsicologoRepository, PsicologoRepository>();
 
 builder.Services.AddScoped<IPacienteService, PacienteService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
