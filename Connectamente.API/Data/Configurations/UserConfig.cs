@@ -1,7 +1,6 @@
 ﻿using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
-using Connectamente.API.Usuario;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Data.Configurations
@@ -25,7 +24,6 @@ namespace Connectamente.API.Data.Configurations
                 PhoneNumber = "5514920044824",
                 DataNascimento = new DateOnly(2002, 4, 1),
                 Foto = "/img/usuarios/estudante.png",
-                TipoModulo = TipoModuloEnum.Academico,
                 NormalizedUserName = "ESTUDANTE@PSICO.COM",
                 LockoutEnabled = true,
                 PasswordHash = hashFixo,
@@ -44,7 +42,6 @@ namespace Connectamente.API.Data.Configurations
                 Sobrenome = "Administrador Psicologia",
                 PhoneNumber = "5514988060308",
                 DataNascimento = new DateOnly(2001, 12, 19),
-                TipoModulo = TipoModuloEnum.Academico,
                 Foto = "/img/usuarios/admin.png",
                 PasswordHash = hashFixo,
                 NormalizedEmail = "ADMIN@PSICO.COM",
@@ -65,7 +62,6 @@ namespace Connectamente.API.Data.Configurations
                 Sobrenome = "Clinica Psicologia",
                 PhoneNumber = "5514991044050",
                 DataNascimento = new DateOnly(2001, 07, 13),
-                TipoModulo = TipoModuloEnum.ClinicaParticular,
                 Foto = "/img/usuarios/clinica.png",
                 PasswordHash = hashFixo,
                 NormalizedEmail = "CLINICA@PSICO.COM",

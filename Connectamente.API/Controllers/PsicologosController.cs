@@ -9,7 +9,7 @@ using Connectamente.API.Services.PacienteService;
 
 namespace Connectamente.API.Controllers;
 
-public class PsicologosController(IPsicologoService psicologoService) : MainController
+public class PsicologosController(IPsicologoService service) : MainController
 {
 
     /// <summary>
@@ -17,30 +17,34 @@ public class PsicologosController(IPsicologoService psicologoService) : MainCont
     /// </summary>
     [ProducesResponseType(typeof(IEnumerable<UsuarioListaDto>), StatusCodes.Status200OK)]
     [HttpGet("Buscar")]
-    public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPsicologos(AuthAcessoDto authAcessoDto)
+    public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPsicologos(AuthAcessoDto auth)
     {
-        var resposta = await psicologoService.BuscarTodosPsicologos();
+        var resposta = await service.BuscarPsicologos(auth);
 
-        if (!resposta.IsSuccess)
+        return resposta.IsSuccess switch
         {
-            return NotFound(resposta);
-        }
-        return Ok(resposta);
+            true => Ok(resposta.Value),
+            false when resposta.Error.Contains("permissão")
+                  => StatusCode(StatusCodes.Status403Forbidden, resposta),
+            _ => NotFound(resposta)
+        };
     }
 
     /// <summary>
-    /// Exibe Dados do Psicologo
+    /// Busca Dados do Psicologo
     /// </summary>     
     [ProducesResponseType(typeof(PsicologoDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<PsicologoDto>> GetPsicologo(string id)
+    public async Task<ActionResult<PsicologoDto>> GetPsicologo(AuthAcessoDto auth, string id)
     {
-        var resposta = await psicologoService.BuscarPsicologoPorId(id);
+        var resposta = await service.BuscarPsicologoPorId(auth, id);
 
-        if (!resposta.IsSuccess)
-        {
-            return NotFound(resposta);
-        }
-        return Ok(resposta);
+        return resposta.IsSuccess switch
+        {                                     
+            true => Ok(resposta.Value),
+            false when resposta.Error.Contains("permissão")
+                  => StatusCode(StatusCodes.Status403Forbidden, resposta),
+            _ => NotFound(resposta)
+        };
     }
 }

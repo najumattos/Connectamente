@@ -10,11 +10,11 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 using dotenv.net;
-using Connectamente.API.Usuario;
 using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.PsicologoService;
 using Connectamente.API.Data.Repositories.PacienteRepository;
 using Connectamente.API.Data.Repositories.PsicologoRepository;
+using Connectamente.API.Models;
 
 DotEnv.Load();                            //Lê o arquivo .env
 // Procura por todas as classes que herdam de 'Profile' no projeto
@@ -37,9 +37,9 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    // Isso força a conversão de todos os Enums para String no JSON
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+{    
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());// Isso força a conversão de todos os Enums para String no JSON
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull; // Não envia propriedades nulas no JSON de resposta
 }); ;
 
 // Serviço de Conexão com o Banco

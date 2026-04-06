@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Connectamente.API.Usuario;
+namespace Connectamente.API.Models;
 
 [Table("Usuario")]
 public class UsuarioModel : IdentityUser
@@ -25,5 +25,4 @@ public class UsuarioModel : IdentityUser
 
     [Display(Prompt = "Escolha uma Foto"), StringLength(300)]
     public string Foto { get; set; }
-    public TipoModuloEnum TipoModulo { get; set; } 
 }

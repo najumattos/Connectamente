@@ -18,7 +18,7 @@ public class PacientesController(IPacienteService pacienteService) : MainControl
     [HttpGet("Buscar")]
     public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPacientes([FromQuery] AuthAcessoDto auth)
     {
-        var resposta = await pacienteService.BuscarPacientes(auth);
+        var resposta = await pacienteService.FiltrarPorPerfilAutorizado(auth);
 
         return resposta.IsSuccess switch
         {

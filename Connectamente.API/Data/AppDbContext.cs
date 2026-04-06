@@ -2,7 +2,6 @@
 using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
-using Connectamente.API.Usuario;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

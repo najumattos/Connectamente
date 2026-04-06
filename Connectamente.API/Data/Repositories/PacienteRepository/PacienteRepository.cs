@@ -1,4 +1,5 @@
 ﻿using Connectamente.API.Domain;
+using Connectamente.API.Enums;
 using Connectamente.API.Models.ViewModel;
 using System.Collections.Generic;
 
@@ -17,6 +18,12 @@ namespace Connectamente.API.Data.Repositories.PacienteRepository
             }
             // o caminho ta certo ate aqui, só falta implementar mesmo
             throw new NotImplementedException();  
+        }
+
+        public Task<Result<IEnumerable<UsuarioListaDto>>> BuscarPacientesPorPerfil(TipoPerfilEnum tipoPerfil)
+        {
+            //filtrar pacientes por tipoPerfil
+            throw new NotImplementedException();
         }
 
         public Task<Result<IEnumerable<UsuarioListaDto>>> BuscarPacientesPorPsicologo(string idPsicologo)

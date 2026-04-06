@@ -156,7 +156,7 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Connectamente.API.Models.PsicologoModel", b =>
                 {
-                    b.Property<string>("PsicologoId")
+                    b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("CRP")
@@ -175,7 +175,7 @@ namespace Connectamente.API.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("PsicologoId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UsuarioId")
                         .IsUnique();

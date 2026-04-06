@@ -24,7 +24,7 @@ public class PsicologoService(IPsicologoRepository repository) : IPsicologoServi
             return Result<PsicologoDto>.Failure(resposta.Error);
         }
         var psicologo = resposta.Value;
-        var acesso = VerificarPermissao(authAcessoDto, psicologo.PsicologoId);
+        var acesso = VerificarPermissao(authAcessoDto, psicologo.Id);
         if (acesso == false)
         {
             return Result<PsicologoDto>.Failure("O usuário não possui permissão para acessar os dados deste psicologo.");
@@ -35,7 +35,7 @@ public class PsicologoService(IPsicologoRepository repository) : IPsicologoServi
     /// <summary>
     /// Retorna TodosPsicologos se TipoPerfilEnum.Coordenador
     /// </summary>
-    public async Task<Result<IEnumerable<UsuarioListaDto>>> BuscarTodosPsicologos(AuthAcessoDto authAcessoDto)
+    public async Task<Result<IEnumerable<UsuarioListaDto>>> BuscarPsicologos(AuthAcessoDto authAcessoDto)
     {
         var resposta = authAcessoDto.TipoPerfil switch
         {

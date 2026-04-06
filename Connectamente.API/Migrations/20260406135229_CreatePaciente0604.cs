@@ -260,7 +260,7 @@ namespace Connectamente.API.Migrations
                         name: "FK_Paciente_Psicologo_PsicologoResponsavelId",
                         column: x => x.PsicologoResponsavelId,
                         principalTable: "Psicologo",
-                        principalColumn: "PsicologoId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -294,7 +294,7 @@ namespace Connectamente.API.Migrations
                         name: "FK_Prontuario_Psicologo_PsicologoResponsavelId",
                         column: x => x.PsicologoResponsavelId,
                         principalTable: "Psicologo",
-                        principalColumn: "PsicologoId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -326,7 +326,7 @@ namespace Connectamente.API.Migrations
                         name: "FK_Consulta_Psicologo_PsicologoModelPsicologoId",
                         column: x => x.PsicologoModelPsicologoId,
                         principalTable: "Psicologo",
-                        principalColumn: "PsicologoId");
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -362,7 +362,7 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Psicologo",
-                columns: new[] { "PsicologoId", "CRP", "Descricao", "TipoPerfil", "UsuarioId" },
+                columns: new[] { "Id", "CRP", "Descricao", "TipoPerfil", "UsuarioId" },
                 values: new object[,]
                 {
                     { "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "1235545", "LET TIME JUST FLYYYYY", 1, "59de1fac-5ba6-49b0-8849-c97e3c7ba11b" },
