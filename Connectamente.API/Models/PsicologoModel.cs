@@ -8,8 +8,9 @@ namespace Connectamente.API.Models;
 [Table("Psicologo")]
 public class PsicologoModel
 {
-    [Key]
-    public string UsuarioId { get; set; }
+    [Key] public string PsicologoId { get; set; } = Guid.NewGuid().ToString();
+
+    [Required] public string UsuarioId { get; set; }
     [ForeignKey("UsuarioId")]
     public virtual UsuarioModel Usuario { get; set; }
 

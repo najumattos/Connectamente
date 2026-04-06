@@ -11,11 +11,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using dotenv.net;
 using Connectamente.API.Usuario;
-using Connectamente.API.Services.UsuarioService;
 using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.PsicologoService;
-using Connectamente.API.Services.ProntuarioService;
-using Connectamente.API.Services.ConsultaService;
+using Connectamente.API.Data.Repositories.PacienteRepository;
 
 DotEnv.Load();                            //Lê o arquivo .env
 // Procura por todas as classes que herdam de 'Profile' no projeto
@@ -111,11 +109,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileService, FileService>();
 
 // Registro dos Serviços Customizados
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+
 builder.Services.AddScoped<IPacienteService, PacienteService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
-builder.Services.AddScoped<IProntuarioService, ProntuarioService>();
-builder.Services.AddScoped<IConsultaService, ConsultaService>();
 
 
 

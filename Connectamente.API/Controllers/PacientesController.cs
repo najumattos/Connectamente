@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Connectamente.API.Services.PacienteService;
-using Connectamente.API.DTOs;
-using Connectamente.API.DTOs.UsersDTOs;
 using System;
 using Connectamente.API.Enums;
 using Connectamente.API.Services;
@@ -16,34 +14,37 @@ public class PacientesController(IPacienteService pacienteService) : MainControl
     /// <summary>
     /// Busca Todos Pacientes
     /// </summary>
-    [ProducesResponseType(typeof(IEnumerable<FichaUsuarioDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<UsuarioListaDto>), StatusCodes.Status200OK)]
     [HttpGet("Buscar")]
-    public async Task<ActionResult<IEnumerable<FichaUsuarioDto>>> GetPacientes(AuthAcessoDto authAcessoDto)
+    public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPacientes([FromQuery] AuthAcessoDto auth)
     {
-        var resposta = await pacienteService.BuscarPacientes(authAcessoDto);
+        var resposta = await pacienteService.BuscarPacientes(auth);
 
-        if (!resposta.IsSuccess)
+        return resposta.IsSuccess switch
         {
-            return NotFound(resposta);
-        }
-        return Ok(resposta);
-
+            true => Ok(resposta.Value),
+            false when resposta.Error.Contains("permissão")
+                  => StatusCode(StatusCodes.Status403Forbidden, resposta),
+            _ => NotFound(resposta)
+        };
     }
 
     /// <summary>
-    /// Exibe Dados do Paciente
+    /// Busca Dados do Paciente
     /// </summary>     
     [ProducesResponseType(typeof(PacienteDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<PacienteDto>> GetPaciente(AuthAcessoDto authAcessoDto, string id)
+    public async Task<ActionResult<PacienteDto>> GetPaciente([FromQuery] AuthAcessoDto auth, string id)
     {
-        var resposta = await pacienteService.BuscarPacientePorId(authAcessoDto, id);
+        var resposta = await pacienteService.BuscarPacientePorId(auth,id);
 
-        if (!resposta.IsSuccess)
-        {
-            return NotFound(resposta);
+            return resposta.IsSuccess switch
+            {
+                true => Ok(resposta.Value),
+                false when resposta.Error.Contains("permissão")
+                      => StatusCode(StatusCodes.Status403Forbidden, resposta),
+                _ => NotFound(resposta)
+            };
         }
-        return Ok(resposta);
-    }
 
 }
