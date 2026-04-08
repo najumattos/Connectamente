@@ -31,7 +31,7 @@ public class PsicologosController(IPsicologoService service) : MainController
     }
 
     /// <summary>
-    /// Busca Dados do Psicologo
+    /// Busca Psicologo Por Id
     /// </summary>     
     [ProducesResponseType(typeof(PsicologoDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
