@@ -1,4 +1,4 @@
-
+repositorio do TCC
 # 📌 Resumo de Estrutura Front-end: Projeto Connectamente
 
 Este documento resume a arquitetura definida para o sistema, focando em escalabilidade, segurança (RBAC) e organização de rotas aninhadas no React.
