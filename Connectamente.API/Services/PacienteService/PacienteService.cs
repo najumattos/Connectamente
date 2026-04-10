@@ -12,15 +12,15 @@ namespace Connectamente.API.Services.PacienteService;
 public class PacienteService(IPacienteRepository repository) : IPacienteService
 {
     /// <summary>
-    /// Retorna TodosPacientes com base na autorização
+    /// Busca TodosPacientes com base na autorização
     /// </summary>
-    public async Task<Result<IEnumerable<UsuarioListaDto>>> FiltrarPorPerfilAutorizado(AuthAcessoDto authAcessoDto)
+    public async Task<Result<IEnumerable<UsuarioListaDto>>> BuscarPacientes(AuthAcessoDto authAcessoDto)
     {
 
         var resposta = authAcessoDto.TipoPerfil switch
         {
             TipoPerfilEnum.Coordenador => await repository.BuscarTodosPacientes(),
-            TipoPerfilEnum.Aluno => await repository.BuscarPacientesPorPsicologo(authAcessoDto.IdPsicologo),
+            TipoPerfilEnum.Aluno => await repository.FiltrarPacientesPorPsicologo(authAcessoDto.IdPsicologo),
             _ => Result<IEnumerable<UsuarioListaDto>>.Failure("Perfil não identificado ou sem permissão.")
         };
 
@@ -34,15 +34,15 @@ public class PacienteService(IPacienteRepository repository) : IPacienteService
     }
 
     /// <summary>
-    /// Retorna Paciente com base na autorização
+    /// Busca Paciente com base na autorização
     /// </summary>
-    public async Task<Result<PacienteDto>> BuscarPacientePorId(AuthAcessoDto authAcessoDto, string idPaciente)
+    public async Task<Result<PacienteDto>> BuscarPacientePorId(AuthAcessoDto authAcessoDto, string id)
     {
-        if (string.IsNullOrWhiteSpace(idPaciente))
+        if (string.IsNullOrWhiteSpace(id))
         {
             return Result<PacienteDto>.Failure("ID do paciente é inválido ou não informado.");
         }
-        var resposta = await repository.BuscarPacientePorId(idPaciente);
+        var resposta = await repository.BuscarPacientePorId(id);
 
         if (!resposta.IsSuccess)
         {
@@ -52,27 +52,39 @@ public class PacienteService(IPacienteRepository repository) : IPacienteService
 
         var acesso = VerificarPermissao(authAcessoDto, paciente.PsicologoResponsavelId);
         if (acesso == false)
-        {
-        
+        {        
             return Result<PacienteDto>.Failure("O usuário não possui permissão para acessar os dados deste paciente.");
         }
         return Result<PacienteDto>.Success(paciente);
     }
-
+  
     /// <summary>
-    /// Retorna Pacientes com base no tipoPerfilEnum do Paciente
+    /// Arquiva Paciente se permitido
     /// </summary>
-    public Task<Result<IEnumerable<UsuarioListaDto>>> FiltrarPorPerfilPaciente(AuthAcessoDto authAcessoDto, TipoPerfilEnum tipoPerfil)
+    public async Task<Result<bool>> ArquivarPaciente(AuthAcessoDto authAcessoDto, string id)
     {
-
-        var resposta = FiltrarPorPerfilAutorizado(authAcessoDto);
-       
-        var pacientesFiltrados = resposta.Result.Value.Where(p => p.TipoPerfil == tipoPerfil).ToList();
-        return Task.FromResult(Result<IEnumerable<UsuarioListaDto>>.Success(pacientesFiltrados));
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return Result<bool>.Failure("ID do paciente é inválido ou não informado.");
+        }
+        var buscar = await repository.BuscarPacientePorId(id);
+        if (!buscar.IsSuccess)
+        {
+            return Result<bool>.Failure("Paciente não existe");
+        }
+        var paciente = buscar.Value;
+        var acesso = VerificarPermissao(authAcessoDto, paciente.PsicologoResponsavelId);
+        if (acesso == false)
+        {
+            return Result<bool>.Failure("O usuário não possui permissão para arquivar esse paciente.");
+        }
+      
+        return await repository.ArquivarPaciente(paciente.Id);
     }
 
+#region Metodos Privados    
     /// <summary>
-    /// Verifica permissão para acessar os dados de um paciente
+    /// Verifica permissão do usuario
     /// </summary>
     private static bool VerificarPermissao(AuthAcessoDto auth, string psicologoResponsavelId)
      => auth.TipoPerfil switch
@@ -80,8 +92,11 @@ public class PacienteService(IPacienteRepository repository) : IPacienteService
          TipoPerfilEnum.Coordenador => true,
          TipoPerfilEnum.Aluno => auth.IdPsicologo == psicologoResponsavelId,
          _ => false
-     }; 
+     };
+
+#endregion
 }
+
 
 /*
  * VerificarPermissaoAcademica() protege o sistema contra um ataque comum chamado IDOR (Insecure Direct Object Reference).

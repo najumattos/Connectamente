@@ -8,7 +8,7 @@ using Connectamente.API.Domain;
 
 namespace Connectamente.API.Controllers;
 
-public class PacientesController(IPacienteService pacienteService) : MainController
+public class PacientesController(IPacienteService service) : MainController
 {
 
     /// <summary>
@@ -18,7 +18,7 @@ public class PacientesController(IPacienteService pacienteService) : MainControl
     [HttpGet("Buscar")]
     public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPacientes([FromQuery] AuthAcessoDto auth)
     {
-        var resposta = await pacienteService.FiltrarPorPerfilAutorizado(auth);
+        var resposta = await service.BuscarPacientes(auth);
 
         return resposta.IsSuccess switch
         {
@@ -36,7 +36,7 @@ public class PacientesController(IPacienteService pacienteService) : MainControl
     [HttpGet("{id}")]
     public async Task<ActionResult<PacienteDto>> GetPaciente([FromQuery] AuthAcessoDto auth, string id)
     {
-        var resposta = await pacienteService.BuscarPacientePorId(auth,id);
+        var resposta = await service.BuscarPacientePorId(auth,id);
 
             return resposta.IsSuccess switch
             {
@@ -45,6 +45,21 @@ public class PacientesController(IPacienteService pacienteService) : MainControl
                       => StatusCode(StatusCodes.Status403Forbidden, resposta),
                 _ => NotFound(resposta)
             };
-        }
+    }
+
+    /// <summary>
+    /// Arquiva Paciente
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [HttpPatch("Arquivar")]
+    public async Task<ActionResult> ArquivarPaciente([FromQuery] AuthAcessoDto auth, string id)
+    {
+        var resposta = await service.ArquivarPaciente(auth, id);
+        return resposta switch
+        {
+            null => NotFound(resposta.Error),
+            _ => NoContent()
+        };
+    }
 
 }

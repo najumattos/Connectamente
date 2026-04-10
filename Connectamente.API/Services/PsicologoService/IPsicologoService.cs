@@ -7,5 +7,5 @@ public interface IPsicologoService
 {
     public Task<Result<IEnumerable<UsuarioListaDto>>> BuscarPsicologos(AuthAcessoDto authAcessoDto);
     public Task<Result<PsicologoDto>> BuscarPsicologoPorId(AuthAcessoDto authAcessoDto, string idPsicologo);
-
+    public Task<Result<bool>> DesativarPsicologo(AuthAcessoDto authAcessoDto, string psicologoId);
 }

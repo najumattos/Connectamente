@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Connectamente.API.Models;
 using Connectamente.API.Models.ViewModel;
-using Connectamente.API.Usuario;
 
 namespace Connectamente.API.Domain;
 

@@ -11,13 +11,13 @@ public class PsicologoService(IPsicologoRepository repository) : IPsicologoServi
     /// <summary>
     /// Retorna Psicologo se autorizado
     /// </summary>
-    public async Task<Result<PsicologoDto>> BuscarPsicologoPorId(AuthAcessoDto authAcessoDto, string idPsicologo)
+    public async Task<Result<PsicologoDto>> BuscarPsicologoPorId(AuthAcessoDto authAcessoDto, string id)
     {
-        if (string.IsNullOrWhiteSpace(idPsicologo))
+        if (string.IsNullOrWhiteSpace(id))
         {
             return Result<PsicologoDto>.Failure("ID do psicologo é inválido ou não informado.");
         }
-        var resposta = await repository.BuscarPsicologoPorId(idPsicologo);
+        var resposta = await repository.BuscarPsicologoPorId(id);
 
         if (!resposta.IsSuccess)
         {
@@ -52,6 +52,31 @@ public class PsicologoService(IPsicologoRepository repository) : IPsicologoServi
     }
 
     /// <summary>
+    /// Coordenador desativa Psicologo
+    /// </summary>
+    public async Task<Result<bool>> DesativarPsicologo(AuthAcessoDto authAcessoDto, string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return Result<bool>.Failure("ID do psicologo é inválido ou não informado.");
+        }
+
+        if(authAcessoDto.TipoPerfil != TipoPerfilEnum.Coordenador){
+            return Result<bool>.Failure("Somente coordenadores podem desativar um psicologo");
+        }
+        var resposta = await repository.DesativarPsicologo(id);
+        
+
+        if (!resposta.IsSuccess)
+        {
+            return Result<bool>.Failure(resposta.Error);
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    #region Metodos Privados
+    /// <summary>
     /// Verifica permissão para acessar os dados de um psicologo
     /// </summary>
     private static bool VerificarPermissao(AuthAcessoDto auth, string psicologoId)
@@ -61,5 +86,6 @@ public class PsicologoService(IPsicologoRepository repository) : IPsicologoServi
          TipoPerfilEnum.Aluno => auth.IdPsicologo == psicologoId,
          _ => false
      };
+    #endregion
 }
 

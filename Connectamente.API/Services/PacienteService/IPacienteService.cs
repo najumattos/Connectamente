@@ -7,9 +7,9 @@ namespace Connectamente.API.Services.PacienteService;
 
 public interface IPacienteService
 {
-    public Task<Result<IEnumerable<UsuarioListaDto>>> FiltrarPorPerfilAutorizado(AuthAcessoDto authAcessoDto);
-    public Task<Result<IEnumerable<UsuarioListaDto>>> FiltrarPorPerfilPaciente(AuthAcessoDto authAcessoDto, TipoPerfilEnum tipoPerfil);
+    public Task<Result<IEnumerable<UsuarioListaDto>>> BuscarPacientes(AuthAcessoDto authAcessoDto);
     public Task<Result<PacienteDto>> BuscarPacientePorId(AuthAcessoDto authAcessoDto, string idPaciente);
+    public Task<Result<bool>> ArquivarPaciente(AuthAcessoDto authAcessoDto, string idPaciente);
 }
 
 /*

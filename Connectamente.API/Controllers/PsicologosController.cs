@@ -40,11 +40,26 @@ public class PsicologosController(IPsicologoService service) : MainController
         var resposta = await service.BuscarPsicologoPorId(auth, id);
 
         return resposta.IsSuccess switch
-        {                                     
+        {
             true => Ok(resposta.Value),
             false when resposta.Error.Contains("permissão")
                   => StatusCode(StatusCodes.Status403Forbidden, resposta),
             _ => NotFound(resposta)
+        };
+    }
+  
+    /// <summary>
+    /// Desativa Psicologo
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [HttpPatch("Desativar/{id}")]
+    public async Task<ActionResult> DesativarPsicologo([FromQuery] AuthAcessoDto auth, string id)
+    {
+        var resposta = await service.DesativarPsicologo(auth, id);
+        return resposta switch
+        {
+            null => NotFound(resposta.Error),
+            _ => NoContent()
         };
     }
 }
