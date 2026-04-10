@@ -47,7 +47,7 @@ namespace Connectamente.API.Controllers
         /// </summary>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("Arquivar")]
-        public async Task<ActionResult> AlterarStatusConsulta([FromQuery] AuthAcessoDto auth, ConsultaDto consulta)
+        public async Task<ActionResult> AlterarStatusConsulta([FromQuery] AuthAcessoDto auth, string id)
         {
             var resposta = await service.AlterarStatusConsulta(auth, consulta);
             return resposta switch
