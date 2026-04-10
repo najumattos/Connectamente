@@ -15,7 +15,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
     public DbSet<PacienteModel> Pacientes { get; set; }
     public DbSet<UsuarioModel> Usuarios { get; set; }
     public DbSet<ConsultaModel> Consultas { get; set; }
-    public DbSet<ProntuarioModel> Prontuarios { get; set; }
+    public DbSet<ProntuarioAdultoModel> Prontuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

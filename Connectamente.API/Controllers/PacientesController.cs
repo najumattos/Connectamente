@@ -30,7 +30,7 @@ public class PacientesController(IPacienteService service) : MainController
     }
 
     /// <summary>
-    /// Busca Dados do Paciente
+    /// Busca Paciente Por Id
     /// </summary>     
     [ProducesResponseType(typeof(PacienteDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]

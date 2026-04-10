@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Connectamente.API.Data.Configurations;
 
-public class ProntuarioConfig : IEntityTypeConfiguration<ProntuarioModel>
+public class ProntuarioConfig : IEntityTypeConfiguration<ProntuarioAdultoModel>
 {
-    public void Configure(EntityTypeBuilder<ProntuarioModel> builder)
+    public void Configure(EntityTypeBuilder<ProntuarioAdultoModel> builder)
     {
         // Relacionamento com Psicólogo
         builder.HasOne(p => p.PsicologoResponsavel)
@@ -22,14 +22,14 @@ public class ProntuarioConfig : IEntityTypeConfiguration<ProntuarioModel>
                .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasData(
-            new ProntuarioModel
+            new ProntuarioAdultoModel
             {
                 ProntuarioId = SeedDataConstants.PRONTUARIO_ID,
                 PsicologoResponsavelId = SeedDataConstants.USER_ESTUDANTE_ID,
                 PacienteId = SeedDataConstants.USER_CLINICA_ID, 
                 DataCriacao = new DateTime(2002, 4, 1),
                 DataUltimaAtualizacao = new DateTime(2002, 4, 1),
-                Queixas = "Paciente relata ansiedade e dificuldades para dormir.",
+                QueixaPrincipal = "Paciente relata ansiedade e dificuldades para dormir.",
                 TipoProntuario = Enums.TipoProntuarioEnum.Adulto
             });
 

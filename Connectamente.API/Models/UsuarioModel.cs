@@ -19,6 +19,8 @@ public class UsuarioModel : IdentityUser
     StringLength(150)]
     public string Sobrenome { get; set; }
 
+    public SexoEnum Sexo { get; set; }
+
     [Display(Name = "Data De Nascimento", Prompt = "Informe a Data De Nascimento"),
     Required(ErrorMessage = "Informe a Data De Nascimento")]
     public DateOnly DataNascimento { get; set; }

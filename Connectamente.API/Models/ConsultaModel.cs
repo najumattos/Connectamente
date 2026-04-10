@@ -18,6 +18,6 @@ public class ConsultaModel
 
     public string ProntuarioId { get; set; }
     [ForeignKey("ProntuarioId")]
-    public virtual ProntuarioModel Prontuario { get; set; }
+    public virtual ProntuarioAdultoModel Prontuario { get; set; }
     
 }

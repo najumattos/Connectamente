@@ -21,6 +21,6 @@ public class PsicologoModel
     StringLength(1000), Required(ErrorMessage = "Campo obrigatório")]
     public string Descricao { get; set; }
     public TipoPerfilEnum TipoPerfil { get; set; }
-    public IEnumerable<ProntuarioModel> Prontuarios { get; set; }
+    public IEnumerable<ProntuarioAdultoModel> Prontuarios { get; set; }
     public IEnumerable<ConsultaModel> ConsultasAgendadas { get; set; }
 }
