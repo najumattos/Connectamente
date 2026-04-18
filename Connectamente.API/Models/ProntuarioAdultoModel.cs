@@ -46,12 +46,12 @@ public class ProntuarioAdultoModel
     public string Sensopercepcao { get; set; }
     public string PensamentoConteudo { get; set; }// Obsessões, delírios, etc.
     public string Humor { get; set; }
-    public AtitudeEntrevistadorEnum Atitude { get; set; }
-    public ConscienciaDoencaEnum Consciencia { get; set; }
+  //  public AtitudeEntrevistadorEnum Atitude { get; set; }
+ //   public ConscienciaDoencaEnum Consciencia { get; set; }
     public string HipoteseDiagnostica { get; set; }
     public string Nacionalidade { get; set; }
-    public EstadoCivilEnum EstadoCivil { get; set; }
-    public GrauInstrucaoEnum GrauInstrucao { get; set; }
+  //  public EstadoCivilEnum EstadoCivil { get; set; }
+  //  public GrauInstrucaoEnum GrauInstrucao { get; set; }
     public string Profissao { get; set; }
     //public string Residencia { get; set; } tabela endereco
     public TipoProntuarioEnum TipoProntuario { get; set; }

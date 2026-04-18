@@ -27,15 +27,7 @@ namespace Connectamente.API.Models
         [Display(Name = "Última Atualização")]
         public DateTime DataUltimaAtualizacao { get; set; } = DateTime.Now;
 
-        public string QueixaPrincipal { get; set; }
-        public bool FoiDesejado { get; set; }
-        public DesenvolvimentoAdolescente Desenvolvimento { get; set; } = new();
-        public AntecedentesFamiliares Antecedentes { get; set; } = new();
-        public AmbienteSocial Ambiente { get; set; } = new();
-        public string Escola { get; set; } = string.Empty;
-        public DadosResponsavel Pai { get; set; } = new();
-        public DadosResponsavel Mae { get; set; } = new();
-        public string CondicaoConjugalPais { get; set; }
+      
     }
 }
 /*

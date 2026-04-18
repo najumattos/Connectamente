@@ -13,7 +13,7 @@ namespace Connectamente.API.Controllers
         [HttpGet("Buscar")]
         public async Task<ActionResult<IEnumerable<ConsultaDto>>> GetConsultas([FromQuery] AuthAcessoDto auth)
         {
-            var resposta = await service.FiltrarPorPerfilAutorizado(auth);
+            var resposta = await service.BuscarConsultas(auth);
 
             return resposta.IsSuccess switch
             {
@@ -49,7 +49,7 @@ namespace Connectamente.API.Controllers
         [HttpPatch("Arquivar")]
         public async Task<ActionResult> AlterarStatusConsulta([FromQuery] AuthAcessoDto auth, string id)
         {
-            var resposta = await service.AlterarStatusConsulta(auth, consulta);
+            var resposta = await service.AlterarStatusConsulta(auth, id);
             return resposta switch
             {
                 null => NotFound(resposta.Error),
