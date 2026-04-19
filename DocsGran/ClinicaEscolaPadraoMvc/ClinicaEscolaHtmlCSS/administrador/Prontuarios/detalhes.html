@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Admin | Detalhes do Prontuário</title>
+	<link rel="stylesheet" href="../../index.css" />
+</head>
+<body>
+	<div class="bg-shape shape-a"></div>
+	<div class="bg-shape shape-b"></div>
+	<main class="app-shell">
+		<header class="topbar">
+			<div><p class="eyebrow">Administrativo</p><h2>Detalhes do Prontuário</h2></div>
+			<div class="topbar-actions">
+				<a class="btn btn-ghost" href="./index.html">Voltar para Prontuários</a>
+			</div>
+		</header>
+
+		<section class="card info-block">
+			<h3 class="section-title">ProntuarioDetalhesViewModel</h3>
+			<div id="prontuario-grid" class="details-grid"></div>
+			<div class="actions-row" style="margin-top: 12px;">
+				<a id="go-paciente" class="btn btn-primary" href="../Pacientes/index.html">Paciente</a>
+				<a id="go-documentos" class="btn btn-ghost" href="../Documentos/index.html">Documentos</a>
+			</div>
+		</section>
+
+		<section class="card table-wrap">
+			<h3 class="section-title">Atendimentos</h3>
+			<table>
+				<thead><tr><th>Data</th><th>Status</th><th>Evolução</th></tr></thead>
+				<tbody id="sess-body"></tbody>
+			</table>
+			<div class="empty-state" id="sess-empty">Sem atendimentos vinculados.</div>
+		</section>
+
+		<section class="card table-wrap">
+			<h3 class="section-title">Documentos do Prontuário</h3>
+			<table>
+				<thead><tr><th>Tipo</th><th>Status</th><th>Data</th><th>Navegação</th></tr></thead>
+				<tbody id="docs-body"></tbody>
+			</table>
+			<div class="empty-state" id="docs-empty">Sem documentos vinculados.</div>
+		</section>
+	</main>
+	<script src="detalhes.js"></script>
+</body>
+</html>

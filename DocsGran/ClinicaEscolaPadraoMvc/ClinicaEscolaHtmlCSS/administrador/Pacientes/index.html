@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Admin | CRUD Pacientes</title>
+	<link rel="stylesheet" href="../../index.css" />
+</head>
+<body>
+	<div class="bg-shape shape-a"></div>
+	<div class="bg-shape shape-b"></div>
+	<main class="app-shell">
+		<header class="topbar">
+			<div>
+				<p class="eyebrow">Administrativo</p>
+				<h2>Pacientes</h2>
+			</div>
+			<div class="topbar-actions">
+				<a class="btn btn-primary" href="./criar.html">Novo Paciente</a>
+				<a class="btn btn-ghost" href="../indexAdmin.html">Voltar ao Painel</a>
+			</div>
+		</header>
+
+		<section class="card table-wrap">
+			<div class="toolbar">
+				<input id="paciente-busca" type="text" placeholder="Buscar por nome ou CPF" />
+				<p class="inline-note">Ações em páginas separadas: criar, editar e ativar/inativar.</p>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>CPF</th>
+						<th>Nascimento</th>
+						<th>Telefone</th>
+						<th>Status</th>
+						<th>Ações CRUD</th>
+					</tr>
+				</thead>
+				<tbody id="pacientes-body"></tbody>
+			</table>
+			<div class="empty-state" id="pacientes-empty">Nenhum paciente cadastrado.</div>
+		</section>
+	</main>
+	<script src="index.js"></script>
+</body>
+</html>
