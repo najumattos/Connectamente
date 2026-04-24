@@ -1,0 +1,52 @@
+sequenceDiagram
+    autonumber
+    actor Front as Frontend
+    participant API as AuthController
+    participant Auth as AuthService
+    participant Identity as UserManager
+    participant DbCtx as ApplicationDbContext
+    participant DB as BancoDeDados
+    participant Jwt as JwtService
+    participant Middleware as JwtBearerMiddleware
+    participant Service as RecursoService
+
+    Front->>API: POST /auth/login (email, senha)
+    API->>Auth: LoginAsync(credentials)
+    Auth->>Identity: FindByEmailAsync(email)
+    Identity->>DbCtx: Buscar usuario por email
+    DbCtx->>DB: SELECT usuario
+    DB-->>DbCtx: Dados do usuario
+    DbCtx-->>Identity: Usuario
+    Identity-->>Auth: Usuario encontrado
+    Auth->>Identity: CheckPasswordAsync(usuario, senha)
+
+    alt Credenciais validas
+        Identity-->>Auth: true
+        Auth->>Jwt: Gerar token JWT (claims, exp)
+        Jwt-->>Auth: access_token
+        Auth-->>API: Login OK + token
+        API-->>Front: 200 OK + JWT
+    else Credenciais invalidas
+        Identity-->>Auth: false
+        Auth-->>API: Falha de autenticacao
+        API-->>Front: 401 Unauthorized
+    end
+
+    Front->>API: GET /recurso-protegido (Bearer JWT)
+    API->>Middleware: Encaminhar requisicao autenticada
+    Middleware->>Jwt: Validar assinatura, exp, issuer, audience
+
+    alt Token valido
+        Jwt-->>Middleware: Claims extraidas
+        Middleware->>Service: Executar regra de negocio
+        Service->>DbCtx: Buscar usuario e vinculo ativo
+        DbCtx->>DB: SELECT usuario, perfis, vinculos
+        DB-->>DbCtx: Dados de autorizacao
+        DbCtx-->>Service: Resultado
+        Service-->>API: Resposta de negocio
+        API-->>Front: 200 OK
+    else Token invalido ou expirado
+        Jwt-->>Middleware: Token invalido
+        Middleware-->>API: Bloquear acesso
+        API-->>Front: 401 Unauthorized
+    end
