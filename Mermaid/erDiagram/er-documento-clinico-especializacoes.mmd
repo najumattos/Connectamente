@@ -1,0 +1,90 @@
+erDiagram
+    direction LR
+
+    DOCUMENTO_CLINICO {
+        int id PK
+        int prontuarioId FK
+        int pacienteId FK
+        int atendimentoId FK
+        string tipoDocumento
+        string statusDocumento
+        int versao
+    }
+
+    DOCUMENTO_IDENTIFICACAO_PACIENTE {
+        int documentoClinicoId PK,FK
+        string numeroProntuarioInformado
+        string nomePacienteNoFormulario
+        datetime dataNascimentoNoFormulario
+        string cpfNoFormulario
+        string rgNoFormulario
+    }
+
+    ANAMNESE_ADULTO {
+        int documentoClinicoId PK,FK
+        string queixaPrincipal
+        string queixaSecundaria
+        string sintomas
+        string inicioPatologia
+        string tratamentosAnteriores
+        string medicamentos
+    }
+
+    ANAMNESE_ADOLESCENTE {
+        int documentoClinicoId PK,FK
+        string escola
+        string paiNome
+        string maeNome
+        string queixaPrincipal
+        string desdeQuando
+        string linguagem
+        string alimentacao
+    }
+
+    PLANTAO_PSICOLOGICO {
+        int documentoClinicoId PK,FK
+        string sinteseQueixaInicial
+        string relatoAtendimento
+        string condutaEncaminhamento
+        string nomeEstagiarioInformado
+        string nomeSupervisorInformado
+    }
+
+    TERMO_PSICOTERAPIA_INDIVIDUAL {
+        int documentoClinicoId PK,FK
+        string nomeClienteNoTermo
+        string rgCliente
+        string estadoCivilCliente
+        string profissaoCliente
+        datetime dataInicioVigencia
+        datetime dataFimVigencia
+        int duracaoSessaoMinutos
+    }
+
+    TERMO_AUTORIZACAO_MENOR {
+        int documentoClinicoId PK,FK
+        int responsavelLegalId FK
+        string nomeMenorNoTermo
+        datetime dataNascimentoMenorNoTermo
+        bool autorizaAtendimentoPsicologico
+        bool autorizaColetaInformacoes
+        datetime dataAssinatura
+    }
+
+    TERMO_COMPROMISSO_INFORMATIZACAO {
+        int documentoClinicoId PK,FK
+        string estagiarioUsuarioId FK
+        int pacienteId FK
+        string cpfEstagiario
+        bool declarouAnuenciaPaciente
+        bool declarouSigiloProfissional
+        datetime dataAssinaturaEstagiario
+    }
+
+    DOCUMENTO_CLINICO ||--o| DOCUMENTO_IDENTIFICACAO_PACIENTE : "especializa"
+    DOCUMENTO_CLINICO ||--o| ANAMNESE_ADULTO : "especializa"
+    DOCUMENTO_CLINICO ||--o| ANAMNESE_ADOLESCENTE : "especializa"
+    DOCUMENTO_CLINICO ||--o| PLANTAO_PSICOLOGICO : "especializa"
+    DOCUMENTO_CLINICO ||--o| TERMO_PSICOTERAPIA_INDIVIDUAL : "especializa"
+    DOCUMENTO_CLINICO ||--o| TERMO_AUTORIZACAO_MENOR : "especializa"
+    DOCUMENTO_CLINICO ||--o| TERMO_COMPROMISSO_INFORMATIZACAO : "especializa"

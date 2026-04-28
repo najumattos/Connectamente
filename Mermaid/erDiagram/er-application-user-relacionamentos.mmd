@@ -1,0 +1,167 @@
+erDiagram
+    direction LR
+
+    IDENTITY_USER {
+        string id PK
+        string userName UK
+        string email UK
+        string phoneNumber
+        bool emailConfirmed
+        bool phoneNumberConfirmed
+        bool twoFactorEnabled
+        datetime lockoutEnd
+        int accessFailedCount
+        bool lockoutEnabled
+    }
+
+    IDENTITY_ROLE {
+        string id PK
+        string name UK
+        string normalizedName UK
+        string concurrencyStamp
+    }
+
+    IDENTITY_USER_ROLE {
+        string userId PK,FK
+        string roleId PK,FK
+    }
+
+    IDENTITY_USER_CLAIM {
+        int id PK
+        string userId FK
+        string claimType
+        string claimValue
+    }
+
+    IDENTITY_USER_LOGIN {
+        string loginProvider PK
+        string providerKey PK
+        string userId FK
+        string providerDisplayName
+    }
+
+    IDENTITY_USER_TOKEN {
+        string userId PK,FK
+        string loginProvider PK
+        string name PK
+        string value
+    }
+
+    IDENTITY_ROLE_CLAIM {
+        int id PK
+        string roleId FK
+        string claimType
+        string claimValue
+    }
+
+    APPLICATION_USER {
+        string id PK
+        string nomeCompleto
+        string cpf
+        string matricula
+        string crp
+        string tipoUsuario
+        bool ativo
+    }
+
+    VINCULO_ALUNO_PACIENTE {
+        int id PK
+        int pacienteId FK
+        string alunoId FK
+        string liberadoPorUsuarioId FK
+        string revogadoPorUsuarioId FK
+        string statusVinculo
+        bool permiteLeitura
+        bool permiteEscrita
+    }
+
+    ATENDIMENTO {
+        int id PK
+        int prontuarioId FK
+        int pacienteId FK
+        string alunoId FK
+        string supervisorId FK
+        string tipoAtendimento
+        string statusAtendimento
+    }
+
+    DOCUMENTO_CLINICO {
+        int id PK
+        int prontuarioId FK
+        int pacienteId FK
+        int atendimentoId FK
+        string criadoPorUsuarioId FK
+        string supervisorId FK
+        string tipoDocumento
+        string statusDocumento
+    }
+
+    EVOLUCAO_ATENDIMENTO {
+        int id PK
+        int documentoClinicoId FK
+        int atendimentoId FK
+        string criadoPorUsuarioId FK
+        string supervisorId FK
+        string textoEvolucao
+    }
+
+    TERMO_RESPONSABILIDADE_ESTAGIARIO {
+        int id PK
+        string estagiarioUsuarioId FK
+        bool declarouRecebimentoManual
+        bool declarouCienciaNormas
+    }
+
+    ANEXO {
+        int id PK
+        int documentoClinicoId FK
+        string enviadoPorUsuarioId FK
+        string nomeOriginal
+        long tamanhoBytes
+    }
+
+    AUDITORIA {
+        int id PK
+        string usuarioId FK
+        string tipoAcao
+        string entidade
+        string registroId
+        int pacienteId FK
+    }
+
+    TERMO_COMPROMISSO_INFORMATIZACAO {
+        int documentoClinicoId PK,FK
+        string estagiarioUsuarioId FK
+        int pacienteId FK
+        bool declarouAnuenciaPaciente
+        bool declarouSigiloProfissional
+    }
+
+    IDENTITY_USER ||--o{ IDENTITY_USER_ROLE : possui
+    IDENTITY_ROLE ||--o{ IDENTITY_USER_ROLE : contem
+    IDENTITY_USER ||--o{ IDENTITY_USER_CLAIM : possui
+    IDENTITY_USER ||--o{ IDENTITY_USER_LOGIN : possui
+    IDENTITY_USER ||--o{ IDENTITY_USER_TOKEN : possui
+    IDENTITY_ROLE ||--o{ IDENTITY_ROLE_CLAIM : possui
+
+    APPLICATION_USER ||--o{ IDENTITY_USER : "estende"
+    APPLICATION_USER ||--o{ VINCULO_ALUNO_PACIENTE : "aluno"
+    APPLICATION_USER ||--o{ VINCULO_ALUNO_PACIENTE : "libera"
+    APPLICATION_USER ||--o{ VINCULO_ALUNO_PACIENTE : "revoga"
+
+    APPLICATION_USER ||--o{ ATENDIMENTO : "atende_como_aluno"
+    APPLICATION_USER ||--o{ ATENDIMENTO : "supervisiona"
+
+    APPLICATION_USER ||--o{ DOCUMENTO_CLINICO : "cria"
+    APPLICATION_USER ||--o{ DOCUMENTO_CLINICO : "supervisiona_doc"
+
+    APPLICATION_USER ||--o{ EVOLUCAO_ATENDIMENTO : "cria_evolucao"
+    APPLICATION_USER ||--o{ EVOLUCAO_ATENDIMENTO : "supervisiona_evolucao"
+
+    APPLICATION_USER ||--o{ TERMO_RESPONSABILIDADE_ESTAGIARIO : "assina"
+
+    APPLICATION_USER ||--o{ ANEXO : "envia"
+
+    APPLICATION_USER ||--o{ AUDITORIA : "gera"
+
+    APPLICATION_USER ||--o{ TERMO_COMPROMISSO_INFORMATIZACAO : "estagiario"

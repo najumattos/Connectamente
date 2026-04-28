@@ -1,0 +1,46 @@
+flowchart LR
+    subgraph EST["Estagiário / Supervisor"]
+        direction TB
+        A([Acessar módulo de vínculos]) --> B[Selecionar paciente]
+        B --> C[Selecionar aluno]
+        C --> D[Informar motivo da liberação]
+        D --> E[Definir permissões de leitura e escrita]
+        E --> F[Salvar vínculo]
+    end
+
+    subgraph SIS["Sistema"]
+        direction TB
+        G{Paciente existe
+        e está ativo?}
+        H{Aluno existe
+        e está ativo?}
+        I{Já existe vínculo ativo?}
+        J[Gerar VinculoAlunoPaciente]
+        K[Registrar DataLiberacao]
+        L[Salvar LiberadoPorUsuarioId]
+        M[Persistir status Ativo]
+        N[Exibir sucesso]
+        O[Exibir erro de validação]
+        P[Manter formulário aberto]
+        Q[Revogar vínculo anterior, se necessário]
+    end
+
+    subgraph BD["Base de Dados"]
+        direction TB
+        R[(Tabela VinculoAlunoPaciente)]
+        S[(Tabela Paciente)]
+        T[(Tabela ApplicationUser)]
+    end
+
+    F --> G
+    G -- Não --> O --> P --> B
+    G -- Sim --> H
+    H -- Não --> O --> P --> C
+    H -- Sim --> I
+    I -- Sim --> O --> P --> C
+    I -- Não --> J --> K --> L --> M --> R --> N
+    M --> Q --> T
+
+    style EST fill:#e1f5ff,stroke:#4aa3df,stroke-width:1px
+    style SIS fill:#f3f4f6,stroke:#6b7280,stroke-width:1px
+    style BD fill:#fce4ec,stroke:#ec4899,stroke-width:1px

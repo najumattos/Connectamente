@@ -1,0 +1,37 @@
+flowchart LR
+    subgraph EST["Estagiário"]
+        direction TB
+        A([Iniciar evolução]) --> B[Selecionar atendimento]
+        B --> C[Preencher texto da evolução]
+        C --> D[Salvar como rascunho]
+        D --> E[Submeter para supervisão]
+    end
+
+    subgraph SIS["Sistema"]
+        direction TB
+        F{Dados obrigatórios
+        preenchidos?}
+        G[Salvar evolução]
+        H[Enviar para supervisor]
+        I[Registrar pendência]
+        J[Notificar estagiário]
+    end
+
+    subgraph SUP["Supervisor"]
+        direction TB
+        K[Analisar evolução]
+        L{Aprovar?}
+        M[Solicitar ajuste]
+        N[Aprovar evolução]
+    end
+
+    E --> F
+    F -- Não --> I --> J --> C
+    F -- Sim --> G --> H --> K
+    K --> L
+    L -- Não --> M --> J --> C
+    L -- Sim --> N --> O([Evolução finalizada])
+
+    style EST fill:#e1f5ff,stroke:#4aa3df,stroke-width:1px
+    style SIS fill:#f3f4f6,stroke:#6b7280,stroke-width:1px
+    style SUP fill:#fff3e0,stroke:#f59e0b,stroke-width:1px

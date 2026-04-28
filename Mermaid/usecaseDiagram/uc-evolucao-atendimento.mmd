@@ -1,0 +1,54 @@
+graph TB
+    subgraph "Sistema de Evolução de Atendimento"
+        UC1["📝 Registrar Evolução de Atendimento"]
+        UC2["👁️ Visualizar Evolução de Atendimento"]
+        UC3["✏️ Editar Evolução de Atendimento"]
+        UC4["🔍 Consultar Histórico de Evoluções"]
+        UC5["📄 Gerar Relatório de Evolução"]
+        UC6["✅ Submeter Evolução para Aprovação"]
+        UC7["❌ Excluir Evolução"]
+        UC8["👁️ Visualizar Feedback do Supervisor"]
+    end
+
+    subgraph Atores
+        EST["👨‍🎓 Estagiário"]
+        SUP["👨‍💼 Supervisor"]
+        PAC["👤 Paciente"]
+    end
+
+    subgraph Dados
+        DOC["📋 Documento Clínico"]
+        AT["🏥 Atendimento"]
+        BD["🗄️ Base de Dados"]
+    end
+
+    EST -->|realiza| UC1
+    EST -->|acessa| UC2
+    EST -->|modifica| UC3
+    EST -->|consulta| UC4
+    EST -->|gera| UC5
+    EST -->|envia| UC6
+    EST -->|solicita| UC7
+    EST -->|visualiza| UC8
+
+    SUP -->|aprova/rejeita| UC6
+    SUP -->|revisa| UC8
+    SUP -->|valida| UC1
+
+    UC1 -->|referencia| DOC
+    UC1 -->|referencia| AT
+    UC1 -->|armazena em| BD
+
+    UC2 -->|lê de| BD
+    UC3 -->|atualiza| BD
+    UC4 -->|consulta| BD
+    UC5 -->|extrai de| BD
+    UC7 -->|remove de| BD
+
+    PAC -.->|dados do| AT
+
+    style EST fill:#e1f5ff
+    style SUP fill:#fff3e0
+    style DOC fill:#f3e5f5
+    style AT fill:#e8f5e9
+    style BD fill:#fce4ec

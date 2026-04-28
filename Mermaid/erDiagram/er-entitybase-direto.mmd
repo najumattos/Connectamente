@@ -1,0 +1,133 @@
+erDiagram
+    direction LR
+
+    ENTITY_BASE {
+        int id PK
+        datetime dataCriacao
+        datetime dataAtualizacao
+        bool ativo
+    }
+
+    PACIENTE {
+        int id PK
+        string nomeCompleto
+        string cpf
+        string rg
+        datetime dataNascimento
+        string sexo
+        string telefone
+    }
+
+    PRONTUARIO {
+        int id PK
+        int pacienteId FK
+        string numeroProntuario UK
+        string situacaoProntuario
+    }
+
+    TRATAMENTO_ANTERIOR_PACIENTE {
+        int id PK
+        int pacienteId FK
+        string tipoTratamento
+        bool possuiHistorico
+    }
+
+    RESPONSAVEL_LEGAL {
+        int id PK
+        int pacienteId FK
+        string nomeCompleto
+        string cpf
+        string grauParentesco
+        bool responsavelPrincipal
+    }
+
+    VINCULO_ALUNO_PACIENTE {
+        int id PK
+        int pacienteId FK
+        string alunoId FK
+        string statusVinculo
+        bool permiteLeitura
+        bool permiteEscrita
+    }
+
+    DOCUMENTO_CLINICO {
+        int id PK
+        int prontuarioId FK
+        int pacienteId FK
+        int atendimentoId FK
+        string tipoDocumento
+        string statusDocumento
+        int versao
+    }
+
+    ATENDIMENTO {
+        int id PK
+        int prontuarioId FK
+        int pacienteId FK
+        string alunoId FK
+        string tipoAtendimento
+        string statusAtendimento
+        bool faltaJustificada
+    }
+
+    EVOLUCAO_ATENDIMENTO {
+        int id PK
+        int documentoClinicoId FK
+        int atendimentoId FK
+        string textoEvolucao
+    }
+
+    ANEXO {
+        int id PK
+        int documentoClinicoId FK
+        string nomeOriginal
+        string extensao
+        long tamanhoBytes
+    }
+
+    AUDITORIA {
+        int id PK
+        string usuarioId FK
+        string tipoAcao
+        string entidade
+        string registroId
+        int pacienteId FK
+        int prontuarioId FK
+    }
+
+    TERMO_RESPONSABILIDADE_ESTAGIARIO {
+        int id PK
+        string estagiarioUsuarioId FK
+        bool declarouRecebimentoManual
+        bool declarouCienciaNormas
+    }
+
+    ENTITY_BASE ||--o{ PACIENTE : "herda"
+    ENTITY_BASE ||--o{ PRONTUARIO : "herda"
+    ENTITY_BASE ||--o{ TRATAMENTO_ANTERIOR_PACIENTE : "herda"
+    ENTITY_BASE ||--o{ RESPONSAVEL_LEGAL : "herda"
+    ENTITY_BASE ||--o{ VINCULO_ALUNO_PACIENTE : "herda"
+    ENTITY_BASE ||--o{ DOCUMENTO_CLINICO : "herda"
+    ENTITY_BASE ||--o{ ATENDIMENTO : "herda"
+    ENTITY_BASE ||--o{ EVOLUCAO_ATENDIMENTO : "herda"
+    ENTITY_BASE ||--o{ ANEXO : "herda"
+    ENTITY_BASE ||--o{ AUDITORIA : "herda"
+    ENTITY_BASE ||--o{ TERMO_RESPONSABILIDADE_ESTAGIARIO : "herda"
+
+    PACIENTE ||--|| PRONTUARIO : "possui"
+    PACIENTE ||--o{ TRATAMENTO_ANTERIOR_PACIENTE : "possui"
+    PACIENTE ||--o{ RESPONSAVEL_LEGAL : "possui"
+    PACIENTE ||--o{ VINCULO_ALUNO_PACIENTE : "vinculado"
+    PACIENTE ||--o{ DOCUMENTO_CLINICO : "referencia"
+    PACIENTE ||--o{ ATENDIMENTO : "recebe"
+    PACIENTE ||--o{ AUDITORIA : "auditado"
+
+    PRONTUARIO ||--o{ DOCUMENTO_CLINICO : "contem"
+    PRONTUARIO ||--o{ ATENDIMENTO : "contem"
+    PRONTUARIO ||--o{ AUDITORIA : "auditado"
+
+    DOCUMENTO_CLINICO ||--o{ EVOLUCAO_ATENDIMENTO : "recebe"
+    DOCUMENTO_CLINICO ||--o{ ANEXO : "possui"
+
+    ATENDIMENTO ||--o{ DOCUMENTO_CLINICO : "origina"
+    ATENDIMENTO ||--o{ EVOLUCAO_ATENDIMENTO : "gera"

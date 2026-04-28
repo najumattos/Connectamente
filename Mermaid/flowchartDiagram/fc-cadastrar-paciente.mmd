@@ -1,0 +1,39 @@
+flowchart LR
+    subgraph USU["Estagiário / Atendente"]
+        direction TB
+        A([Acessar módulo de Pacientes]) --> B[Clicar em Novo cadastro]
+        B --> C[Preencher dados pessoais]
+        C --> D[Preencher contatos e endereço]
+        D --> E[Informar dados complementares]
+        E --> F[Salvar cadastro]
+    end
+
+    subgraph SIS["Sistema"]
+        direction TB
+        G{Campos obrigatórios
+        preenchidos?}
+        H{CPF válido e não duplicado?}
+        I[Gerar registro de Paciente]
+        J[Registrar DataCriacao]
+        K[Persistir cadastro]
+        L[Exibir sucesso]
+        M[Exibir erro de validação]
+        N[Manter formulário aberto]
+        O[Registrar prontuário, se aplicável]
+    end
+
+    subgraph BD["Base de Dados"]
+        direction TB
+        P[(Tabela Paciente)]
+        Q[(Tabela Prontuario)]
+    end
+
+    F --> G
+    G -- Não --> M --> N --> C
+    G -- Sim --> H
+    H -- Não --> M --> N --> C
+    H -- Sim --> I --> J --> K --> P --> O --> Q --> L
+
+    style USU fill:#e1f5ff,stroke:#4aa3df,stroke-width:1px
+    style SIS fill:#f3f4f6,stroke:#6b7280,stroke-width:1px
+    style BD fill:#fce4ec,stroke:#ec4899,stroke-width:1px

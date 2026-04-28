@@ -1,0 +1,50 @@
+flowchart LR
+    subgraph USU["Estagiário / Atendente"]
+        direction TB
+        A([Acessar módulo de Pacientes]) --> B[Clicar em Novo cadastro]
+        B --> C[Informar dados do paciente menor]
+        C --> D[Informar dados do responsável legal]
+        D --> E[Anexar ou registrar autorização]
+        E --> F[Salvar cadastro]
+    end
+
+    subgraph SIS["Sistema"]
+        direction TB
+        G{Paciente é menor de idade?}
+        H{Campos obrigatórios
+        do menor preenchidos?}
+        I{Responsável legal válido?}
+        J{Autorização anexada
+        ou registrada?}
+        K[Gerar registro de Paciente]
+        L[Gerar ResponsavelLegal]
+        M[Gerar Prontuario]
+        N[Gerar TermoAutorizacaoMenor]
+        O[Persistir cadastro]
+        P[Exibir sucesso]
+        Q[Exibir erro de validação]
+        R[Manter formulário aberto]
+    end
+
+    subgraph BD["Base de Dados"]
+        direction TB
+        S[(Tabela Paciente)]
+        T[(Tabela ResponsavelLegal)]
+        U[(Tabela Prontuario)]
+        V[(Tabela TermoAutorizacaoMenor)]
+    end
+
+    F --> G
+    G -- Não --> Q --> R --> A
+    G -- Sim --> H
+    H -- Não --> Q --> R --> C
+    H -- Sim --> I
+    I -- Não --> Q --> R --> D
+    I -- Sim --> J
+    J -- Não --> Q --> R --> E
+    J -- Sim --> K --> L --> M --> N --> O
+    O --> S --> T --> U --> V --> P
+
+    style USU fill:#e1f5ff,stroke:#4aa3df,stroke-width:1px
+    style SIS fill:#f3f4f6,stroke:#6b7280,stroke-width:1px
+    style BD fill:#fce4ec,stroke:#ec4899,stroke-width:1px

@@ -1,0 +1,48 @@
+flowchart LR
+    subgraph EST["Estagiário"]
+        direction TB
+        A([Iniciar evolução]) --> B[Selecionar atendimento]
+        B --> C[Carregar documento clínico]
+        C --> D[Preencher DataEvolucao]
+        D --> E[Digitar TextoEvolucao]
+        E --> F[Informar supervisor, se houver]
+        F --> G[Salvar evolução]
+    end
+
+    subgraph SIS["Sistema"]
+        direction TB
+        H{Atendimento e documento
+        clínico são válidos?}
+        I{TextoEvolucao
+        está preenchido?}
+        J[Gerar EvolucaoAtendimento]
+        K[Associar DocumentoClinico]
+        L[Associar Atendimento]
+        M[Registrar CriadoPorUsuarioId]
+        N[Registrar SupervisorId]
+        O[Persistir na base]
+        P[Exibir sucesso]
+        Q[Exibir erro de validação]
+    end
+
+    subgraph SUP["Supervisor"]
+        direction TB
+        R[Receber evolução para análise]
+        S[Revisar conteúdo clínico]
+        T{Aprovar evolução?}
+        U[Solicitar ajuste]
+        V[Aprovar para histórico]
+    end
+
+    G --> H
+    H -- Não --> Q --> B
+    H -- Sim --> I
+    I -- Não --> Q --> E
+    I -- Sim --> J --> K --> L --> M --> N --> O --> P --> R
+    R --> S --> T
+    T -- Não --> U --> E
+    T -- Sim --> V --> W([EvolucaoAtendimento concluída])
+
+    style EST fill:#e1f5ff,stroke:#4aa3df,stroke-width:1px
+    style SIS fill:#f3f4f6,stroke:#6b7280,stroke-width:1px
+    style SUP fill:#fff3e0,stroke:#f59e0b,stroke-width:1px

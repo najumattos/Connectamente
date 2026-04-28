@@ -1,0 +1,79 @@
+graph TB
+    subgraph "Sistema de Clínicas Escola"
+        UC0["🔐 Autenticar usuário"]
+        UC1["📊 Acessar painel inicial"]
+        UC2["👤 Acessar módulo de Pacientes"]
+        UC3["📁 Acessar módulo de Prontuários"]
+        UC4["📝 Acessar módulo de Documentos Clínicos"]
+        UC5["🤝 Acessar módulo de Vínculos"]
+        UC6["🏥 Acessar módulo de Atendimentos"]
+        UC7["📄 Acessar módulo de Evoluções"]
+        UC8["📎 Acessar módulo de Anexos"]
+        UC9["🛠️ Acessar módulo Administrativo"]
+        UC10["📈 Acessar relatórios e auditoria"]
+        UC11["🚫 Negar acesso"]
+        UC12["✅ Liberar acesso ao módulo"]
+    end
+
+    subgraph "Atores"
+        EST["👨‍🎓 Estagiário"]
+        SUP["👨‍💼 Supervisor"]
+        ADM["👤 Administrador"]
+    end
+
+    EST -->|autentica| UC0
+    SUP -->|autentica| UC0
+    ADM -->|autentica| UC0
+
+    EST -->|pode acessar| UC1
+    EST -->|pode acessar| UC2
+    EST -->|pode acessar| UC3
+    EST -->|pode acessar| UC4
+    EST -->|pode acessar| UC5
+    EST -->|pode acessar| UC6
+    EST -->|pode acessar| UC7
+    EST -->|pode acessar| UC8
+
+    SUP -->|pode acessar| UC1
+    SUP -->|pode acessar| UC2
+    SUP -->|pode acessar| UC3
+    SUP -->|pode acessar| UC4
+    SUP -->|pode acessar| UC5
+    SUP -->|pode acessar| UC6
+    SUP -->|pode acessar| UC7
+    SUP -->|pode acessar| UC8
+    SUP -->|pode acessar| UC10
+
+    ADM -->|pode acessar| UC1
+    ADM -->|pode acessar| UC2
+    ADM -->|pode acessar| UC3
+    ADM -->|pode acessar| UC4
+    ADM -->|pode acessar| UC5
+    ADM -->|pode acessar| UC6
+    ADM -->|pode acessar| UC7
+    ADM -->|pode acessar| UC8
+    ADM -->|pode acessar| UC9
+    ADM -->|pode acessar| UC10
+
+    UC0 -->|valida permissões| UC12
+    UC0 -->|nega quando não permitido| UC11
+
+    UC12 --> UC1
+    UC12 --> UC2
+    UC12 --> UC3
+    UC12 --> UC4
+    UC12 --> UC5
+    UC12 --> UC6
+    UC12 --> UC7
+    UC12 --> UC8
+    UC12 --> UC9
+    UC12 --> UC10
+
+    UC11 -.->|retorna mensagem de acesso negado| UC0
+
+    style EST fill:#e1f5ff
+    style SUP fill:#fff3e0
+    style ADM fill:#ede9fe
+    style UC0 fill:#dbeafe
+    style UC11 fill:#fee2e2
+    style UC12 fill:#dcfce7
