@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>PlantaoPsicologico</title>
+	<link rel="stylesheet" href="../index.css" />
+	<link rel="stylesheet" href="./documentosClinicos.css" />
+</head>
+<body>
+	<main class="doc-shell">
+		<header class="doc-header">
+			<div>
+				<p class="eyebrow">TipoDocumentoClinico</p>
+				<h2>PlantaoPsicologico</h2>
+			</div>
+			<a class="btn btn-ghost" href="./index.html">Voltar</a>
+		</header>
+		<form class="card doc-form">
+			<label>Data do plantao
+				<input type="date" />
+			</label>
+			<label>Motivo do atendimento
+				<input type="text" placeholder="Queixa imediata" />
+			</label>
+			<label>Conduta inicial
+				<input type="text" placeholder="Encaminhamento ou orientacao" />
+			</label>
+			<label>Risco identificado
+				<input type="text" placeholder="Baixo/medio/alto" />
+			</label>
+			<label class="full">Descricao do atendimento
+				<textarea rows="5"></textarea>
+			</label>
+		</form>
+	</main>
+</body>
+</html>

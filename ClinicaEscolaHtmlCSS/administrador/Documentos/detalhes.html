@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Admin | Detalhes do Documento</title>
+	<link rel="stylesheet" href="../../index.css" />
+</head>
+<body>
+	<div class="bg-shape shape-a"></div>
+	<div class="bg-shape shape-b"></div>
+	<main class="app-shell">
+		<header class="topbar">
+			<div><p class="eyebrow">Administrativo</p><h2>Detalhes do Documento</h2></div>
+			<div class="topbar-actions">
+				<a class="btn btn-ghost" href="./index.html">Voltar para Documentos</a>
+			</div>
+		</header>
+
+		<section class="card info-block">
+			<h3 class="section-title">Documento Clínico</h3>
+			<div id="doc-grid" class="details-grid"></div>
+			<div class="actions-row" style="margin-top: 12px;">
+				<a id="go-paciente" class="btn btn-primary" href="../Pacientes/index.html">Paciente</a>
+				<a id="go-prontuario" class="btn btn-ghost" href="../Prontuarios/index.html">Prontuário</a>
+				<a id="go-modelo" class="btn btn-ghost" href="../../documentosClinicos/index.html">Modelo do Tipo</a>
+			</div>
+		</section>
+
+		<section class="card patient-doc-nav">
+			<h4>Navegar nos documentos do paciente</h4>
+			<p class="muted">Fluxo mais conciso: anterior, próximo ou escolha direta por tipo/data.</p>
+			<div class="actions-row">
+				<a id="prev-doc" class="btn btn-ghost" href="./index.html">Anterior</a>
+				<a id="next-doc" class="btn btn-ghost" href="./index.html">Próximo</a>
+			</div>
+			<label>Ir para documento específico
+				<select id="doc-picker"></select>
+			</label>
+		</section>
+	</main>
+	<script src="detalhes.js"></script>
+</body>
+</html>
