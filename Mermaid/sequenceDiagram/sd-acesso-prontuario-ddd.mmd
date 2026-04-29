@@ -1,0 +1,109 @@
+sequenceDiagram
+    actor Estagiario as Estagiário
+    participant Controller as Controller<br/>HTTP
+    participant UseCase as UseCase<br/>Application
+    participant Domain as Domain<br/>Regras de Negócio
+    participant Repository as Repository<br/>Data Access
+    participant Database as Database<br/>PostgreSQL
+    participant Coordenador as Coordenador<br/>Supervisor
+
+    Estagiario->>Controller: GET /prontuarios/{id}<br/>(com token JWT)
+    activate Controller
+    
+    Controller->>Controller: Validar token JWT
+    
+    alt Token inválido
+        Controller-->>Estagiario: HTTP 401 Unauthorized
+    else Token válido
+        Controller->>UseCase: acessarProntuario(idProntuario, idEstagiario)
+        activate UseCase
+        
+        UseCase->>UseCase: Validar entrada
+        
+        alt ID prontuário inválido
+            UseCase-->>Controller: erro: Prontuário não encontrado
+        else ID prontuário válido
+            UseCase->>Repository: buscarProntuarioPorId(idProntuario)
+            activate Repository
+            Repository->>Database: SELECT * FROM prontuarios WHERE id = $1
+            activate Database
+            Database-->>Repository: dados prontuário
+            deactivate Database
+            Repository-->>UseCase: Prontuario objeto
+            deactivate Repository
+            
+            UseCase->>Domain: validarAcessoProntuario(estagiario, prontuario)
+            activate Domain
+            Domain->>Domain: Regra 1: Vínculo ativo?
+            
+            alt Sem vínculo ativo
+                Domain-->>UseCase: erro: Sem permissão
+            else Vínculo ativo
+                Domain->>Domain: Regra 2: Prontuário ativo?
+                alt Não ativo
+                    Domain-->>UseCase: erro: Prontuário arquivado
+                else Ativo
+                    Domain->>Domain: Regra 3: Requer aprovação?
+                    alt Requer aprovação
+                        Domain-->>UseCase: requerAprovaçãoCoordenador()
+                        UseCase->>Repository: buscarCoordenadorDoPaciente(idPaciente)
+                        activate Repository
+                        Repository->>Database: SELECT coordenador_id FROM pacientes
+                        activate Database
+                        Database-->>Repository: idCoordenador
+                        deactivate Database
+                        Repository-->>UseCase: Coordenador objeto
+                        deactivate Repository
+                        
+                        UseCase->>Coordenador: notificarSolicitacaoAcesso(estagiario, prontuario)
+                        activate Coordenador
+                        Coordenador->>Coordenador: Revisar solicitação
+                        alt Coordenador rejeita
+                            Coordenador-->>UseCase: rejeitarAcesso(motivo)
+                        else Coordenador aprova
+                            Coordenador-->>UseCase: aprovarAcesso()
+                            UseCase->>Repository: registrarAcessoProntuario(idEstagiario, idProntuario)
+                            activate Repository
+                            Repository->>Database: INSERT INTO acessos_prontuario
+                            activate Database
+                            Database-->>Repository: id registro
+                            deactivate Database
+                            Repository->>Database: UPDATE prontuarios SET último_acesso = now()
+                            activate Database
+                            Database-->>Repository: OK
+                            deactivate Database
+                            Repository-->>UseCase: Acesso registrado
+                            deactivate Repository
+                        end
+                        deactivate Coordenador
+                    else Sem aprovação
+                        Domain-->>UseCase: acessoPermitido()
+                        UseCase->>Repository: registrarAcessoProntuario(idEstagiario, idProntuario)
+                        activate Repository
+                        Repository->>Database: INSERT INTO acessos_prontuario
+                        activate Database
+                        Database-->>Repository: id registro
+                        deactivate Database
+                        Repository->>Database: UPDATE prontuarios SET último_acesso = now()
+                        activate Database
+                        Database-->>Repository: OK
+                        deactivate Database
+                        Repository-->>UseCase: Acesso registrado
+                        deactivate Repository
+                    end
+                end
+            end
+            deactivate Domain
+        end
+        deactivate UseCase
+        
+        alt Erro na validação
+            Controller-->>Estagiario: HTTP 403 Forbidden / 404 Not Found
+        else Erro na aprovação
+            Controller-->>Estagiario: HTTP 403 Forbidden (acesso rejeitado)
+        else Sucesso
+            Controller->>Controller: Serializar resposta JSON
+            Controller-->>Estagiario: HTTP 200 OK {prontuario com dados}
+        end
+        deactivate Controller
+    end
