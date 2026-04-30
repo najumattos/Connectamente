@@ -7,3 +7,5 @@ Velocidade (Aproveita o que você sabe): O uso do ASP.NET Core MVC permite que v
 Organização (Clean Code): Em vez de um "monolito de barro", você organiza o projeto em módulos claros (como Prontuários, Alunos e Pacientes), facilitando a manutenção futura.  
 
 Segurança (Foco do Projeto): Como o sistema exige controle rígido de acesso (LGPD), o MVC com Identity e Fluent API oferece o controle necessário sobre quem acessa cada prontuário.
+
+Como estruturar na prática (O "Caminho das Pedras")Para manter a robustez sem travar no desenvolvimento, siga esta distribuição:Camada de Interface (MVC): Use para as Views e Controllers. Mantenha os Controllers "magros", apenas chamando a lógica.  Camada de Domínio (O Coração): Aqui entram suas Models e Enums. É onde ficam as regras de negócio, como "um aluno só acessa pacientes vinculados".  Camada de Infraestrutura (Data): Onde reside o EF Core e as Configurations (Fluent API), separando a lógica de banco de dados do restante do código.  
