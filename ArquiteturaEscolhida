@@ -1,0 +1,9 @@
+MVC + Monolito Modular (inspirado em DDD)
+Esta combinação une a velocidade do framework que você já conhece com a robustez organizacional necessária para um sistema de saúde.
+
+Por que essa escolha?
+Velocidade (Aproveita o que você sabe): O uso do ASP.NET Core MVC permite que você entregue as telas e a autenticação (Identity) rapidamente, cumprindo o prazo.  
+
+Organização (Clean Code): Em vez de um "monolito de barro", você organiza o projeto em módulos claros (como Prontuários, Alunos e Pacientes), facilitando a manutenção futura.  
+
+Segurança (Foco do Projeto): Como o sistema exige controle rígido de acesso (LGPD), o MVC com Identity e Fluent API oferece o controle necessário sobre quem acessa cada prontuário.
