@@ -1,5 +1,5 @@
-﻿using Connectamente.API.Models.ViewModel;
-using Connectamente.API.Services.ConsultaService;
+﻿using Connectamente.API.DTOs;
+using Connectamente.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers
@@ -11,9 +11,9 @@ namespace Connectamente.API.Controllers
         /// </summary>
         [ProducesResponseType(typeof(IEnumerable<ConsultaDto>), StatusCodes.Status200OK)]
         [HttpGet("Buscar")]
-        public async Task<ActionResult<IEnumerable<ConsultaDto>>> GetConsultas([FromQuery] AuthAcessoDto auth)
+        public async Task<ActionResult<IEnumerable<ConsultaDto>>> GetConsultas()
         {
-            var resposta = await service.BuscarConsultas(auth);
+            var resposta = await service.BuscarTodasConsultas();
 
             return resposta.IsSuccess switch
             {
@@ -29,9 +29,9 @@ namespace Connectamente.API.Controllers
         /// </summary>     
         [ProducesResponseType(typeof(ConsultaDto), StatusCodes.Status200OK)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ConsultaDto>> GetConsulta([FromQuery] AuthAcessoDto auth, string id)
+        public async Task<ActionResult<ConsultaDto>> GetConsulta(string id)
         {
-            var resposta = await service.BuscarConsultaPorId(auth, id);
+            var resposta = await service.BuscarConsultaPorId(id);
 
             return resposta.IsSuccess switch
             {
@@ -47,9 +47,9 @@ namespace Connectamente.API.Controllers
         /// </summary>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("Arquivar")]
-        public async Task<ActionResult> AlterarStatusConsulta([FromQuery] AuthAcessoDto auth, string id)
+        public async Task<ActionResult> AlterarStatusConsulta(string id)
         {
-            var resposta = await service.AlterarStatusConsulta(auth, id);
+            var resposta = await service.AlterarStatusConsulta(id);
             return resposta switch
             {
                 null => NotFound(resposta.Error),

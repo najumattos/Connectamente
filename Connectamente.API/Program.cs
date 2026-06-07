@@ -1,19 +1,12 @@
-using Connectamente.API.Data;
 using Connectamente.API.Middleware;
 using Connectamente.API.Services.FileService;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 using System.Text.Json.Serialization;
 using dotenv.net;
-using Connectamente.API.Services.PacienteService;
-using Connectamente.API.Services.PsicologoService;
-using Connectamente.API.Data.Repositories.PacienteRepository;
-using Connectamente.API.Data.Repositories.PsicologoRepository;
+using Connectamente.API.Data;
 using Connectamente.API.Models;
 
 DotEnv.Load();                            //Lê o arquivo .env
@@ -55,7 +48,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // Serviço de Autenticação e Autorização - Identity
-builder.Services.AddIdentity<UsuarioModel, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUserModel, IdentityRole>(options =>
 {
     // Configurar Senha
     options.Password.RequiredLength = 6;
@@ -72,52 +65,11 @@ builder.Services.AddIdentity<UsuarioModel, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-/* Serviço JWT
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["SecretKey"];
-if (string.IsNullOrEmpty(secretKey))
-{
-    throw new InvalidOperationException("A chave secreta do JWT (SecretKey) não foi configurada no appsettings.json!");
-}
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-        ClockSkew = TimeSpan.Zero
-    };
-   
-});
-                */
 // Adicionar a Autorização
 builder.Services.AddAuthorization();
 
 // Serviço de Arquivos
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IFileService, FileService>();
-
-// Registro dos Serviços Customizados
-builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
-builder.Services.AddScoped<IPsicologoRepository, PsicologoRepository>();
-
-builder.Services.AddScoped<IPacienteService, PacienteService>();
-builder.Services.AddScoped<IPsicologoService, PsicologoService>();
-
-
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

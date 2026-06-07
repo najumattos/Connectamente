@@ -1,0 +1,10 @@
+namespace Connectamente.API.Enums;
+
+public enum StatusAtendimentoEnum
+{
+    Agendado = 1,
+    Realizado = 2,
+    Cancelado = 3,
+    FaltaPaciente = 4,
+    FaltaAluno = 5
+}

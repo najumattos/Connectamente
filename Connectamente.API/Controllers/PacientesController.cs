@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Connectamente.API.Services.PacienteService;
-using System;
-using Connectamente.API.Enums;
-using Connectamente.API.Services;
-using Connectamente.API.Models.ViewModel;
-using Connectamente.API.Domain;
+using Connectamente.API.DTOs;
+using Connectamente.API.Services.Interfaces;
 
 namespace Connectamente.API.Controllers;
 
@@ -18,12 +14,12 @@ public class PacientesController(IPacienteService service) : MainController
     [HttpGet("Buscar")]
     public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPacientes([FromQuery] AuthAcessoDto auth)
     {
-        var resposta = await service.BuscarPacientes(auth);
+        var resposta = await service.BuscarTodosPacientes();
 
         return resposta.IsSuccess switch
         {
             true => Ok(resposta.Value),
-            false when resposta.Error.Contains("permissão")
+            false when resposta.Error.Contains("permissao")
                   => StatusCode(StatusCodes.Status403Forbidden, resposta),
             _ => NotFound(resposta)
         };
@@ -34,14 +30,14 @@ public class PacientesController(IPacienteService service) : MainController
     /// </summary>     
     [ProducesResponseType(typeof(PacienteDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<PacienteDto>> GetPaciente([FromQuery] AuthAcessoDto auth, string id)
+    public async Task<ActionResult<PacienteDto>> GetPaciente(string id)
     {
-        var resposta = await service.BuscarPacientePorId(auth,id);
+        var resposta = await service.BuscarPacientePorId(id);
 
             return resposta.IsSuccess switch
             {
                 true => Ok(resposta.Value),
-                false when resposta.Error.Contains("permissão")
+                false when resposta.Error.Contains("permissao")
                       => StatusCode(StatusCodes.Status403Forbidden, resposta),
                 _ => NotFound(resposta)
             };
@@ -52,9 +48,9 @@ public class PacientesController(IPacienteService service) : MainController
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpPatch("Arquivar")]
-    public async Task<ActionResult> ArquivarPaciente([FromQuery] AuthAcessoDto auth, string id)
+    public async Task<ActionResult> ArquivarPaciente(string id)
     {
-        var resposta = await service.ArquivarPaciente(auth, id);
+        var resposta = await service.ArquivarPaciente(id);
         return resposta switch
         {
             null => NotFound(resposta.Error),

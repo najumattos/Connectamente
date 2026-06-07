@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
 
@@ -18,5 +17,3 @@ public abstract class MainController : ControllerBase
 
 
 }
-
-

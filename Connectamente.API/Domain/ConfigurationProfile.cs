@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Connectamente.API.Models;
-using Connectamente.API.Models.ViewModel;
 
 namespace Connectamente.API.Domain;
 
@@ -10,8 +8,7 @@ public class ConfigurationProfile : Profile
     {
         //verificar isso aquiiiiidadnsadbab
         // Mapeamento nos dois sentidos (Entidade <-> DTO)
-        CreateMap<PsicologoDto, PsicologoDto>().ReverseMap();
-        CreateMap<PacienteDto, PacienteDto>().ReverseMap();
+  
 
     }
 }

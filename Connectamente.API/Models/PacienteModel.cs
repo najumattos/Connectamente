@@ -1,23 +1,33 @@
-﻿using Connectamente.API.Enums;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Connectamente.API.Models;
 
-[Table("Paciente")]
-public class PacienteModel
+public class PacienteModel : EntityBase
 {
-    [Key] public string PacienteId { get; set; }
-
-    [Required]public string UsuarioId { get; set; }
-    [ForeignKey("UsuarioId")]
-    public virtual UsuarioModel Usuario { get; set; }
-    public string PsicologoResponsavelId { get; set; }
-    [ForeignKey("PsicologoResponsavelId")]
-    [Required(ErrorMessage = "O psicologo é obrigatório.")]
-    public virtual PsicologoModel PsicologoResponsavel { get; set; }
+    public string NomeCompleto { get; set; } = string.Empty;  
+    public string? Telefone { get; set; }
+    public string? TelefoneRecado { get; set; }
+    public string? Sexo { get; set; }
+    public string? Naturalidade { get; set; }
+    public string? EstadoNascimento { get; set; }
+    public string? Escolaridade { get; set; }
+    public string? Profissao { get; set; }    
+    public string? RG { get; set; }
+    public string? CPF { get; set; }
+    public string? EstadoCivil { get; set; }
+    public string? Religiao { get; set; }
+    public Endereco? Endereco { get; set; } 
+    public DateTime? DataNascimento { get; set; }
     
-    [Required] public string ContatoEmergencia { get; set; }  
-
+    public int? Idade => DataNascimento.HasValue 
+        ? DateTime.Today.Year - DataNascimento.Value.Year - (DateTime.Today < DataNascimento.Value.AddYears(DateTime.Today.Year - DataNascimento.Value.Year) ? 1 : 0) 
+        : null;
+        
+    public int FamiliarResponsavelId { get; set; } 
+    public InfoFamiliarModel? FamiliarResponsavel { get; set; }
+    
+    public ProntuarioModel? Prontuario { get; set; }
+    
+    public ICollection<InfoFamiliarModel> Familiares { get; set; } = [];
+    public ICollection<AtendimentoModel> Atendimentos { get; set; } = [];
+    public ICollection<DocumentoClinicoModel> DocumentosClinicos { get; set; } = [];
+    public ICollection<AuditoriaModel> Auditorias { get; set; } = [];
 }
-
