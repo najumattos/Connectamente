@@ -1,61 +1,82 @@
 using Microsoft.AspNetCore.Mvc;
 using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.PacienteDto;
 using Connectamente.API.Services.Interfaces;
+using FluentResults;
 
 namespace Connectamente.API.Controllers;
 
 public class PacientesController(IPacienteService service) : MainController
 {
-
     /// <summary>
-    /// Busca Todos Pacientes
+    /// Busca todos os pacientes de forma paginada e filtrada.
     /// </summary>
-    [ProducesResponseType(typeof(IEnumerable<UsuarioListaDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<PacienteListaDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("Buscar")]
-    public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPacientes([FromQuery] AuthAcessoDto auth)
+    public async Task<IActionResult> GetPacientes([FromQuery] AuthAcessoDto auth)
     {
-        var resposta = await service.BuscarTodosPacientes();
+        Result<IEnumerable<PacienteListaDto>> resposta = await service.BuscarTodosPacientesAsync();
 
-        return resposta.IsSuccess switch
+        if (resposta.IsFailed)
         {
-            true => Ok(resposta.Value),
-            false when resposta.Error.Contains("permissao")
-                  => StatusCode(StatusCodes.Status403Forbidden, resposta),
-            _ => NotFound(resposta)
-        };
+            return TratarFalhas(resposta.ToResult());
+        }
+
+        return Ok(resposta.Value);
     }
 
     /// <summary>
-    /// Busca Paciente Por Id
+    /// Busca a ficha detalhada de um paciente por ID.
     /// </summary>     
-    [ProducesResponseType(typeof(PacienteDto), StatusCodes.Status200OK)]
-    [HttpGet("{id}")]
-    public async Task<ActionResult<PacienteDto>> GetPaciente(string id)
+    [ProducesResponseType(typeof(PacienteDetalhesDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetPaciente([FromRoute] int id)
     {
-        var resposta = await service.BuscarPacientePorId(id);
+        Result<PacienteDetalhesDto> resposta = await service.BuscarPacientePorIdAsync(id);
 
-            return resposta.IsSuccess switch
-            {
-                true => Ok(resposta.Value),
-                false when resposta.Error.Contains("permissao")
-                      => StatusCode(StatusCodes.Status403Forbidden, resposta),
-                _ => NotFound(resposta)
-            };
+        if (resposta.IsFailed)
+        {
+            return TratarFalhas(resposta.ToResult());
+        }
+
+        return Ok(resposta.Value);
     }
 
     /// <summary>
-    /// Arquiva Paciente
+    /// Arquiva logicamente um paciente no sistema.
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [HttpPatch("Arquivar")]
-    public async Task<ActionResult> ArquivarPaciente(string id)
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPatch("{id:int}/arquivar")]
+    public async Task<IActionResult> ArquivarPaciente([FromRoute] int id)
     {
-        var resposta = await service.ArquivarPaciente(id);
-        return resposta switch
+        Result resposta = await service.ArquivarPacienteAsync(id);
+
+        if (resposta.IsFailed)
         {
-            null => NotFound(resposta.Error),
-            _ => NoContent()
-        };
+            return TratarFalhas(resposta);
+        }
+
+        return NoContent();
     }
 
+    /// <summary>
+    /// Centralizador privado para tradução de falhas do FluentResults para o ecossistema HTTP.
+    /// </summary>
+    private IActionResult TratarFalhas(Result resultado)
+    {
+        // Verifica se alguma mensagem de erro contém o gatilho de falta de permissão
+        if (resultado.HasError(err => err.Message.Contains("permissao", StringComparison.OrdinalIgnoreCase)))
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, resultado.Errors.Select(e => e.Message));
+        }
+
+        // Caso padrão para entidades não encontradas ou falhas genéricas de negócio
+        return NotFound(resultado.Errors.Select(e => e.Message));
+    }
 }

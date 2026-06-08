@@ -1,5 +1,4 @@
 using Connectamente.API.Middleware;
-using Connectamente.API.Services.FileService;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +7,7 @@ using System.Text.Json.Serialization;
 using dotenv.net;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
+using Connectamente.API.Domain;
 
 DotEnv.Load();                            //Lê o arquivo .env
 // Procura por todas as classes que herdam de 'Profile' no projeto
@@ -113,6 +113,8 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownNetworks.Clear();
     options.KnownProxies.Clear();
 });
+
+builder.Services.AddSmartServices();
 var app = builder.Build();
 
 // 1. Deve ser o primeiro para entender o protocolo original

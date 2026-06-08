@@ -1,5 +1,6 @@
 ﻿using Connectamente.API.Domain;
 using Connectamente.API.DTOs;
+using FluentResults;
 
 namespace Connectamente.API.Services.Interfaces;
 

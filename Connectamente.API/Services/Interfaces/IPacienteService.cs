@@ -1,24 +1,39 @@
-﻿using Connectamente.API.Domain;
-using Connectamente.API.DTOs;
- namespace Connectamente.API.Services.Interfaces;
+﻿using Connectamente.API.DTOs.PacienteDto;
+using FluentResults;
 
+namespace Connectamente.API.Services.Interfaces;
+
+/// <summary>
+/// Define os contratos de serviços de negócio para a gestão de pacientes.
+/// </summary>
 public interface IPacienteService
 {
-    public Task<Result<IEnumerable<UsuarioListaDto>>> BuscarTodosPacientes();
-    public Task<Result<PacienteDto>> BuscarPacientePorId(string idPaciente);
-    public Task<Result<bool>> ArquivarPaciente(string idPaciente);
+    /// <summary>
+    /// Obtém a listagem completa de todos os pacientes cadastrados no sistema.
+    /// </summary>
+    /// <returns>
+    /// Um objeto <see cref="Result"/> contendo a coleção de <see cref="PacienteListaDto"/> em caso de sucesso,
+    /// ou mensagens de erro detalhadas em caso de falha.
+    /// </returns>
+    Task<Result<IEnumerable<PacienteListaDto>>> BuscarTodosPacientesAsync();
+
+    /// <summary>
+    /// Busca a ficha detalhada de um paciente específico através do seu identificador único.
+    /// </summary>
+    /// <param name="id">O identificador numérico único do paciente.</param>
+    /// <returns>
+    /// Um objeto <see cref="Result"/> encapsulando o <see cref="PacienteDetalhesDto"/> se encontrado,
+    /// ou uma falha de validação/not found.
+    /// </returns>
+    Task<Result<PacienteDetalhesDto>> BuscarPacientePorIdAsync(int id);
+
+    /// <summary>
+    /// Realiza o arquivamento (desativação lógica) de um paciente no sistema.
+    /// </summary>
+    /// <param name="id">O identificador numérico único do paciente a ser arquivado.</param>
+    /// <returns>
+    /// Um objeto <see cref="Result"/> sem tipo de retorno que indica estritamente se a operação 
+    /// foi bem-sucedida ou se falhou por regras de negócio.
+    /// </returns>
+    Task<Result> ArquivarPacienteAsync(int id);
 }
-
-
-/*
- *  public Task<Result<PacienteDto>> BuscarPacientePorId(string idPaciente) ?
- *
- * Se o método for apenas BuscarPacientePorId(string idPaciente), qualquer pessoa
- * que descobrir o ID de um paciente (por exemplo, testando números na URL da API)
- * conseguirá ver os dados dele.
- * Isso é uma falha de segurança grave chamada IDOR (Insecure Direct Object Reference).
- * 
- * O Repository busca o dado puramente pelo ID (ele é o executor).
- * O Service valida se o usuário logado tem permissão de ver aquele ID específico
- * Se um Aluno tentar buscar o ID de um paciente que pertence a outro Aluno, o seu Service deve barrar, mesmo que o ID do paciente exista no banco.
- */

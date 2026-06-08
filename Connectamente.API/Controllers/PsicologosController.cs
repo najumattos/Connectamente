@@ -1,4 +1,5 @@
 using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.PacienteDto;
 using Connectamente.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,17 +11,16 @@ public class PsicologosController(IPsicologoService service) : MainController
     /// <summary>
     /// Busca Todos Psicologos
     /// </summary>
-    [ProducesResponseType(typeof(IEnumerable<UsuarioListaDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<PacienteListaDto>), StatusCodes.Status200OK)]
     [HttpGet("Buscar")]
-    public async Task<ActionResult<IEnumerable<UsuarioListaDto>>> GetPsicologos()
+    public async Task<ActionResult<IEnumerable<PacienteListaDto>>> GetPsicologos()
     {
         var resposta = await service.BuscarTodosPsicologos();
 
         return resposta.IsSuccess switch
         {
             true => Ok(resposta.Value),
-            false when resposta.Error.Contains("permissao")
-                  => StatusCode(StatusCodes.Status403Forbidden, resposta),
+           
             _ => NotFound(resposta)
         };
     }
@@ -37,8 +37,7 @@ public class PsicologosController(IPsicologoService service) : MainController
         return resposta.IsSuccess switch
         {
             true => Ok(resposta.Value),
-            false when resposta.Error.Contains("permissao")
-                  => StatusCode(StatusCodes.Status403Forbidden, resposta),
+           
             _ => NotFound(resposta)
         };
     }
@@ -53,7 +52,7 @@ public class PsicologosController(IPsicologoService service) : MainController
         var resposta = await service.DesativarPsicologo(id);
         return resposta switch
         {
-            null => NotFound(resposta.Error),
+         
             _ => NoContent()
         };
     }

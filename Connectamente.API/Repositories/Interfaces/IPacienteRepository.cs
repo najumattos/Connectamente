@@ -7,6 +7,7 @@ namespace Connectamente.API.Repositories.Interfaces;
 /// </summary>
 public interface IPacienteRepository
 {
+    IQueryable<PacienteModel> ObterQueryable();
     /// <summary>
     /// Obtém um paciente por seu identificador único.
     /// </summary>

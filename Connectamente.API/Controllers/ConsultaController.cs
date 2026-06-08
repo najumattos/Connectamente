@@ -18,8 +18,8 @@ namespace Connectamente.API.Controllers
             return resposta.IsSuccess switch
             {
                 true => Ok(resposta.Value),
-                false when resposta.Error.Contains("permissão")
-                      => StatusCode(StatusCodes.Status403Forbidden, resposta),
+                
+                     
                 _ => NotFound(resposta)
             };
         }
@@ -36,8 +36,7 @@ namespace Connectamente.API.Controllers
             return resposta.IsSuccess switch
             {
                 true => Ok(resposta.Value),
-                false when resposta.Error.Contains("permissão")
-                      => StatusCode(StatusCodes.Status403Forbidden, resposta),
+               
                 _ => NotFound(resposta)
             };
         }
@@ -52,7 +51,7 @@ namespace Connectamente.API.Controllers
             var resposta = await service.AlterarStatusConsulta(id);
             return resposta switch
             {
-                null => NotFound(resposta.Error),
+              
                 _ => NoContent()
             };
         }
