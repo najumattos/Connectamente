@@ -4,6 +4,7 @@ using Connectamente.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608204251_AddRelacionamentoTermoEstagiario")]
+    partial class AddRelacionamentoTermoEstagiario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -430,7 +433,7 @@ namespace Connectamente.API.Migrations
                             Id = "a18fbcde-1111-42b1-b4fa-4b8c0c45daaa",
                             AccessFailedCount = 0,
                             Ativo = true,
-                            ConcurrencyStamp = "ef7a1510-9177-4c44-b0cf-5b12da6bf121",
+                            ConcurrencyStamp = "c741a86a-dcf9-4279-9a42-82e3747bfd93",
                             Cpf = "12345678901",
                             Crp = "06/12345-6",
                             Email = "mariana.admin@connectamente.com",
@@ -440,9 +443,9 @@ namespace Connectamente.API.Migrations
                             NomeCompleto = "Profª. Dra. Mariana Silva",
                             NormalizedEmail = "MARIANA.ADMIN@CONNECTAMENTE.COM",
                             NormalizedUserName = "MARIANA.ADMIN@CONNECTAMENTE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIeHlzWfJt5o6qNf4kZ0B9vLmR6w7qN1mXyPzR9WvB5tQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDoIXKfB9IJ4sohgbpJSkmvnEKE/0Q+iiBSiLlCIC+eTw+PxaqvRQisWf7ccQ1smtQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef7a1510-9177-4c44-b0cf-5b12da6bf121",
+                            SecurityStamp = "55cb01dc-9dd6-4805-bcf3-151c1b07d459",
                             TipoUsuario = 1,
                             TwoFactorEnabled = false,
                             UserName = "mariana.admin@connectamente.com"
@@ -452,7 +455,7 @@ namespace Connectamente.API.Migrations
                             Id = "b29fbcde-2222-53c2-c5fb-5c9d1d56ebbb",
                             AccessFailedCount = 0,
                             Ativo = true,
-                            ConcurrencyStamp = "bc3101aa-2831-4e44-88aa-cc1234567890",
+                            ConcurrencyStamp = "616b8143-a4fb-4a9b-8638-0513abef2347",
                             Cpf = "98765432100",
                             Email = "gabriel.aluno@connectamente.com",
                             EmailConfirmed = true,
@@ -461,9 +464,9 @@ namespace Connectamente.API.Migrations
                             NomeCompleto = "Gabriel Soares Santos",
                             NormalizedEmail = "GABRIEL.ALUNO@CONNECTAMENTE.COM",
                             NormalizedUserName = "GABRIEL.ALUNO@CONNECTAMENTE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG6W2m1Hk8zN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDJ/66LQ66Qmy3+qT69GE8FJ33GG+OCHk6qqumsYYj+U8tWZRvrXptpzJgnFmbqXtQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bc3101aa-2831-4e44-88aa-cc1234567890",
+                            SecurityStamp = "148ee0b3-25c1-44fd-8056-3a955c5b9e99",
                             TipoUsuario = 2,
                             TwoFactorEnabled = false,
                             UserName = "gabriel.aluno@connectamente.com"

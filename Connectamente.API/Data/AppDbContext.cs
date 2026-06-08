@@ -19,6 +19,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
     public DbSet<TermoAutorizacaoMenorModel> TermosAutorizacaoMenor => Set<TermoAutorizacaoMenorModel>();
      public DbSet<AnexoModel> Anexos => Set<AnexoModel>();
     public DbSet<AuditoriaModel> Auditorias => Set<AuditoriaModel>();
+    public DbSet<TermoResponsabilidadeEstagiario> TermosResponsabilidadeEstagiarios => Set<TermoResponsabilidadeEstagiario>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

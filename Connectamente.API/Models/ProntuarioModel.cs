@@ -6,6 +6,8 @@ public class ProntuarioModel : EntityBase
 {
     public int PacienteId { get; set; }
     public PacienteModel Paciente { get; set; } = null!; 
+    public string PsicologoResponsavelId { get; set; } = string.Empty;    
+    public ApplicationUserModel? PsicologoResponsavel { get; set; }
     
     public string NumeroProntuario { get; set; } = string.Empty;
     public DateTime? DataPrimeiraConsulta { get; set; }

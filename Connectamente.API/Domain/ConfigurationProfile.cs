@@ -17,11 +17,11 @@ public class ConfigurationProfile : Profile
             .ForMember(dest => dest.ResponsavelLegal, opt => opt.MapFrom(src =>
                 src.FamiliarResponsavel != null ? src.FamiliarResponsavel.NomeCompleto : null))
             .ForMember(dest => dest.NumeroProntuario, opt => opt.MapFrom(src =>
-                src.Prontuario != null ? src.Prontuario.NumeroProntuario : null));
+                src.Prontuario != null ? src.Prontuario.NumeroProntuario : null))
 
-            /* Resolve o Psicólogo Responsável extraindo do Prontuário ou da amarração correta do seu domínio
+            // Resolve o Psicólogo Responsável extraindo do Prontuário ou da amarração correta do seu domínio
             .ForMember(dest => dest.PsicologoResponsavel, opt => opt.MapFrom(src =>
-                src.Prontuario != null && src.Prontuario.Psicologo != null ? src.Prontuario.Psicologo.NomeCompleto : null));*/
+                src.Prontuario != null && src.Prontuario.PsicologoResponsavel != null ? src.Prontuario.PsicologoResponsavel.NomeCompleto : null));
 
         CreateMap<PacienteModel, PacienteListaDto>()
             .ForMember(dest => dest.ResponsavelLegal, opt => opt.MapFrom(src => 

@@ -18,7 +18,8 @@ public static class ProntuarioSeed
                 SituacaoProntuario = SituacaoProntuarioEnum.Ativo,
                 ObservacoesGerais = "Paciente encaminhada para acompanhamento psicológico padrão.",
                 DataCriacao = new DateTime(2026, 1, 1),
-                Ativo = true
+                Ativo = true,
+                PsicologoResponsavelId = "b29fbcde-2222-53c2-c5fb-5c9d1d56ebbb"
             },
             new ProntuarioModel
             {
@@ -29,7 +30,8 @@ public static class ProntuarioSeed
                 SituacaoProntuario = SituacaoProntuarioEnum.Ativo,
                 ObservacoesGerais = "Paciente relata queixas relacionadas a estresse ocupacional severo.",
                 DataCriacao = new DateTime(2026, 1, 2),
-                Ativo = true
+                Ativo = true,
+                PsicologoResponsavelId = "b29fbcde-2222-53c2-c5fb-5c9d1d56ebbb"
             }
         );
     }

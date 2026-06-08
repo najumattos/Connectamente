@@ -49,7 +49,7 @@ public static class PacienteSeed
                 DataNascimento = new DateTime(1988, 10, 22),
                 FamiliarResponsavelId = null,
                 DataCriacao = new DateTime(2026, 1, 2),
-                Ativo = true
+                Ativo = false
             }
         );       
     }

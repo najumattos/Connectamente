@@ -4,6 +4,7 @@ using Connectamente.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608204722_FixApplicationUserSeedStamps")]
+    partial class FixApplicationUserSeedStamps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -440,7 +443,7 @@ namespace Connectamente.API.Migrations
                             NomeCompleto = "Profª. Dra. Mariana Silva",
                             NormalizedEmail = "MARIANA.ADMIN@CONNECTAMENTE.COM",
                             NormalizedUserName = "MARIANA.ADMIN@CONNECTAMENTE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIeHlzWfJt5o6qNf4kZ0B9vLmR6w7qN1mXyPzR9WvB5tQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJcjde/0ssn6LhgG9MKJy9yzZ41ElyHCKIzuilcpALSUzTGcEj+8Vla+dZZVrDArww==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "ef7a1510-9177-4c44-b0cf-5b12da6bf121",
                             TipoUsuario = 1,
@@ -461,7 +464,7 @@ namespace Connectamente.API.Migrations
                             NomeCompleto = "Gabriel Soares Santos",
                             NormalizedEmail = "GABRIEL.ALUNO@CONNECTAMENTE.COM",
                             NormalizedUserName = "GABRIEL.ALUNO@CONNECTAMENTE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG6W2m1Hk8zN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM+XB1X3FEJT3JMrvhA/5n0xZya7ABnWjPtTx8mkK4EFLewzh/thUm6nhbCXlkElXA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "bc3101aa-2831-4e44-88aa-cc1234567890",
                             TipoUsuario = 2,

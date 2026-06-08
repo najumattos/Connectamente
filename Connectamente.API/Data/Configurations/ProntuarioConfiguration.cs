@@ -27,6 +27,11 @@ public class ProntuarioConfiguration : IEntityTypeConfiguration<ProntuarioModel>
             .HasForeignKey(x => x.ProntuarioId)
             .OnDelete(DeleteBehavior.Restrict); 
     
+         // Configuração do relacionamento 1:N (Um Psicólogo tem Vários Prontuários)
+        builder.HasOne(p => p.PsicologoResponsavel)
+            .WithMany(u => u.ProntuariosResponsavel) // Casamento com a propriedade do ApplicationUser
+            .HasForeignKey(p => p.PsicologoResponsavelId) // Sua FK explícita string
+            .OnDelete(DeleteBehavior.Restrict); // Segurança: Proíbe deletar o psicólogo se ele possuir históricos clínicos ativos
     ProntuarioSeed.Seed(builder);
     }
 
