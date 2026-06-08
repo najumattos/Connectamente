@@ -1,3 +1,4 @@
+using Connectamente.API.Data.Seeds;
 using Connectamente.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,18 +19,15 @@ public class ProntuarioConfiguration : IEntityTypeConfiguration<ProntuarioModel>
         builder.Property(x => x.NumeroProntuario).IsRequired();
         builder.Property(x => x.DataPrimeiraConsulta).IsRequired();
         builder.Property(x => x.SituacaoProntuario).IsRequired();
-        builder.Property(x => x.ObservacoesGerais);
-
-        // RELACIONAMENTO 1:1 - Um Paciente tem um único Prontuário
-        builder.HasOne(x => x.Paciente)
-            .WithOne(x => x.Prontuario)
-            .HasForeignKey<ProntuarioModel>(x => x.PacienteId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.Property(x => x.ObservacoesGerais);      
 
         // RELACIONAMENTO 1:N - Um Prontuário possui muitos Tratamentos Anteriores
         builder.HasMany(x => x.TratamentosAnteriores)
             .WithOne(x => x.Prontuario)
-            .HasForeignKey(x => x.ProntuarioModelId)
+            .HasForeignKey(x => x.ProntuarioId)
             .OnDelete(DeleteBehavior.Restrict); 
+    
+    ProntuarioSeed.Seed(builder);
     }
+
 }

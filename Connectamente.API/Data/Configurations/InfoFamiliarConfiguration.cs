@@ -1,3 +1,4 @@
+using Connectamente.API.Data.Seeds;
 using Connectamente.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -11,7 +12,8 @@ public class InfoFamiliarConfiguration : IEntityTypeConfiguration<InfoFamiliarMo
         builder.ToTable("InfosFamiliares");
         builder.HasKey(x => x.Id);
 
-        builder.Property<int>("PacienteId");
+        builder.Property<int?>("PacienteId").IsRequired(false);
+        
         builder.Property(x => x.NomeCompleto);
         builder.Property(x => x.Parentesco).HasConversion<int?>();
         builder.Property(x => x.GrauInstrucao);
@@ -38,5 +40,7 @@ public class InfoFamiliarConfiguration : IEntityTypeConfiguration<InfoFamiliarMo
             .WithMany(x => x.Familiares)
             .HasForeignKey("PacienteId")
             .OnDelete(DeleteBehavior.Cascade);
+
+        InfoFamiliarSeed.Seed(builder);
     }
 }

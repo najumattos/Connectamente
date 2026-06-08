@@ -21,12 +21,12 @@ public class TratamentoAnteriorPacienteConfiguration : IEntityTypeConfiguration<
         
         // Chaves Estrangeiras Físicas (Mapeamento de tipos)
         builder.Property(x => x.PacienteId).IsRequired();
-        builder.Property(x => x.ProntuarioModelId); // Pode ser nulo se o prontuário for gerado depois
+        builder.Property(x => x.ProntuarioId); // Pode ser nulo se o prontuário for gerado depois
 
         // RELACIONAMENTO 1:N - Um Prontuário tem Muitos Tratamentos Anteriores
         builder.HasOne(x => x.Prontuario)
             .WithMany(x => x.TratamentosAnteriores)
-            .HasForeignKey(x => x.ProntuarioModelId)
+            .HasForeignKey(x => x.ProntuarioId)
             .OnDelete(DeleteBehavior.Cascade); // Se o Prontuário sumir, apasta os tratamentos dele
 
         // RELACIONAMENTO 1:N - Um Paciente tem Muitos Tratamentos Anteriores
@@ -34,5 +34,7 @@ public class TratamentoAnteriorPacienteConfiguration : IEntityTypeConfiguration<
             .WithMany()
             .HasForeignKey(x => x.PacienteId)
             .OnDelete(DeleteBehavior.Cascade); 
+
+            
     }
 }

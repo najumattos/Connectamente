@@ -25,12 +25,6 @@ public class AtendimentoConfiguration : IEntityTypeConfiguration<AtendimentoMode
         builder.HasOne(x => x.Prontuario)
             .WithMany(x => x.Atendimentos)
             .HasForeignKey(x => x.ProntuarioId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.Paciente)
-            .WithMany(x => x.Atendimentos)
-            .HasForeignKey(x => x.PacienteId)
-            .OnDelete(DeleteBehavior.Restrict);
-
+            .OnDelete(DeleteBehavior.Restrict);    
     }
 }

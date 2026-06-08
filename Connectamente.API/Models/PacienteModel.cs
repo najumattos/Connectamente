@@ -21,13 +21,11 @@ public class PacienteModel : EntityBase
         ? DateTime.Today.Year - DataNascimento.Value.Year - (DateTime.Today < DataNascimento.Value.AddYears(DateTime.Today.Year - DataNascimento.Value.Year) ? 1 : 0) 
         : null;
         
-    public int FamiliarResponsavelId { get; set; } 
+    public int? FamiliarResponsavelId { get; set; } 
     public InfoFamiliarModel? FamiliarResponsavel { get; set; }
     
     public ProntuarioModel? Prontuario { get; set; }
     
     public ICollection<InfoFamiliarModel> Familiares { get; set; } = [];
-    public ICollection<AtendimentoModel> Atendimentos { get; set; } = [];
-    public ICollection<DocumentoClinicoModel> DocumentosClinicos { get; set; } = [];
     public ICollection<AuditoriaModel> Auditorias { get; set; } = [];
 }

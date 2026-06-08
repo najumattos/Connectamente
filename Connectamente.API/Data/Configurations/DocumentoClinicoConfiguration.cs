@@ -29,12 +29,7 @@ public class DocumentoClinicoConfiguration : IEntityTypeConfiguration<DocumentoC
         builder.HasOne(x => x.Prontuario)
             .WithMany(x => x.DocumentosClinicos)
             .HasForeignKey(x => x.ProntuarioId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.Paciente)
-            .WithMany(x => x.DocumentosClinicos)
-            .HasForeignKey(x => x.PacienteId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict);       
 
         builder.HasOne(x => x.Atendimento)
             .WithMany(x => x.DocumentosClinicos)

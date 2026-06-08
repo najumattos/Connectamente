@@ -1,58 +1,70 @@
-using System.Linq.Expressions;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
 using Connectamente.API.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Repositories;
 
 public class PacienteRepository(AppDbContext context) : IPacienteRepository
 {
-    public Task AdicionarAsync(PacienteModel entidade)
+    private readonly AppDbContext _context = context;
+
+    public async Task<PacienteModel?> ObterPorIdAsync(int id)
     {
-        throw new NotImplementedException();
-    }
-    public Task AdicionarVariosAsync(IEnumerable<PacienteModel> entidades)
-    {
-        throw new NotImplementedException();
+        // Usa AsNoTracking() se for apenas para leitura, mas para o repositório genérico de escrita, 
+        // mantemos o rastreamento ativo para permitir modificações posteriores pelo Unit of Work / Service.
+        return await _context.Pacientes
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public void Atualizar(PacienteModel entidade)
+    public async Task<PacienteModel?> ObterCompletoPorIdAsync(int id)
     {
-        throw new NotImplementedException();
+       return await _context.Pacientes
+            .Include(p => p.Prontuario)
+            .Include(p => p.Familiares)
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public Task<IEnumerable<PacienteModel>> BuscarAsync(Expression<Func<PacienteModel, bool>> predicate)
+    public async Task<IEnumerable<PacienteModel>> ObterPaginadoAsync(string? nome, int skip, int take)
     {
-        throw new NotImplementedException();
+        var query = _context.Pacientes.AsNoTracking();
+
+        // Filtro condicional por nome usando eficiência de string do EF Core
+        if (!string.IsNullOrWhiteSpace(nome))
+        {
+            query = query.Where(p => p.NomeCompleto.Contains(nome));
+        }
+
+        // Paginação obrigatória para performance em bases grandes
+        return await query
+            .OrderBy(p => p.NomeCompleto)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
     }
 
-    public Task<bool> CommitAsync()
+    public async Task<bool> ExisteCpfAsync(string cpf)
     {
-        throw new NotImplementedException();
+        // AnyAsync é muito mais rápido do que fazer um Where().FirstOrDefault() != null,
+        // pois o banco encerra a busca assim que encontra o primeiro registro correspondente.
+        return await _context.Pacientes
+            .AnyAsync(p => p.CPF == cpf);
     }
 
-    public void Dispose()
+    public async Task AdicionarAsync(PacienteModel paciente)
     {
-        throw new NotImplementedException();
+        await _context.Pacientes.AddAsync(paciente);
     }
 
-    public Task<PacienteModel?> ObterPorIdAsync(int id)
+    public void Atualizar(PacienteModel paciente)
     {
-        throw new NotImplementedException();
+        // puramente síncrono. Altera o estado no ChangeTracker do EF para 'Modified'.
+        _context.Pacientes.Update(paciente);
     }
 
-    public Task<IEnumerable<PacienteModel>> ObterTodosAsync()
+    public void Remover(PacienteModel paciente)
     {
-        throw new NotImplementedException();
-    }
-
-    public void Remover(PacienteModel entidade)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task RemoverPorIdAsync(int id)
-    {
-        throw new NotImplementedException();
+        // puramente síncrono. Altera o estado no ChangeTracker do EF para 'Deleted'.
+        _context.Pacientes.Remove(paciente);
     }
 }
