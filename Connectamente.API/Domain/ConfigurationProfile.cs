@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.PacienteDto;
+using Connectamente.API.DTOs.ProntuarioDto;
 using Connectamente.API.Models;
 
 namespace Connectamente.API.Domain;
@@ -26,6 +27,22 @@ public class ConfigurationProfile : Profile
         CreateMap<PacienteModel, PacienteListaDto>()
             .ForMember(dest => dest.ResponsavelLegal, opt => opt.MapFrom(src => 
                 src.FamiliarResponsavel != null ? src.FamiliarResponsavel.NomeCompleto : null));
+
+        // 2. Mapeamento complexo de Prontuario para Detalhes
+        CreateMap<ProntuarioModel, ProntuarioDetalhesDto>()            
+            .ForMember(dest => dest.PacienteNomeCompleto, 
+                opt => opt.MapFrom(src => src.Paciente.NomeCompleto))        
+            .ForMember(dest => dest.NomePsicologoResponsavel, 
+                opt => opt.MapFrom(src => src.PsicologoResponsavel != null ? src.PsicologoResponsavel.NomeCompleto : string.Empty));        
+        CreateMap<TratamentoAnteriorModel, ProntuarioTratamentoAnteriorDto>();
+        CreateMap<AtendimentoModel, ProntuarioAtendimentoDto>();
+        CreateMap<DocumentoClinicoModel, ProntuarioDocumentoClinicoDto>();
+
+        CreateMap<ProntuarioModel, ProntuarioListaDto>()            
+            .ForMember(dest => dest.NomeCompletoPaciente, 
+                opt => opt.MapFrom(src => src.Paciente.NomeCompleto))        
+            .ForMember(dest => dest.NomePsicologoResponsavel, 
+                opt => opt.MapFrom(src => src.PsicologoResponsavel != null ? src.PsicologoResponsavel.NomeCompleto : string.Empty));
 
     }
 }

@@ -2,67 +2,65 @@ using Connectamente.API.Models;
 
 namespace Connectamente.API.Repositories.Interfaces;
 
+/// <summary>
+/// Contrato de persistência e consulta para a entidade <see cref="ProntuarioModel"/>.
+/// </summary>
 public interface IProntuarioRepository
 {
-	/// <summary>
-	/// Obtém a listagem de prontuários ativos para leitura, sem rastreamento de mudanças pelo Entity Framework.
-	/// </summary>
-	/// <returns>
-	/// Uma tarefa assíncrona que representa a operação de consulta e retorna uma sequência de prontuários ativos.
-	/// </returns>
-	Task<IEnumerable<ProntuarioModel>> GetAllAsync();
+    /// <summary>
+    /// Fornece uma consulta avaliável (<see cref="IQueryable{ProntuarioModel}"/>) sobre a tabela de prontuários.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Este método não executa a consulta no banco de dados imediatamente. Ele expõe a árvore de expressões 
+    /// do Entity Framework, permitindo que camadas superiores (como a camada de aplicação/serviço) adicionem 
+    /// filtros (<c>.Where</c>), ordenações (<c>.OrderBy</c>) ou realizem projeções diretas para DTOs 
+    /// utilizando o <c>.ProjectTo</c> do AutoMapper.
+    /// </para>
+    /// <para>
+    /// <b>Nota de Performance:</b> A consulta só será convertida em SQL e executada no banco de dados quando 
+    /// for materializada (ex: chamando <c>ToListAsync()</c>, <c>FirstOrDefaultAsync()</c> ou iterando sobre os dados).
+    /// </para>
+    /// </remarks>
+    /// <returns>Uma estrutura <see cref="IQueryable{ProntuarioModel}"/> apontando para o fluxo de dados de prontuários.</returns>
+    IQueryable<ProntuarioModel> ObterQueryable();
 
-	/// <summary>
-	/// Busca um prontuário pelo identificador primário para leitura, sem rastreamento de mudanças pelo Entity Framework.
-	/// </summary>
-	/// <param name="id">Identificador do prontuário herdado de <see cref="EntityBase"/>.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que representa a operação de busca e retorna o prontuário encontrado ou <c>null</c> quando não existir.
-	/// </returns>
-	Task<ProntuarioModel?> GetByIdAsync(int id);
+    /// <summary>
+    /// Busca um prontuário pelo seu identificador primário de forma assíncrona.
+    /// </summary>
+    /// <param name="id">Identificador único do prontuário herdado de <see cref="EntityBase"/>.</param>
+    /// <returns>A entidade do prontuário se encontrado; caso contrário, <see langword="null"/>.</returns>
+    Task<ProntuarioModel?> ObterPorIdAsync(int id);
 
-	/// <summary>
-	/// Busca o prontuário vinculado a um paciente específico para leitura, sem rastreamento de mudanças pelo Entity Framework.
-	/// </summary>
-	/// <param name="pacienteId">Identificador do paciente ao qual o prontuário está associado.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que representa a operação de busca e retorna o prontuário vinculado ao paciente ou <c>null</c> quando não existir.
-	/// </returns>
-	Task<ProntuarioModel?> GetByPacienteIdAsync(int pacienteId);
+    /// <summary>
+    /// Busca um prontuário carregando explicitamente seus relacionamentos pesados (Tratamentos, Atendimentos, Documentos).
+    /// Ideal para visualização completa na tela de detalhes sem múltiplas requisições.
+    /// </summary>
+    /// <param name="id">Identificador único do prontuário.</param>
+    /// <returns>A entidade completa do prontuário com suas coleções populadas se encontrado; caso contrário, <see langword="null"/>.</returns>
+    Task<ProntuarioModel?> ObterComDetalhesPorIdAsync(int id);
 
-	/// <summary>
-	/// Busca um prontuário pelo identificador carregando o paciente e os atendimentos relacionados.
-	/// </summary>
-	/// <param name="id">Identificador do prontuário herdado de <see cref="EntityBase"/>.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que representa a operação de consulta com detalhes e retorna o prontuário com navegações carregadas ou <c>null</c> quando não existir.
-	/// </returns>
-	Task<ProntuarioModel?> GetWithDetailsByIdAsync(int id);
+    /// <summary>
+    /// Adiciona um novo prontuário ao contexto de dados.
+    /// </summary>
+    /// <param name="prontuario">A entidade do prontuário a ser inserida.</param>
+    Task AdicionarAsync(ProntuarioModel prontuario);
 
-	/// <summary>
-	/// Cria um novo prontuário no banco de dados.
-	/// </summary>
-	/// <param name="prontuario">Entidade de prontuário que será persistida.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que representa a operação de criação e retorna o prontuário persistido com os valores atualizados pelo banco de dados.
-	/// </returns>
-	Task<ProntuarioModel> CreateAsync(ProntuarioModel prontuario);
+    /// <summary>
+    /// Atualiza os dados de um prontuário existente que já está sendo rastreado pelo contexto.
+    /// </summary>
+    /// <param name="prontuario">A entidade do prontuário com os dados modificados.</param>
+    void Atualizar(ProntuarioModel prontuario);
 
-	/// <summary>
-	/// Atualiza um prontuário existente no banco de dados.
-	/// </summary>
-	/// <param name="prontuario">Entidade de prontuário contendo o estado atualizado.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que representa a operação de atualização e retorna o prontuário atualizado ou <c>null</c> quando o registro não for encontrado.
-	/// </returns>
-	Task<ProntuarioModel?> UpdateAsync(ProntuarioModel prontuario);
+    /// <summary>
+    /// Remove logicamente ou fisicamente o registro de prontuário do contexto.
+    /// </summary>
+    /// <param name="prontuario">A entidade do prontuário a ser removida.</param>
+    void Remover(ProntuarioModel prontuario);
 
-	/// <summary>
-	/// Executa a exclusão lógica de um prontuário, marcando sua situação como inativa/desligada.
-	/// </summary>
-	/// <param name="id">Identificador do prontuário herdado de <see cref="EntityBase"/>.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que representa a operação de exclusão lógica e retorna <c>true</c> quando a alteração foi aplicada com sucesso; caso contrário, retorna <c>false</c>.
-	/// </returns>
-	Task<bool> DeleteAsync(int id);
+    /// <summary>
+    /// Persiste todas as alterações pendentes no contexto de dados de forma assíncrona.
+    /// </summary>
+    /// <returns><see langword="true"/> se as alterações foram gravadas com sucesso; caso contrário, <see langword="false"/>.</returns>
+    Task<bool> CommitAsync();
 }

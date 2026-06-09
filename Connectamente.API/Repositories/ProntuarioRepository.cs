@@ -1,5 +1,4 @@
 using Connectamente.API.Data;
-using Connectamente.API.Enums;
 using Connectamente.API.Models;
 using Connectamente.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,82 +7,56 @@ namespace Connectamente.API.Repositories;
 
 public class ProntuarioRepository(AppDbContext context) : IProntuarioRepository
 {
-	public async Task<IEnumerable<ProntuarioModel>> GetAllAsync()
-	{
-		return await context.Prontuarios
-			.AsNoTracking()
-			.Where(prontuario => prontuario.SituacaoProntuario != SituacaoProntuarioEnum.InativoDesligado)
-			.OrderBy(prontuario => prontuario.NumeroProntuario)
-			.ToListAsync();
-	}
+    public IQueryable<ProntuarioModel> ObterQueryable()
+    {
+        // Retorna o DbSet puro. O AsNoTracking() ou tracking deve ser decidido 
+        // na camada de Serviço com base na necessidade da query.
+        return context.Set<ProntuarioModel>();
+    }
 
-	public async Task<ProntuarioModel?> GetByIdAsync(int id)
-	{
-		return await context.Prontuarios
-			.AsNoTracking()
-			.FirstOrDefaultAsync(prontuario => prontuario.Id == id && prontuario.SituacaoProntuario != SituacaoProntuarioEnum.InativoDesligado);
-	}
+    public async Task<ProntuarioModel?> ObterPorIdAsync(int id)
+    {
+        // Busca simples por chave primária utilizando o cache local do EF antes de ir ao banco
+        return await context.Set<ProntuarioModel>().FindAsync(id);
+    }
 
-	public async Task<ProntuarioModel?> GetByPacienteIdAsync(int pacienteId)
-	{
-		return await context.Prontuarios
-			.AsNoTracking()
-			.FirstOrDefaultAsync(prontuario => prontuario.PacienteId == pacienteId && prontuario.SituacaoProntuario != SituacaoProntuarioEnum.InativoDesligado);
-	}
+    public async Task<ProntuarioModel?> ObterComDetalhesPorIdAsync(int id)
+    {
+        // 🧠 Uso de Eager Loading (.Include) para trazer o grafo completo da entidade
+        // Evita o problema de "N+1 queries" no banco de dados.
+        return await context.Set<ProntuarioModel>()
+            .Include(p => p.Paciente)
+            .Include(p => p.PsicologoResponsavel)
+            .Include(p => p.TratamentosAnteriores)
+            .Include(p => p.Atendimentos)
+            .Include(p => p.DocumentosClinicos)
+            .FirstOrDefaultAsync(p => p.Id == id);
+    }
 
-	public async Task<ProntuarioModel?> GetWithDetailsByIdAsync(int id)
-	{
-		return await context.Prontuarios
-			.AsNoTracking()
-			.Include(prontuario => prontuario.Paciente)
-			.Include(prontuario => prontuario.Atendimentos)
-			.FirstOrDefaultAsync(prontuario => prontuario.Id == id && prontuario.SituacaoProntuario != SituacaoProntuarioEnum.InativoDesligado);
-	}
+    public async Task AdicionarAsync(ProntuarioModel prontuario)
+    {
+        // Adiciona a entidade ao rastreador do EF Core em estado 'Added'
+        await context.Set<ProntuarioModel>().AddAsync(prontuario);
+    }
 
-	public async Task<ProntuarioModel> CreateAsync(ProntuarioModel prontuario)
-	{
-		prontuario.DataCriacao = DateTime.UtcNow;
+    public void Atualizar(ProntuarioModel prontuario)
+    {
+        // Modifica o estado da entidade para 'Modified'. 
+        // Nota: Se a entidade já foi rastreada pelo ObterPorId, este método é opcional, 
+        // mas é uma boa prática para entidades desconectadas (vinda de APIs/DTo).
+        context.Set<ProntuarioModel>().Update(prontuario);
+    }
 
-		context.Prontuarios.Add(prontuario);
-		await context.SaveChangesAsync();
+    public void Remover(ProntuarioModel prontuario)
+    {
+        // Modifica o estado para 'Deleted' (ou executa o Soft Delete se configurado globalmente)
+        context.Set<ProntuarioModel>().Remove(prontuario);
+    }
 
-		return prontuario;
-	}
-
-	public async Task<ProntuarioModel?> UpdateAsync(ProntuarioModel prontuario)
-	{
-		var existente = await context.Prontuarios
-			.FirstOrDefaultAsync(item => item.Id == prontuario.Id && item.SituacaoProntuario != SituacaoProntuarioEnum.InativoDesligado);
-
-		if (existente is null)
-		{
-			return null;
-		}
-
-		context.Entry(existente).CurrentValues.SetValues(prontuario);
-		existente.DataCriacao = prontuario.DataCriacao;
-		existente.DataAtualizacao = DateTime.UtcNow;
-
-		await context.SaveChangesAsync();
-
-		return existente;
-	}
-
-	public async Task<bool> DeleteAsync(int id)
-	{
-		var prontuario = await context.Prontuarios
-			.FirstOrDefaultAsync(item => item.Id == id && item.SituacaoProntuario != SituacaoProntuarioEnum.InativoDesligado);
-
-		if (prontuario is null)
-		{
-			return false;
-		}
-
-		prontuario.SituacaoProntuario = SituacaoProntuarioEnum.InativoDesligado;
-		prontuario.DataAtualizacao = DateTime.UtcNow;
-
-		await context.SaveChangesAsync();
-
-		return true;
-	}
+    public async Task<bool> CommitAsync()
+    {
+        // Executa o comando SQL (INSERT, UPDATE, DELETE) de forma transacional no banco
+        var linhasAfetadas = await context.SaveChangesAsync();
+        return linhasAfetadas > 0;
+    }
 }

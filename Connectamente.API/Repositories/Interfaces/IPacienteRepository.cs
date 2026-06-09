@@ -7,7 +7,24 @@ namespace Connectamente.API.Repositories.Interfaces;
 /// </summary>
 public interface IPacienteRepository
 {
-    IQueryable<PacienteModel> ObterQueryable();
+   /// <summary>
+/// Fornece uma consulta avaliável (<see cref="IQueryable{PacienteModel}"/>) sobre a tabela de pacientes.
+/// </summary>
+/// <remarks>
+/// <para>
+/// Este método não executa a consulta no banco de dados imediatamente. Ele expõe a árvore de expressões 
+/// do Entity Framework, permitindo que camadas superiores (como a camada de aplicação/serviço) adicionem 
+/// filtros (<c>.Where</c>), ordenações (<c>.OrderBy</c>) ou realizem projeções diretas para DTOs 
+/// utilizando o <c>.ProjectTo</c> do AutoMapper.
+/// </para>
+/// <para>
+/// <b>Nota de Performance:</b> A consulta só será convertida em SQL e executada no banco de dados quando 
+/// for materializada (ex: chamando <c>ToListAsync()</c>, <c>FirstOrDefaultAsync()</c> ou iterando sobre os dados).
+/// </para>
+/// </remarks>
+/// <returns>Uma estrutura <see cref="IQueryable{PacienteModel}"/> apontando para o fluxo de dados de pacientes.</returns>
+	 IQueryable<PacienteModel> ObterQueryable();
+     
     /// <summary>
     /// Obtém um paciente por seu identificador único.
     /// </summary>

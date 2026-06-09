@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.PacienteDto;
 using Connectamente.API.Services.Interfaces;
 using FluentResults;
@@ -15,7 +14,7 @@ public class PacientesController(IPacienteService service) : MainController
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("Buscar")]
-    public async Task<IActionResult> GetPacientes([FromQuery] AuthAcessoDto auth)
+    public async Task<IActionResult> GetPacientes()
     {
         Result<IEnumerable<PacienteListaDto>> resposta = await service.BuscarTodosPacientesAsync();
 
@@ -65,18 +64,5 @@ public class PacientesController(IPacienteService service) : MainController
         return NoContent();
     }
 
-    /// <summary>
-    /// Centralizador privado para tradução de falhas do FluentResults para o ecossistema HTTP.
-    /// </summary>
-    private IActionResult TratarFalhas(Result resultado)
-    {
-        // Verifica se alguma mensagem de erro contém o gatilho de falta de permissão
-        if (resultado.HasError(err => err.Message.Contains("permissao", StringComparison.OrdinalIgnoreCase)))
-        {
-            return StatusCode(StatusCodes.Status403Forbidden, resultado.Errors.Select(e => e.Message));
-        }
 
-        // Caso padrão para entidades não encontradas ou falhas genéricas de negócio
-        return NotFound(resultado.Errors.Select(e => e.Message));
-    }
 }
