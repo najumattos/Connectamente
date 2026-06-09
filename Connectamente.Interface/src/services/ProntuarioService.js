@@ -3,7 +3,7 @@ import api from './api';
 
 const ProntuarioService = {
 
-  //chama GetProntuario() e retorna uma lista de ProntuarioBasicoDto  || Esse ProntuarioBasicoDto é um DTO generico para lista de prontuarios independente do TipoProntuario ser adulto ou infantil
+  //chama GetProntuarios() e retorna uma lista de ProntuarioListaDto  
   buscarTodos: async () => {
     const response = await api.get('/Prontuarios/Buscar');
     return response.data;

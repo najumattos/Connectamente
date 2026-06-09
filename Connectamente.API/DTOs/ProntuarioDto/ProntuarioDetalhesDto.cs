@@ -28,8 +28,9 @@
 public record ProntuarioTratamentoAnteriorDto
 {
     public int Id { get; init; }
-    public string Descricao { get; init; } = string.Empty;
-    public string Local { get; init; } = string.Empty;
+    public TipoTratamentoAnteriorEnum TipoTratamento { get; init; } 
+    public bool Internacao { get; init; }
+    public string MotivoInternacao { get; set; }
 }
 
 public record ProntuarioAtendimentoDto

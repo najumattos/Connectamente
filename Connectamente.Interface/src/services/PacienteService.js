@@ -3,7 +3,7 @@ import api from './api';
 
 const PacienteService = {
 
-  //chama GetPacientes() e retorna uma lista de FichaUsuarioDto  || Esse FichaUsuarioDto é um DTO generico para lista de psicologo, paciente e usuario
+  //chama GetPacientes() e retorna uma lista de PacienteListaDto
   buscarTodos: async () => {
     const response = await api.get('/Pacientes/Buscar');
     return response.data;

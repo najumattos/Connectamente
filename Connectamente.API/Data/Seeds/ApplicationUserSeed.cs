@@ -1,6 +1,5 @@
 using Connectamente.API.Enums;
 using Connectamente.API.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,7 +15,7 @@ private const string ADMIN_ID = "a18fbcde-1111-42b1-b4fa-4b8c0c45daaa";
 
     public void Configure(EntityTypeBuilder<ApplicationUserModel> builder)
     {
-        var hasher = new PasswordHasher<ApplicationUserModel>();
+       
         // 1. Instância da Professora Administradora (Senha: Admin@Connect9)
         var admin = new ApplicationUserModel
         {

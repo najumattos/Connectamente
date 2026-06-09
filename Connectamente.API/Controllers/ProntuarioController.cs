@@ -4,8 +4,6 @@ using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
-
-[Route("api/prontuarios")] // Rota base unificada no plural e em minúsculo
 public class ProntuarioController(IProntuarioService service) : MainController
 {
     /// <summary>
@@ -14,7 +12,7 @@ public class ProntuarioController(IProntuarioService service) : MainController
     [ProducesResponseType(typeof(IEnumerable<ProntuarioListaDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpGet] // GET api/prontuarios
+    [HttpGet("Buscar")] // GET api/prontuarios
     public async Task<IActionResult> GetProntuarios()
     {
         Result<IEnumerable<ProntuarioListaDto>> resposta = await service.BuscarTodosProntuariosAsync();

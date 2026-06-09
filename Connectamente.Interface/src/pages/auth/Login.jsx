@@ -41,7 +41,7 @@ function Login() {
             placeholder="Seu email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            
           />
 
           <input
@@ -49,7 +49,7 @@ function Login() {
             placeholder="Sua senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            required
+            
           />
 
           <button type="submit">Entrar</button>

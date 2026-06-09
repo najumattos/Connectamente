@@ -22,9 +22,21 @@ public class TratamentoAnteriorSeed : IEntityTypeConfiguration<TratamentoAnterio
                 DataCriacao = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 Ativo = true
             },
-            new TratamentoAnteriorModel
+                        new TratamentoAnteriorModel
             {
                 Id = 2,
+                PacienteId = 1, // Vinculado à Ana Silva Costa
+                ProntuarioId = 1, // Vinculado ao Prontuário PRONT-2026-0001
+                TipoTratamento = TipoTratamentoAnteriorEnum.Cardiologico,
+                Internacao = true,
+                MotivoInternacao = "Problema no coração",
+                Observacoes = "Doente de amor procurou remedio na vida noturna",
+                DataCriacao = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                Ativo = true
+            },
+            new TratamentoAnteriorModel
+            {
+                Id = 3,
                 PacienteId = 2, // Vinculado ao Carlos Eduardo Santos
                 ProntuarioId = 2, // Vinculado ao Prontuário PRONT-2026-0002
                 TipoTratamento = TipoTratamentoAnteriorEnum.Psiquiatrico, 
