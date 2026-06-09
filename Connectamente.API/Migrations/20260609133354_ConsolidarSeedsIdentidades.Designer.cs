@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260608205212_FixSeedsAndHashes")]
-    partial class FixSeedsAndHashes
+    [Migration("20260609133354_ConsolidarSeedsIdentidades")]
+    partial class ConsolidarSeedsIdentidades
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -443,7 +443,7 @@ namespace Connectamente.API.Migrations
                             NomeCompleto = "Profª. Dra. Mariana Silva",
                             NormalizedEmail = "MARIANA.ADMIN@CONNECTAMENTE.COM",
                             NormalizedUserName = "MARIANA.ADMIN@CONNECTAMENTE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIeHlzWfJt5o6qNf4kZ0B9vLmR6w7qN1mXyPzR9WvB5tQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ1Z8b7vN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQwMTlzNzhBcDFFM0FkR2g3Yg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "ef7a1510-9177-4c44-b0cf-5b12da6bf121",
                             TipoUsuario = 1,
@@ -464,7 +464,7 @@ namespace Connectamente.API.Migrations
                             NomeCompleto = "Gabriel Soares Santos",
                             NormalizedEmail = "GABRIEL.ALUNO@CONNECTAMENTE.COM",
                             NormalizedUserName = "GABRIEL.ALUNO@CONNECTAMENTE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG6W2m1Hk8zN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM6W2m1Hk8zN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQwMTlzNzhBcDFFM0FkR2g3Yg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "bc3101aa-2831-4e44-88aa-cc1234567890",
                             TipoUsuario = 2,
@@ -1203,6 +1203,31 @@ namespace Connectamente.API.Migrations
                     b.HasIndex("ProntuarioId");
 
                     b.ToTable("TratamentosAnterioresPaciente", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Ativo = true,
+                            DataCriacao = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Internacao = false,
+                            Observacoes = "Realizou 6 meses de terapia cognitivo-comportamental em 2024 devido a crises de ansiedade.",
+                            PacienteId = 1,
+                            ProntuarioId = 1,
+                            TipoTratamento = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Ativo = true,
+                            DataCriacao = new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Internacao = true,
+                            MotivoInternacao = "Surto psicótico agudo decorrente de estresse severo em ambiente corporativo.",
+                            Observacoes = "Paciente ficou internado por 15 dias na clínica Restaurar em agosto de 2025. Faz uso de medicação controlada.",
+                            PacienteId = 2,
+                            ProntuarioId = 2,
+                            TipoTratamento = 3
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

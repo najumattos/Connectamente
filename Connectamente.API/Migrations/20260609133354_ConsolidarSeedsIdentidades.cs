@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Connectamente.API.Migrations
 {
     /// <inheritdoc />
-    public partial class ConsolidacaoEstruturaBanco : Migration
+    public partial class ConsolidarSeedsIdentidades : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -203,6 +205,37 @@ namespace Connectamente.API.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TermosResponsabilidadeEstagiarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EstagiarioUsuarioId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MatriculaInformada = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DeclarouRecebimentoManual = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DeclarouCienciaNormas = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DataAssinatura = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Observacoes = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DataAtualizacao = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Ativo = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TermosResponsabilidadeEstagiarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TermosResponsabilidadeEstagiarios_AspNetUsers_EstagiarioUsua~",
+                        column: x => x.EstagiarioUsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -648,7 +681,7 @@ namespace Connectamente.API.Migrations
                     CondicaoConjugal = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ResponsavelPrincipal = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PacienteId = table.Column<int>(type: "int", nullable: false)
+                    PacienteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -662,44 +695,44 @@ namespace Connectamente.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    NomeCompleto = table.Column<string>(type: "longtext", nullable: true)
+                    NomeCompleto = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Telefone = table.Column<string>(type: "longtext", nullable: true)
+                    Telefone = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    TelefoneRecado = table.Column<string>(type: "longtext", nullable: true)
+                    TelefoneRecado = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Sexo = table.Column<string>(type: "longtext", nullable: true)
+                    Sexo = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Naturalidade = table.Column<string>(type: "longtext", nullable: true)
+                    Naturalidade = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EstadoNascimento = table.Column<string>(type: "longtext", nullable: true)
+                    EstadoNascimento = table.Column<string>(type: "varchar(2)", maxLength: 2, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Escolaridade = table.Column<string>(type: "longtext", nullable: true)
+                    Escolaridade = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Profissao = table.Column<string>(type: "longtext", nullable: true)
+                    Profissao = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RG = table.Column<string>(type: "longtext", nullable: true)
+                    RG = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CPF = table.Column<string>(type: "longtext", nullable: true)
+                    CPF = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EstadoCivil = table.Column<string>(type: "longtext", nullable: true)
+                    EstadoCivil = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Religiao = table.Column<string>(type: "longtext", nullable: true)
+                    Religiao = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoLogradouro = table.Column<string>(type: "longtext", nullable: true)
+                    EnderecoLogradouro = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoNumero = table.Column<string>(type: "longtext", nullable: true)
+                    EnderecoNumero = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoBairro = table.Column<string>(type: "longtext", nullable: true)
+                    EnderecoBairro = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoCidade = table.Column<string>(type: "longtext", nullable: true)
+                    EnderecoCidade = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoEstado = table.Column<string>(type: "longtext", nullable: true)
+                    EnderecoEstado = table.Column<string>(type: "varchar(2)", maxLength: 2, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoCep = table.Column<string>(type: "longtext", nullable: true)
+                    EnderecoCep = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataNascimento = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    FamiliarResponsavelId = table.Column<int>(type: "int", nullable: false),
+                    FamiliarResponsavelId = table.Column<int>(type: "int", nullable: true),
                     DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Ativo = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -761,6 +794,8 @@ namespace Connectamente.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PacienteId = table.Column<int>(type: "int", nullable: false),
+                    PsicologoResponsavelId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     NumeroProntuario = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataPrimeiraConsulta = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -775,11 +810,17 @@ namespace Connectamente.API.Migrations
                 {
                     table.PrimaryKey("PK_Prontuarios", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Prontuarios_AspNetUsers_PsicologoResponsavelId",
+                        column: x => x.PsicologoResponsavelId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Prontuarios_Pacientes_PacienteId",
                         column: x => x.PacienteId,
                         principalTable: "Pacientes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -790,7 +831,7 @@ namespace Connectamente.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PacienteId = table.Column<int>(type: "int", nullable: false),
-                    ProntuarioModelId = table.Column<int>(type: "int", nullable: true),
+                    ProntuarioId = table.Column<int>(type: "int", nullable: true),
                     TipoTratamento = table.Column<int>(type: "int", nullable: false),
                     Internacao = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     MotivoInternacao = table.Column<string>(type: "longtext", nullable: true)
@@ -811,13 +852,62 @@ namespace Connectamente.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TratamentosAnterioresPaciente_Prontuarios_ProntuarioModelId",
-                        column: x => x.ProntuarioModelId,
+                        name: "FK_TratamentosAnterioresPaciente_Prontuarios_ProntuarioId",
+                        column: x => x.ProntuarioId,
                         principalTable: "Prontuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Ativo", "ConcurrencyStamp", "Cpf", "Crp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Matricula", "NomeCompleto", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TipoUsuario", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "a18fbcde-1111-42b1-b4fa-4b8c0c45daaa", 0, true, "ef7a1510-9177-4c44-b0cf-5b12da6bf121", "12345678901", "06/12345-6", "mariana.admin@connectamente.com", true, false, null, "PR99955", "Profª. Dra. Mariana Silva", "MARIANA.ADMIN@CONNECTAMENTE.COM", "MARIANA.ADMIN@CONNECTAMENTE.COM", "AQAAAAIAAYagAAAAEJ1Z8b7vN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQwMTlzNzhBcDFFM0FkR2g3Yg==", null, false, "ef7a1510-9177-4c44-b0cf-5b12da6bf121", 1, false, "mariana.admin@connectamente.com" },
+                    { "b29fbcde-2222-53c2-c5fb-5c9d1d56ebbb", 0, true, "bc3101aa-2831-4e44-88aa-cc1234567890", "98765432100", null, "gabriel.aluno@connectamente.com", true, false, null, "AL202611", "Gabriel Soares Santos", "GABRIEL.ALUNO@CONNECTAMENTE.COM", "GABRIEL.ALUNO@CONNECTAMENTE.COM", "AQAAAAIAAYagAAAAEM6W2m1Hk8zN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQwMTlzNzhBcDFFM0FkR2g3Yg==", null, false, "bc3101aa-2831-4e44-88aa-cc1234567890", 2, false, "gabriel.aluno@connectamente.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Pacientes",
+                columns: new[] { "Id", "Ativo", "CPF", "DataAtualizacao", "DataCriacao", "DataNascimento", "Escolaridade", "EstadoCivil", "EstadoNascimento", "FamiliarResponsavelId", "Naturalidade", "NomeCompleto", "Profissao", "RG", "Religiao", "Sexo", "Telefone", "TelefoneRecado", "EnderecoBairro", "EnderecoCep", "EnderecoCidade", "EnderecoEstado", "EnderecoLogradouro", "EnderecoNumero" },
+                values: new object[,]
+                {
+                    { 1, true, "12345678901", null, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Superior Completo", "Solteira", "MG", null, "Belo Horizonte", "Ana Silva Costa", "Engenheira", "MG1234567", null, "Feminino", "11999998888", null, "Centro", "01001000", "São Paulo", "SP", "Rua das Flores", "123" },
+                    { 2, false, "98765432100", null, new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1988, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Médio Completo", "Casado", "SP", null, "Campinas", "Carlos Eduardo Santos", "Comerciante", "SP7654321", null, "Masculino", "19988887777", null, "Jardins", "13010000", "Campinas", "SP", "Avenida Central", "99A" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "InfosFamiliares",
+                columns: new[] { "Id", "CPF", "CondicaoConjugal", "DataNascimento", "Email", "GrauInstrucao", "NomeCompleto", "PacienteId", "Parentesco", "Profissao", "RG", "ResponsavelPrincipal", "Telefone", "EnderecoBairro", "EnderecoCep", "EnderecoCidade", "EnderecoEstado", "EnderecoLogradouro", "EnderecoNumero" },
+                values: new object[,]
+                {
+                    { 1, "11122233344", null, new DateTime(1970, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Superior", "Roberto Silva Costa", 1, 1, "Administrador", null, true, "11988881111", "Centro", "01001000", "São Paulo", "SP", "Rua das Flores", "123" },
+                    { 2, "22233344455", null, new DateTime(1973, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Superior", "Maria Aparecida Costa", 1, 2, "Professora", null, false, "11988882222", "Centro", "01001000", "São Paulo", "SP", "Rua das Flores", "123" },
+                    { 3, "33344455566", null, new DateTime(1948, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fundamental", "Antônia Silva", 1, 4, "Aposentada", null, false, "11988883333", "Velho", "01002000", "São Paulo", "SP", "Avenida da Saudade", "50" },
+                    { 4, "11122233344", null, new DateTime(1970, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Administrador", "Roberto Silva Costa", 2, 1, "Gerente", null, false, "11988881111", "Centro", "01001000", "São Paulo", "SP", "Rua das Flores", "123" },
+                    { 5, "22233344455", null, new DateTime(1973, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Superior", "Maria Aparecida Costa", 2, 2, "Professora", null, false, "11988882222", "Centro", "01001000", "São Paulo", "SP", "Rua das Flores", "123" },
+                    { 6, "33344455566", null, new DateTime(1948, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fundamental", "Antônia Silva", 2, 5, "Aposentada", null, true, "11988883333", "Velho", "01002000", "São Paulo", "SP", "Avenida da Saudade", "50" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Prontuarios",
+                columns: new[] { "Id", "Ativo", "DataAtualizacao", "DataCriacao", "DataPrimeiraConsulta", "NumeroProntuario", "ObservacoesGerais", "PacienteId", "PsicologoResponsavelId", "SituacaoProntuario" },
+                values: new object[,]
+                {
+                    { 1, true, null, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "PRONT-2026-0001", "Paciente encaminhada para acompanhamento psicológico padrão.", 1, "b29fbcde-2222-53c2-c5fb-5c9d1d56ebbb", 1 },
+                    { 2, true, null, new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "PRONT-2026-0002", "Paciente relata queixas relacionadas a estresse ocupacional severo.", 2, "b29fbcde-2222-53c2-c5fb-5c9d1d56ebbb", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TratamentosAnterioresPaciente",
+                columns: new[] { "Id", "Ativo", "DataAtualizacao", "DataCriacao", "Internacao", "MotivoInternacao", "Observacoes", "PacienteId", "ProntuarioId", "TipoTratamento" },
+                values: new object[,]
+                {
+                    { 1, true, null, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), false, null, "Realizou 6 meses de terapia cognitivo-comportamental em 2024 devido a crises de ansiedade.", 1, 1, 1 },
+                    { 2, true, null, new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), true, "Surto psicótico agudo decorrente de estresse severo em ambiente corporativo.", "Paciente ficou internado por 15 dias na clínica Restaurar em agosto de 2025. Faz uso de medicação controlada.", 2, 2, 3 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnamnesesAdolescente_ResponsavelPrincipalId",
@@ -948,9 +1038,20 @@ namespace Connectamente.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Prontuarios_PsicologoResponsavelId",
+                table: "Prontuarios",
+                column: "PsicologoResponsavelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TermosAutorizacaoMenor_InfoFamiliarId",
                 table: "TermosAutorizacaoMenor",
                 column: "InfoFamiliarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TermosResponsabilidadeEstagiarios_EstagiarioUsuarioId",
+                table: "TermosResponsabilidadeEstagiarios",
+                column: "EstagiarioUsuarioId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TratamentosAnterioresPaciente_PacienteId",
@@ -958,9 +1059,9 @@ namespace Connectamente.API.Migrations
                 column: "PacienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TratamentosAnterioresPaciente_ProntuarioModelId",
+                name: "IX_TratamentosAnterioresPaciente_ProntuarioId",
                 table: "TratamentosAnterioresPaciente",
-                column: "ProntuarioModelId");
+                column: "ProntuarioId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AnamnesesAdolescente_DocumentosClinicos_DocumentoClinicoId",
@@ -1000,7 +1101,7 @@ namespace Connectamente.API.Migrations
                 column: "PacienteId",
                 principalTable: "Pacientes",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Atendimentos_Prontuarios_ProntuarioId",
@@ -1032,7 +1133,7 @@ namespace Connectamente.API.Migrations
                 column: "PacienteId",
                 principalTable: "Pacientes",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DocumentosClinicos_Prontuarios_ProntuarioId",
@@ -1095,6 +1196,9 @@ namespace Connectamente.API.Migrations
                 name: "TermosPsicoterapiaIndividual");
 
             migrationBuilder.DropTable(
+                name: "TermosResponsabilidadeEstagiarios");
+
+            migrationBuilder.DropTable(
                 name: "TratamentosAnterioresPaciente");
 
             migrationBuilder.DropTable(
@@ -1104,13 +1208,13 @@ namespace Connectamente.API.Migrations
                 name: "DocumentosClinicos");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Atendimentos");
 
             migrationBuilder.DropTable(
                 name: "Prontuarios");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "InfosFamiliares");

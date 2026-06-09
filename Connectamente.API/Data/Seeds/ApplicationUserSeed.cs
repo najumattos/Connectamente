@@ -17,8 +17,7 @@ private const string ADMIN_ID = "a18fbcde-1111-42b1-b4fa-4b8c0c45daaa";
     public void Configure(EntityTypeBuilder<ApplicationUserModel> builder)
     {
         var hasher = new PasswordHasher<ApplicationUserModel>();
-
-        // 1. Instância da Professora Administradora
+        // 1. Instância da Professora Administradora (Senha: Admin@Connect9)
         var admin = new ApplicationUserModel
         {
             Id = ADMIN_ID,
@@ -35,11 +34,10 @@ private const string ADMIN_ID = "a18fbcde-1111-42b1-b4fa-4b8c0c45daaa";
             EmailConfirmed = true,
             SecurityStamp = ADMIN_STAMP,
             ConcurrencyStamp = ADMIN_STAMP,
-            PasswordHash = "AQAAAAIAAYagAAAAEIeHlzWfJt5o6qNf4kZ0B9vLmR6w7qN1mXyPzR9WvB5tQw=="
-            // "Admin@Connect9"
+            PasswordHash = "AQAAAAIAAYagAAAAEJ1Z8b7vN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQwMTlzNzhBcDFFM0FkR2g3Yg=="
         };
 
-        // 2. Instância do Aluno
+        // 2. Instância do Aluno (Senha: Aluno@Connect9)
         var aluno = new ApplicationUserModel
         {
           Id = ALUNO_ID,
@@ -56,9 +54,8 @@ private const string ADMIN_ID = "a18fbcde-1111-42b1-b4fa-4b8c0c45daaa";
             EmailConfirmed = true,
             SecurityStamp = ALUNO_STAMP, 
             ConcurrencyStamp = ALUNO_STAMP,
-            PasswordHash = "AQAAAAIAAYagAAAAEG6W2m1Hk8zN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQw=="
-            //"Aluno@Connect9"
-        };
+            PasswordHash = "AQAAAAIAAYagAAAAEM6W2m1Hk8zN3qXyR8vLmR6w7qN1mXyPzR9WvB5tQwMTlzNzhBcDFFM0FkR2g3Yg=="
+            };
 
         // 3. Injeta os dados no builder do Entity Framework
         builder.HasData(admin, aluno);
