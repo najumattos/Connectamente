@@ -1,26 +1,55 @@
-using Connectamente.API.Enums;
 using Connectamente.API.Models;
 
 namespace Connectamente.API.Repositories.Interfaces;
 
+/// <summary>
+/// Interface de persistência e consulta para a gestão de usuários da aplicação (<see cref="ApplicationUserModel"/>).
+/// </summary>
 public interface IApplicationUserRepository
 {
 	/// <summary>
-	/// Obtém todos os usuários cadastrados no banco de dados.
-	/// </summary>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna a lista de usuários encontrados.
-	/// </returns>
-	Task<IEnumerable<ApplicationUserModel>> GetAllAsync();
+    /// Recupera todos os usuários registrados no sistema sem a aplicação de paginação ou filtros.
+    /// </summary>
+    /// <remarks>
+    /// <b>Aviso de performance:</b> Por retornar todos os registros de uma só vez, certifique-se de utilizar 
+    /// projeções ou otimizações de leitura (como AsNoTracking) na implementação deste método.
+    /// </remarks>
+    /// <returns>Uma coleção contendo todas as instâncias de <see cref="ApplicationUserModel"/> presentes na base.</returns>
+    Task<IEnumerable<ApplicationUserModel>> BuscarTodosAsync();
 
-	/// <summary>
-	/// Busca um usuário pelo identificador.
-	/// </summary>
-	/// <param name="id">Identificador único do usuário.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna o usuário encontrado ou <c>null</c> quando não existir.
-	/// </returns>
-	Task<ApplicationUserModel> GetByIdAsync(string id);
+    /// <summary>
+    /// Obtém os dados detalhados de um usuário específico utilizando o seu identificador único de formato textual.
+    /// </summary>
+    /// <param name="id">O identificador alfanumérico único (string/GUID) gerado pelo subsistema do ASP.NET Identity.</param>
+    /// <returns>A instância populada de <see cref="ApplicationUserModel"/> acompanhada de suas coleções mapeadas, ou <see langword="null"/> caso não seja localizada.</returns>
+    Task<ApplicationUserModel?> BuscarDetalhesAsync(string id);
+
+    /// <summary>
+    /// Atualiza as propriedades cadastrais e estados modificados de um usuário já existente.
+    /// </summary>
+    /// <param name="usuario">A instância do usuário contendo as alterações a serem consolidadas no banco de dados.</param>
+    Task EditarAsync(ApplicationUserModel usuario);
+
+    /// <summary>
+    /// Realiza a inclusão e persistência de um novo usuário no banco de dados.
+    /// </summary>
+    /// <param name="usuario">A nova instância de usuário a ser criada.</param>
+    /// <returns>O objeto correspondente ao usuário persistido.</returns>
+    Task<ApplicationUserModel> AdicionarAsync(ApplicationUserModel usuario);
+
+    /// <summary>
+    /// Executa o arquivamento ou desativação lógica do usuário, modificando sua flag de atividade para impedir acessos operacionais sem excluir o registro físico.
+    /// </summary>
+    /// <param name="id">O identificador alfanumérico único (string) do usuário a ser desativado.</param>
+    /// <returns><see langword="true"/> se a alteração de estado foi efetuada e gravada com sucesso; caso contrário, <see langword="false"/>.</returns>
+    Task<bool> ArquivarAsync(string id);
+
+    /// <summary>
+    /// Remove permanentemente o registro do usuário e todos os dados estritos associados da base de dados física.
+    /// </summary>
+    /// <param name="id">O identificador alfanumérico único (string) do usuário a ser removido.</param>
+    /// <returns><see langword="true"/> se o comando de exclusão foi concluído com sucesso; caso contrário, <see langword="false"/>.</returns>
+    Task<bool> ExcluirAsync(string id);
 
 	/// <summary>
 	/// Busca um usuário pelo CPF.
@@ -29,41 +58,9 @@ public interface IApplicationUserRepository
 	/// <returns>
 	/// Uma tarefa assíncrona que retorna o usuário encontrado ou <c>null</c> quando não existir.
 	/// </returns>
-	Task<ApplicationUserModel> GetByCpfAsync(string cpf);
+	Task<ApplicationUserModel> BuscarPorCpfAsync(string cpf);
 
-	/// <summary>
-	/// Lista os usuários de um determinado tipo/perfil.
-	/// </summary>
-	/// <param name="tipoUsuario">Tipo de usuário que será usado no filtro.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna a lista de usuários do perfil informado.
-	/// </returns>
-	Task<IEnumerable<ApplicationUserModel>> GetByTipoUsuarioAsync(TipoUsuarioEnum tipoUsuario);
-
-	/// <summary>
-	/// Cria um novo usuário no banco de dados.
-	/// </summary>
-	/// <param name="usuario">Entidade de usuário que será persistida.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna o usuário persistido com os valores gravados pelo banco de dados.
-	/// </returns>
-	Task<ApplicationUserModel> AddAsync(ApplicationUserModel usuario);
-
-	/// <summary>
-	/// Atualiza um usuário existente no banco de dados.
-	/// </summary>
-	/// <param name="usuario">Entidade de usuário contendo os dados atualizados.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna o usuário atualizado ou <c>null</c> quando o registro não for encontrado.
-	/// </returns>
-	Task<ApplicationUserModel> UpdateAsync(ApplicationUserModel usuario);
-
-	/// <summary>
-	/// Remove um usuário do banco de dados.
-	/// </summary>
-	/// <param name="id">Identificador único do usuário.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna <c>true</c> quando a exclusão for concluída com sucesso; caso contrário, retorna <c>false</c>.
-	/// </returns>
-	Task<bool> DeleteAsync(string id);
+    IQueryable<ApplicationUserModel> ObterQueryable();
+    
+    	
 }

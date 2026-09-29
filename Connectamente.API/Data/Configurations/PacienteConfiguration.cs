@@ -1,6 +1,6 @@
-using Connectamente.API.Data.Seeds;
 using Connectamente.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Connectamente.API.Data.Configurations;
@@ -10,81 +10,60 @@ public class PacienteConfiguration : IEntityTypeConfiguration<PacienteModel>
     public void Configure(EntityTypeBuilder<PacienteModel> builder)
     {        
         builder.ToTable("Pacientes");
+
         builder.HasKey(p => p.Id);
+        builder.Property(p => p.Id)
+               .ValueGeneratedOnAdd();
 
-        // Propriedades Herdadas de EntityBase e Primitivas Obrigatórias
-        builder.Property(p => p.DataCriacao).IsRequired();
-        builder.Property(p => p.DataAtualizacao);
-        builder.Property(p => p.Ativo).IsRequired();
-        
-        // Definição de limites e obrigatoriedade (Evita longtext genérico no MySQL)
-        builder.Property(p => p.NomeCompleto)
-            .IsRequired()
-            .HasMaxLength(150);
+       builder.Property(p => p.DataCriacao)
+        .ValueGeneratedOnAdd() 
+        .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
-        builder.Property(p => p.CPF)
-            .HasMaxLength(11); // Apenas números, ou 14 se incluir pontos/traços
+        builder.Property(p => p.DataAtualizacao).ValueGeneratedOnAddOrUpdate();
 
-        builder.Property(p => p.RG)
-            .HasMaxLength(20);
+        builder.Property(p => p.Ativo)
+               .IsRequired()
+               .HasDefaultValue(true);
 
-        builder.Property(p => p.Telefone)
-            .HasMaxLength(20);
+        builder.Property(p => p.Observacoes)
+               .HasMaxLength(500);
 
-        builder.Property(p => p.TelefoneRecado)
-            .HasMaxLength(20);
-
-        builder.Property(p => p.Sexo)
-            .HasMaxLength(20);
-
-        builder.Property(p => p.Naturalidade)
-            .HasMaxLength(100);
-
-        builder.Property(p => p.EstadoNascimento)
-            .HasMaxLength(2); // Sigla do estado (ex: SP, RJ)
-
-        builder.Property(p => p.Escolaridade)
-            .HasMaxLength(50);
-
-        builder.Property(p => p.Profissao)
-            .HasMaxLength(100);
-
-        builder.Property(p => p.EstadoCivil)
-            .HasMaxLength(30);
-
-        builder.Property(p => p.Religiao)
-            .HasMaxLength(50);
-
-        builder.Property(p => p.DataNascimento);
-        
-        builder.Property(p => p.FamiliarResponsavelId).IsRequired(false);
-
-        // Ignora a propriedade calculada (Não vira coluna física no banco de dados)
-        builder.Ignore(p => p.Idade);
-
-        // Value Object: Mapeia as propriedades do Endereço na mesma tabela de Pacientes
-        builder.OwnsOne(p => p.Endereco, endereco =>
+        // Mapeamento do Complex Type: Identificacao
+        builder.ComplexProperty(p => p.Identificacao, ident =>
         {
-            endereco.Property(e => e.Logradouro).HasColumnName("EnderecoLogradouro").HasMaxLength(200);
-            endereco.Property(e => e.Numero).HasColumnName("EnderecoNumero").HasMaxLength(20);
-            endereco.Property(e => e.Bairro).HasColumnName("EnderecoBairro").HasMaxLength(100);
-            endereco.Property(e => e.Cidade).HasColumnName("EnderecoCidade").HasMaxLength(100);
-            endereco.Property(e => e.Estado).HasColumnName("EnderecoEstado").HasMaxLength(2);
-            endereco.Property(e => e.CEP).HasColumnName("EnderecoCep").HasMaxLength(8);      
+            ident.Property(i => i.NomeCompleto).IsRequired().HasMaxLength(150);
+            ident.Property(i => i.DataNascimento).IsRequired();
+            ident.Property(i => i.CPF).HasMaxLength(11);
+            ident.Property(i => i.RG).HasMaxLength(20);
+            ident.Property(i => i.TelefonePrincipal).IsRequired().HasMaxLength(20);
+            ident.Property(i => i.TelefoneRecado).HasMaxLength(20);
+            ident.Property(i => i.Profissao).HasMaxLength(100);
+            ident.Property(i => i.Email).HasMaxLength(150);
+            ident.Property(i => i.Naturalidade).HasMaxLength(100);
+            ident.Property(i => i.EstadoNascimento).HasMaxLength(2);
+            ident.Property(i => i.Religiao).HasMaxLength(50);
+            
+            // Otimização: Armazenamento performático como Inteiro no MySQL
+            ident.Property(i => i.Escolaridade).IsRequired();
+            ident.Property(i => i.Genero).IsRequired();
+            ident.Property(i => i.EstadoCivil).IsRequired();
         });
 
-        // RELACIONAMENTO 1:N - Um Paciente tem um Familiar Responsável administrativo
-        builder.HasOne(p => p.FamiliarResponsavel)
-            .WithMany()
-            .HasForeignKey(p => p.FamiliarResponsavelId)
-            .OnDelete(DeleteBehavior.Restrict); // Evita deletar o familiar por acidente
+        // Chamada isolada para marcar a propriedade complexa Identificacao como obrigatória na raiz
+        builder.ComplexProperty(p => p.Identificacao).IsRequired();
 
-        // RELACIONAMENTO 1:1 - Um Paciente tem um único Prontuário Clínico
-        builder.HasOne(p => p.Prontuario)
-        .WithOne(p => p.Paciente)
-        .HasForeignKey<ProntuarioModel>(pr => pr.PacienteId) 
-        .OnDelete(DeleteBehavior.Cascade); // Se o Paciente for excluído fisicamente, o prontuário também deve ser
-    
-    PacienteSeed.Seed(builder);
+        // Mapeamento do Complex Type: Endereco
+        builder.ComplexProperty(p => p.Endereco, end =>
+        {
+            end.Property(e => e.Logradouro).IsRequired().HasMaxLength(150);
+            end.Property(e => e.Numero).IsRequired().HasMaxLength(10);
+            end.Property(e => e.Bairro).IsRequired().HasMaxLength(100);
+            end.Property(e => e.Cidade).IsRequired().HasMaxLength(100);
+            end.Property(e => e.Estado).IsRequired().HasMaxLength(2);
+            end.Property(e => e.CEP).IsRequired().HasMaxLength(8);
+        });
+
+        // Chamada isolada para marcar a propriedade complexa Endereco como obrigatória na raiz
+        builder.ComplexProperty(p => p.Endereco).IsRequired();
     }
 }

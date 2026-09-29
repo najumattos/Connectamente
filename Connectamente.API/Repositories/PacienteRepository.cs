@@ -7,66 +7,77 @@ namespace Connectamente.API.Repositories;
 
 public class PacienteRepository(AppDbContext context) : IPacienteRepository
 {
-public IQueryable<PacienteModel> ObterQueryable()
-    {
-        return context.Pacientes;
-    }
-    public async Task<PacienteModel?> ObterPorIdAsync(int id)
-    {
-        // Usa AsNoTracking() se for apenas para leitura, mas para o repositório genérico de escrita, 
-        // mantemos o rastreamento ativo para permitir modificações posteriores pelo Unit of Work / Service.
-        return await context.Pacientes
-            .FirstOrDefaultAsync(p => p.Id == id);
-    }
-
-    public async Task<PacienteModel?> ObterCompletoPorIdAsync(int id)
-    {
-       return await context.Pacientes
-            .Include(p => p.Prontuario)
-            .Include(p => p.Familiares)
-            .FirstOrDefaultAsync(p => p.Id == id);
-    }
-
-    public async Task<IEnumerable<PacienteModel>> ObterPaginadoAsync(string? nome, int skip, int take)
-    {
-        var query = context.Pacientes.AsNoTracking();
-
-        // Filtro condicional por nome usando eficiência de string do EF Core
-        if (!string.IsNullOrWhiteSpace(nome))
-        {
-            query = query.Where(p => p.NomeCompleto.Contains(nome));
-        }
-
-        // Paginação obrigatória para performance em bases grandes
-        return await query
-            .OrderBy(p => p.NomeCompleto)
-            .Skip(skip)
-            .Take(take)
-            .ToListAsync();
-    }
 
     public async Task<bool> ExisteCpfAsync(string cpf)
     {
-        // AnyAsync é muito mais rápido do que fazer um Where().FirstOrDefault() != null,
-        // pois o banco encerra a busca assim que encontra o primeiro registro correspondente.
-        return await context.Pacientes
-            .AnyAsync(p => p.CPF == cpf);
+       return await context.Set<PacienteModel>()
+            .AnyAsync(p => p.Identificacao.CPF == cpf);
+
     }
 
-    public async Task AdicionarAsync(PacienteModel paciente)
+    public async Task<PacienteModel> AdicionarAsync(PacienteModel paciente)
     {
+        paciente.DataCriacao = DateTime.UtcNow; 
+        paciente.Ativo = true;
         await context.Pacientes.AddAsync(paciente);
+        await context.SaveChangesAsync();
+        return paciente;
     }
 
-    public void Atualizar(PacienteModel paciente)
+public async Task<IEnumerable<PacienteModel>> BuscarTodosAsync()
     {
-        // puramente síncrono. Altera o estado no ChangeTracker do EF para 'Modified'.
-        context.Pacientes.Update(paciente);
+      return await context.Set<PacienteModel>()
+        .AsNoTracking()
+        .Include(p => p.Prontuario)
+            .ThenInclude(pr => pr.Familiares)
+        .ToListAsync();
     }
 
-    public void Remover(PacienteModel paciente)
+    public async Task<PacienteModel?> BuscarDetalhesAsync(int id)
     {
-        // puramente síncrono. Altera o estado no ChangeTracker do EF para 'Deleted'.
-        context.Pacientes.Remove(paciente);
+       return await context.Set<PacienteModel>()
+        .Include(p => p.Prontuario)
+            .ThenInclude(pr => pr.Familiares)
+        .FirstOrDefaultAsync(p => p.Id == id);
+    }
+
+    public async Task EditarAsync(PacienteModel paciente)
+    {
+        context.Set<PacienteModel>().Update(paciente);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<bool> ArquivarAsync(int id)
+    {
+        var paciente = await context.Set<PacienteModel>().FindAsync(id);
+        if (paciente == null) return false;
+
+        paciente.Ativo = false;
+        paciente.DataAtualizacao = DateTime.UtcNow;
+
+        await context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> ExcluirAsync(int id)
+    {
+        var paciente = await context.Set<PacienteModel>().FindAsync(id);
+        if (paciente == null) return false;
+
+        context.Set<PacienteModel>().Remove(paciente);
+        await context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<IEnumerable<PacienteModel>> BuscarPorIdPsicologoAsync(string psicologoId)
+    {
+         if (string.IsNullOrWhiteSpace(psicologoId))
+        {
+            return Enumerable.Empty<PacienteModel>();
+        }
+
+        return await context.Pacientes
+            .Where(p => p.Prontuario.PsicologoResponsavelId == psicologoId)
+            .ToListAsync();
     }
 }

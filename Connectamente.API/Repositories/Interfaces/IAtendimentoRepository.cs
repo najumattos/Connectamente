@@ -1,78 +1,53 @@
-using Connectamente.API.Enums;
 using Connectamente.API.Models;
 
 namespace Connectamente.API.Repositories.Interfaces;
 
+/// <summary>
+/// Interface para gerenciamento e persistência de sessões de Atendimentos/Agendamentos.
+/// </summary>
 public interface IAtendimentoRepository
 {
-	/// <summary>
-	/// Obtém todos os atendimentos cadastrados no banco de dados.
-	/// </summary>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna a lista de atendimentos encontrados.
-	/// </returns>
-	Task<IEnumerable<AtendimentoModel>> GetAllAsync();
+    /// <summary>
+    /// Obtém a listagem completa de todos os atendimentos cadastrados na clínica.
+    /// </summary>
+    Task<IEnumerable<AtendimentoModel>> BuscarTodosAsync();
 
-	/// <summary>
-	/// Busca um atendimento pelo identificador herdado de <see cref="EntityBase"/>.
-	/// </summary>
-	/// <param name="id">Identificador único do atendimento.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna o atendimento encontrado ou <c>null</c> quando não existir.
-	/// </returns>
-	Task<AtendimentoModel> GetByIdAsync(int id);
+    /// <summary>
+    /// Filtra as sessões de atendimento vinculadas a prontuários que pertencem a um psicólogo específico.
+    /// </summary>
+    /// <param name="psicologoId">O ID do psicólogo logado ou responsável.</param>
+    Task<IEnumerable<AtendimentoModel>> BuscarPorIdPsicologoAsync(string psicologoId);
 
-	/// <summary>
-	/// Lista os atendimentos de um aluno específico.
-	/// </summary>
-	/// <param name="alunoId">Identificador do aluno responsável pelo atendimento.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna a lista de atendimentos do aluno informado.
-	/// </returns>
-	Task<IEnumerable<AtendimentoModel>> GetByAlunoIdAsync(string alunoId);
+    /// <summary>
+    /// Retorna os detalhes de um atendimento com os dados do Prontuário, Paciente e Documentos Clínicos gerados.
+    /// </summary>
+    /// <param name="id">O ID do atendimento.</param>
+    Task<AtendimentoModel?> BuscarDetalhesAsync(int id);
 
-	/// <summary>
-	/// Lista os atendimentos de um paciente específico.
-	/// </summary>
-	/// <param name="pacienteId">Identificador do paciente que será usado no filtro.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna a lista de atendimentos do paciente informado.
-	/// </returns>
-	Task<IEnumerable<AtendimentoModel>> GetByPacienteIdAsync(int pacienteId);
+    /// <summary>
+    /// Modifica o estado ou informações de um atendimento (ex: alterar status para Realizado ou Cancelado).
+    /// </summary>
+    /// <param name="atendimento">O objeto modificado.</param>
+    Task<bool> EditarAsync(AtendimentoModel atendimento);
 
-	/// <summary>
-	/// Filtra os atendimentos por status.
-	/// </summary>
-	/// <param name="status">Status do atendimento a ser aplicado no filtro.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna a lista de atendimentos com o status informado.
-	/// </returns>
-	Task<IEnumerable<AtendimentoModel>> GetByStatusAsync(StatusAtendimentoEnum status);
+    /// <summary>
+    /// Reserva ou agenda um novo atendimento no sistema.
+    /// </summary>
+    /// <param name="atendimento">Os dados do novo agendamento.</param>
+    Task<AtendimentoModel> AdicionarAsync(AtendimentoModel atendimento);
 
-	/// <summary>
-	/// Cria um novo atendimento no banco de dados.
-	/// </summary>
-	/// <param name="atendimento">Entidade de atendimento que será persistida.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna o atendimento persistido com os valores gravados pelo banco de dados.
-	/// </returns>
-	Task<AtendimentoModel> AddAsync(AtendimentoModel atendimento);
+    /// <summary>
+    /// Executa o cancelamento ou arquivamento do atendimento mudando seu estado interno.
+    /// </summary>
+    /// <param name="id">O ID do atendimento.</param>
+    Task<bool> ArquivarAsync(int id);
 
-	/// <summary>
-	/// Atualiza um atendimento existente no banco de dados.
-	/// </summary>
-	/// <param name="atendimento">Entidade de atendimento contendo os dados atualizados.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna o atendimento atualizado ou <c>null</c> quando o registro não for encontrado.
-	/// </returns>
-	Task<AtendimentoModel> UpdateAsync(AtendimentoModel atendimento);
+    /// <summary>
+    /// Remove permanentemente o registro da sessão de atendimento do banco de dados.
+    /// </summary>
+    /// <param name="id">O ID do atendimento.</param>
+    Task<bool> ExcluirAsync(int id);
 
-	/// <summary>
-	/// Remove um atendimento do banco de dados.
-	/// </summary>
-	/// <param name="id">Identificador único do atendimento.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna <c>true</c> quando a exclusão for concluída com sucesso; caso contrário, retorna <c>false</c>.
-	/// </returns>
-	Task<bool> DeleteAsync(int id);
+    Task<IEnumerable<AtendimentoModel>> BuscarTodosAtendimentosDaSemanaAsync();
+   Task<IEnumerable<AtendimentoModel>> BuscarAtendimentosDaSemanaPorPsicologoAsync(string id);
 }

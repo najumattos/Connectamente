@@ -7,56 +7,117 @@ namespace Connectamente.API.Repositories;
 
 public class ProntuarioRepository(AppDbContext context) : IProntuarioRepository
 {
-    public IQueryable<ProntuarioModel> ObterQueryable()
+    public async Task<bool> ExisteNumeroProntuarioAsync(string numeroProntuario)
     {
-        // Retorna o DbSet puro. O AsNoTracking() ou tracking deve ser decidido 
-        // na camada de Serviço com base na necessidade da query.
-        return context.Set<ProntuarioModel>();
+        return await context.Prontuarios
+    .AnyAsync(p => p.NumeroProntuario == numeroProntuario);
     }
 
-    public async Task<ProntuarioModel?> ObterPorIdAsync(int id)
+    public async Task<bool> ExisteProntuarioAsync(int id)
     {
-        // Busca simples por chave primária utilizando o cache local do EF antes de ir ao banco
-        return await context.Set<ProntuarioModel>().FindAsync(id);
+        return await context.Prontuarios
+          .AnyAsync(p => p.Id == id);
     }
 
-    public async Task<ProntuarioModel?> ObterComDetalhesPorIdAsync(int id)
+   
+    public async Task<ProntuarioModel> AdicionarAsync(ProntuarioModel prontuario)
     {
-        // 🧠 Uso de Eager Loading (.Include) para trazer o grafo completo da entidade
-        // Evita o problema de "N+1 queries" no banco de dados.
-        return await context.Set<ProntuarioModel>()
+          prontuario.DataCriacao = DateTime.UtcNow;
+            prontuario.Ativo = true;
+        await context.Prontuarios.AddAsync(prontuario);
+        await context.SaveChangesAsync();
+        return prontuario;
+    }
+
+public async Task EditarAsync(ProntuarioModel prontuario)
+    {
+        prontuario.DataAtualizacao = DateTime.UtcNow;
+        context.Entry(prontuario).State = EntityState.Modified;
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<bool> ArquivarAsync(int id)
+    {
+        var prontuario = await context.Set<ProntuarioModel>().FindAsync(id);
+        if (prontuario is null) return false;
+
+        prontuario.Ativo = false;
+        prontuario.DataAtualizacao = DateTime.UtcNow;
+
+        return await context.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> ExcluirAsync(int id)
+    {
+        var prontuario = await context.Set<ProntuarioModel>().FindAsync(id);
+        if (prontuario is null) return false;
+
+        context.Set<ProntuarioModel>().Remove(prontuario);
+        return await context.SaveChangesAsync() > 0;
+    }
+  
+
+public async Task<bool> VincularPsicologoProntuarioAsync(VinculoProntuarioPsicologoModel model)
+{    
+    // 1. Busca o prontuário no banco de dados
+    var prontuario = await context.Prontuarios
+        .FirstOrDefaultAsync(p => p.Id == model.ProntuarioId);
+
+    // 2. Se o prontuário não existir, retorna false
+    if (prontuario == null)
+    {
+        return false;
+    }
+
+    // 3. Atualiza as propriedades na entidade rastreada
+    prontuario.PsicologoResponsavelId = model.PsicologoId; 
+
+    // 4. Persiste as alterações de fato no banco de dados
+    int linhasAfetadas = await context.SaveChangesAsync();
+
+    // 5. Retorna true se pelo menos uma linha foi modificada com sucesso
+    return linhasAfetadas > 0;
+}
+
+   public async Task<IEnumerable<ProntuarioModel>> BuscarProntuariosSemPsicologoAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Prontuarios
             .Include(p => p.Paciente)
-            .Include(p => p.PsicologoResponsavel)
+            .Where(p => p.PsicologoResponsavelId == null || p.PsicologoResponsavelId == string.Empty)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<ProntuarioModel>> BuscarTodosAsync()
+    {
+        return await context.Prontuarios
+            .AsNoTracking()
+            .Include(p => p.Paciente)
+            .Include(ps => ps.PsicologoResponsavel)
+            .ToListAsync();
+    }
+
+    public async Task<ProntuarioModel?> BuscarDetalhesAsync(int id)
+    {
+        return await context.Prontuarios
+            .Include(p => p.Paciente)
             .Include(p => p.TratamentosAnteriores)
+            .Include(p => p.Familiares)
             .Include(p => p.Atendimentos)
-            .Include(p => p.DocumentosClinicos)
+            .Include(p => p.DocumentosClinicos)            
+            .Include(ps => ps.PsicologoResponsavel)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public async Task AdicionarAsync(ProntuarioModel prontuario)
+    public async Task<IEnumerable<ProntuarioModel>> BuscarPorIdPsicologoAsync(string psicologoId)
     {
-        // Adiciona a entidade ao rastreador do EF Core em estado 'Added'
-        await context.Set<ProntuarioModel>().AddAsync(prontuario);
-    }
+        if (string.IsNullOrWhiteSpace(psicologoId))
+        {
+            return Enumerable.Empty<ProntuarioModel>();
+        }
 
-    public void Atualizar(ProntuarioModel prontuario)
-    {
-        // Modifica o estado da entidade para 'Modified'. 
-        // Nota: Se a entidade já foi rastreada pelo ObterPorId, este método é opcional, 
-        // mas é uma boa prática para entidades desconectadas (vinda de APIs/DTo).
-        context.Set<ProntuarioModel>().Update(prontuario);
-    }
-
-    public void Remover(ProntuarioModel prontuario)
-    {
-        // Modifica o estado para 'Deleted' (ou executa o Soft Delete se configurado globalmente)
-        context.Set<ProntuarioModel>().Remove(prontuario);
-    }
-
-    public async Task<bool> CommitAsync()
-    {
-        // Executa o comando SQL (INSERT, UPDATE, DELETE) de forma transacional no banco
-        var linhasAfetadas = await context.SaveChangesAsync();
-        return linhasAfetadas > 0;
+        return await context.Prontuarios
+            .Include(p => p.Paciente)
+            .Where(p => p.PsicologoResponsavelId == psicologoId)
+            .ToListAsync();
     }
 }

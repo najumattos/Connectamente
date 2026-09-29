@@ -1,48 +1,39 @@
-    using Connectamente.API.Enums;
+using System.ComponentModel.DataAnnotations;
+using Connectamente.API.DTOs.AtendimentoDto;
+using Connectamente.API.DTOs.DocumentoClinicoDto;
+using Connectamente.API.DTOs.FamiliarDto;
+using Connectamente.API.DTOs.TratamentoAnteriorDto;
+using Connectamente.API.Enums;
 
-    namespace Connectamente.API.DTOs.ProntuarioDto;
+namespace Connectamente.API.DTOs.ProntuarioDto;
 
-    public record ProntuarioDetalhesDto
+    public class ProntuarioDetalhesDto : EntityBaseDetalhesDto
 {
-    public int Id { get; init; }
-    public string NumeroProntuario { get; init; } = string.Empty; 
-    public SituacaoProntuarioEnum SituacaoProntuario { get; init; } 
-    public DateTime? DataPrimeiraConsulta { get; init; }
-    public string? ObservacoesGerais { get; init; }
+   [Required]
+    public int Id { get; set; }
 
+    [Display(Name = "Número do Prontuário")]
+    public string NumeroProntuario { get; set; } = string.Empty; 
+
+    [Display(Name = "Situação do Prontuário")]
+    public SituacaoEnum SituacaoProntuario { get; set; } 
     // Dados do Paciente Vinculado
-    public int PacienteId { get; init; }
-    public string PacienteNomeCompleto { get; init; } = string.Empty;  
+    [Required]
+    public int PacienteId { get; set; }
+
+    [Display(Name = "Paciente")]
+    public string PacienteNomeCompleto { get; set; } = string.Empty;  
 
     // Dados do Profissional Responsável
-    public string PsicologoResponsavelId { get; init; } = string.Empty;
-    public string NomePsicologoResponsavel { get; init; } = string.Empty;  
+    [Required]
+    public string PsicologoResponsavelId { get; set; } = string.Empty;
+
+    [Display(Name = "Psicólogo Responsável")]
+    public string NomePsicologoResponsavel { get; set; } = string.Empty;  
    
-    public ICollection<ProntuarioTratamentoAnteriorDto> TratamentosAnteriores { get; init; } = [];
-    public ICollection<ProntuarioAtendimentoDto> Atendimentos { get; init; } = [];
-    public ICollection<ProntuarioDocumentoClinicoDto> DocumentosClinicos { get; init; } = [];
-}
-
-// --- SUB-DTOs AUXILIARES (Simplificados apenas para exibição em listas dentro do detalhe) ---
-
-public record ProntuarioTratamentoAnteriorDto
-{
-    public int Id { get; init; }
-    public TipoTratamentoAnteriorEnum TipoTratamento { get; init; } 
-    public bool Internacao { get; init; }
-    public string MotivoInternacao { get; set; }
-}
-
-public record ProntuarioAtendimentoDto
-{
-    public int Id { get; init; }
-    public DateTime DataAtendimento { get; init; }
-    public string Status { get; init; } = string.Empty;
-}
-
-public record ProntuarioDocumentoClinicoDto
-{
-    public int Id { get; init; }
-    public string TipoDocumento { get; init; } = string.Empty;
-    public DateTime DataCriacao { get; init; }
+    // Coleções convertidas para ViewModels de exibição
+    public ICollection<TratamentoAnteriorListaDto> TratamentosAnteriores { get; set; } = [];
+    public ICollection<AtendimentoListaDto> Atendimentos { get; set; } = [];
+    public ICollection<DocumentoListaDto> DocumentosClinicos { get; set; } = [];
+    public ICollection<FamiliarListaDto> Familiares { get; set; } =[];
 }

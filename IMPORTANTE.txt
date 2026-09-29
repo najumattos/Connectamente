@@ -1,6 +1,8 @@
 cd Connectamente.API -> dotnet watch run 
 cd Connectamente.Interface -> npm install | npm run dev
 
+dotnet ef migrations add NomeDaMigration
+dotnet ef database update
 ETEC
 | Set-ExecutionPolicy -Scope CurrentUser RemoteSigned 
 | winget install Microsoft.DotNet.SDK.9 

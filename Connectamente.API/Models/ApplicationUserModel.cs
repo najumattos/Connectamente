@@ -11,10 +11,9 @@ public class ApplicationUserModel : IdentityUser
     public string? Crp { get; set; }
     public TipoUsuarioEnum TipoUsuario { get; set; }
     public bool Ativo { get; set; } = true;
-    public TermoResponsabilidadeEstagiario? TermoResponsabilidade { get; set; }
+    public bool AssinouTermoResponsabilidadeEstagiario { get; set; } = false;   
+    public DateTime DataCadastro { get; set; }   
     public ICollection<DocumentoClinicoModel> DocumentosCriados { get; set; } = [];
-    public ICollection<EvolucaoAtendimentoModel> EvolucoesCriadas { get; set; } = [];    
-    public ICollection<AnexoModel> AnexosEnviados { get; set; } = [];
     public ICollection<AuditoriaModel> Auditorias { get; set; } = [];
-    public ICollection<ProntuarioModel> ProntuariosResponsavel { get; set; } = [];
+       public ICollection<ProntuarioModel> ProntuariosResponsavel { get; set; } = [];
 }

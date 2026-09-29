@@ -1,24 +1,16 @@
 
-using Connectamente.API.Enums;
 
 namespace Connectamente.API.Models;
 
-public class AuditoriaModel : EntityBase
+public class AuditoriaModel 
 {
-    public string UsuarioId { get; set; } = string.Empty;
-    public TipoAcaoAuditoriaEnum TipoAcao { get; set; }
-    public string Entidade { get; set; } = string.Empty;
-    public string RegistroId { get; set; } = string.Empty;
-    public int? PacienteId { get; set; }
-    public int? ProntuarioId { get; set; }
-    public DateTime DataHora { get; set; } = DateTime.UtcNow;
-    public string? IP { get; set; }
-    public string? UserAgent { get; set; }
-    public string? ValoresAntesJson { get; set; }
-    public string? ValoresDepoisJson { get; set; }
-    public string? Observacoes { get; set; }
+    public long Id { get; set; }    
+    public string? UsuarioEmail { get; set; } = string.Empty;
+    public string TipoAcao { get; set; } = string.Empty;
+    public string NomeTabela { get; set; } = string.Empty;
+      public string RegistroId { get; set; } = string.Empty; // O ID do registro alterado (como string para aceitar qualquer tipo de chave)
+   public DateTime DataHora { get; set; } = DateTime.UtcNow; // Sempre salvar em formato UTC  
+public string? ValoresAntigos { get; set; } // JSON com o estado do registro ANTES da alteração
 
-    public ApplicationUserModel Usuario { get; set; } = null!;
-    public PacienteModel? Paciente { get; set; }
-    public ProntuarioModel? Prontuario { get; set; }
+public string? ValoresNovos { get; set; } // JSON com o estado do registro DEPOIS da alteração
 }

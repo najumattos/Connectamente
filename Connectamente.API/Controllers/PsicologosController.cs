@@ -1,5 +1,6 @@
-using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.AuthDto;
 using Connectamente.API.DTOs.PacienteDto;
+using Connectamente.API.DTOs.PsicologoDto;
 using Connectamente.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,7 @@ public class PsicologosController(IPsicologoService service) : MainController
     [HttpGet("Buscar")]
     public async Task<ActionResult<IEnumerable<PacienteListaDto>>> GetPsicologos()
     {
-        var resposta = await service.BuscarTodosPsicologos();
+        var resposta = await service.BuscarTodosPsicologosAsync();
 
         return resposta.IsSuccess switch
         {
@@ -28,11 +29,11 @@ public class PsicologosController(IPsicologoService service) : MainController
     /// <summary>
     /// Busca Psicologo Por Id
     /// </summary>     
-    [ProducesResponseType(typeof(PsicologoDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PsicologoDetalhesDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<PsicologoDto>> GetPsicologo(string id)
+    public async Task<ActionResult<PsicologoDetalhesDto>> GetPsicologo(string id)
     {
-        var resposta = await service.BuscarPsicologoPorId(id);
+        var resposta = await service.BuscarPsicologoPorIdAsync(id);
 
         return resposta.IsSuccess switch
         {
@@ -47,9 +48,10 @@ public class PsicologosController(IPsicologoService service) : MainController
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpPatch("Desativar/{id}")]
-    public async Task<ActionResult> DesativarPsicologo([FromQuery] AuthAcessoDto auth, string id)
+    public async Task<ActionResult> DesativarPsicologo([FromQuery] AuthUserDto auth, string id)
     {
-        var resposta = await service.DesativarPsicologo(id);
+        var resposta = "desativar";
+      //  var resposta = await service.DesativarPsicologo(id);
         return resposta switch
         {
          

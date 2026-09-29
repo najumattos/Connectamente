@@ -1,44 +1,65 @@
 using Connectamente.API.Data;
-using Connectamente.API.Enums;
 using Connectamente.API.Models;
 using Connectamente.API.Repositories.Interfaces;
-
+using Microsoft.EntityFrameworkCore;
 namespace Connectamente.API.Repositories;
 
-public class ApplicationUserRepository(AppDbContext AppDbContext) : IApplicationUserRepository
+public class ApplicationUserRepository(AppDbContext context) : IApplicationUserRepository
 {
-    public Task<ApplicationUserModel> AddAsync(ApplicationUserModel usuario)
+    public async Task<ApplicationUserModel> AdicionarAsync(ApplicationUserModel usuario)
     {
-        throw new NotImplementedException();
+        await context.Set<ApplicationUserModel>().AddAsync(usuario);
+        await context.SaveChangesAsync();
+        return usuario;
     }
 
-    public Task<bool> DeleteAsync(string id)
+    public async Task<bool> ArquivarAsync(string id)
     {
-        throw new NotImplementedException();
+        var usuario = await context.Set<ApplicationUserModel>().FindAsync(id);
+        if (usuario is null) return false;
+
+        usuario.Ativo = false; // Soft delete / arquivamento baseado na propriedade configurada
+        return await context.SaveChangesAsync() > 0;
     }
 
-    public Task<IEnumerable<ApplicationUserModel>> GetAllAsync()
+    public async Task<ApplicationUserModel?> BuscarDetalhesAsync(string id)
     {
-        throw new NotImplementedException();
+        return await context.Set<ApplicationUserModel>()
+            .Include(u => u.DocumentosCriados)
+            .Include(u => u.ProntuariosResponsavel)
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public Task<ApplicationUserModel> GetByCpfAsync(string cpf)
+    public async Task<ApplicationUserModel?> BuscarPorCpfAsync(string cpf)
     {
-        throw new NotImplementedException();
+        return await context.Set<ApplicationUserModel>()
+            .FirstOrDefaultAsync(u => u.Cpf == cpf);
     }
 
-    public Task<ApplicationUserModel> GetByIdAsync(string id)
+    public async Task<IEnumerable<ApplicationUserModel>> BuscarTodosAsync()
     {
-        throw new NotImplementedException();
+        return await context.Set<ApplicationUserModel>()
+            .AsNoTracking()
+            .ToListAsync();
     }
 
-    public Task<IEnumerable<ApplicationUserModel>> GetByTipoUsuarioAsync(TipoUsuarioEnum tipoUsuario)
+    public async Task EditarAsync(ApplicationUserModel usuario)
     {
-        throw new NotImplementedException();
+        context.Entry(usuario).State = EntityState.Modified;
+        await context.SaveChangesAsync();
     }
 
-    public Task<ApplicationUserModel> UpdateAsync(ApplicationUserModel usuario)
+    public async Task<bool> ExcluirAsync(string id)
     {
-        throw new NotImplementedException();
+        var usuario = await context.Set<ApplicationUserModel>().FindAsync(id);
+        if (usuario is null) return false;
+
+        context.Set<ApplicationUserModel>().Remove(usuario);
+        return await context.SaveChangesAsync() > 0;
+    }
+
+     public IQueryable<ApplicationUserModel> ObterQueryable()
+    {
+        return context.Users;
     }
 }

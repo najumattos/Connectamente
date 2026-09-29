@@ -31,8 +31,8 @@ function index() {
                     {psicologos.length > 0 ? (
                         psicologos.map((psicologo) => (
                            <Link 
-        key={psicologo.usuarioId} 
-        to={`visualizar/${psicologo.usuarioId}`}
+        key={psicologo.psicologoResponsavelId} 
+        to={`visualizar/${psicologo.psicologoResponsavelId}`}
         style={{ textDecoration: 'none', color: 'inherit' }} 
     >
         <div style={{ 
@@ -47,7 +47,7 @@ function index() {
         >
             {/**TODO:1 ao inves dessas informações, dava pa fazer um componente pra receber FichaUsuarioDto (que eu disse no whatsapp) */}
            <h3>{psicologo.nomeCompleto}</h3>
-           <p>{psicologo.id}</p>
+           <p>{psicologo.psicologoResponsavelId}</p>
            <small>Clique para ver perfil completo</small>
         </div>
     </Link>

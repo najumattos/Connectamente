@@ -2,11 +2,10 @@ namespace Connectamente.API.Enums;
 
 public enum TipoDocumentoClinicoEnum
 {
-    IdentificacaoPaciente = 1,// documento desnecessario?
-    AnamneseAdulto = 2,//ok
-    AnamneseAdolescente = 3, //ok
-    EvolucaoAtendimento = 5,
-    TermoPsicoterapiaIndividual = 6,
-    TermoAutorizacaoMenor = 7,
-    TermoCompromissoInformatizacao = 8
+    TermoCompromissoInformatizacao = 1,
+    TermoPsicoterapiaIndividual = 2,
+    TermoAutorizacaoMenor = 3,
+    TermoEstagiario = 4,
+    Anamnese = 5,
+    EvolucaoAtendimento = 6,
 }

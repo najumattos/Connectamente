@@ -1,49 +1,123 @@
 using Connectamente.API.Data;
-using Connectamente.API.Enums;
 using Connectamente.API.Models;
 using Connectamente.API.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Repositories;
 
-public class AtendimentoRepository(AppDbContext AppDbContext) : IAtendimentoRepository
+public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepository
 {
-    public Task<AtendimentoModel> AddAsync(AtendimentoModel atendimento)
+    public async Task<AtendimentoModel> AdicionarAsync(AtendimentoModel atendimento)
     {
-        throw new NotImplementedException();
+        if (atendimento.DataCriacao == default)
+        {
+            atendimento.Ativo = true;
+        }
+
+        await context.Atendimentos.AddAsync(atendimento);
+        await context.SaveChangesAsync();
+        
+        return atendimento;
     }
 
-    public Task<bool> DeleteAsync(int id)
+    public async Task<bool> ArquivarAsync(int id)
     {
-        throw new NotImplementedException();
+       var atendimento = await context.Atendimentos.FindAsync(id);
+        if (atendimento == null) return false;
+
+        atendimento.Ativo = false;
+        atendimento.DataAtualizacao = DateTime.UtcNow;
+
+        await context.SaveChangesAsync();
+        return true;
     }
 
-    public Task<IEnumerable<AtendimentoModel>> GetAllAsync()
+    public async Task<IEnumerable<AtendimentoModel>> BuscarAtendimentosDaSemanaPorPsicologoAsync(string id)
+{
+    var hoje = DateTime.UtcNow.Date;
+    var fimDaSemana = hoje.AddDays(7);
+
+    return await context.Atendimentos
+        .AsNoTracking()
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.Paciente)
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.PsicologoResponsavel)
+        .Where(a => a.Ativo
+                    && a.Prontuario.PsicologoResponsavelId == id
+                    && a.DataHoraInicio >= hoje
+                    && a.DataHoraInicio <= fimDaSemana)
+        .OrderBy(a => a.DataHoraInicio)
+        .ToListAsync();
+}
+
+   public async Task<AtendimentoModel?> BuscarDetalhesAsync(int id)
+{
+    return await context.Atendimentos
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.Paciente)
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.PsicologoResponsavel) 
+        .Include(a => a.DocumentosClinicos)
+        .FirstOrDefaultAsync(a => a.Id == id);
+}
+
+    public async Task<IEnumerable<AtendimentoModel>> BuscarPorIdPsicologoAsync(string psicologoId)
     {
-        throw new NotImplementedException();
+        return await context.Atendimentos
+            .AsNoTracking()
+             .Include(a => a.Prontuario)
+            .ThenInclude(p => p.Paciente)
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.PsicologoResponsavel)
+            .Where(a => a.Prontuario.PsicologoResponsavelId == psicologoId) 
+            .OrderByDescending(a => a.DataHoraInicio)
+            .ToListAsync();
     }
 
-    public Task<IEnumerable<AtendimentoModel>> GetByAlunoIdAsync(string alunoId)
+    public async Task<IEnumerable<AtendimentoModel>> BuscarTodosAsync()
     {
-        throw new NotImplementedException();
+        return await context.Atendimentos
+            .AsNoTracking()
+             .Include(a => a.Prontuario)
+            .ThenInclude(p => p.Paciente)
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.PsicologoResponsavel)
+            .OrderByDescending(a => a.DataHoraInicio)
+            .ToListAsync();
     }
 
-    public Task<AtendimentoModel> GetByIdAsync(int id)
+    public async Task<IEnumerable<AtendimentoModel>> BuscarTodosAtendimentosDaSemanaAsync()
     {
-        throw new NotImplementedException();
+       var hoje = DateTime.UtcNow.Date;
+    var fimDaSemana = hoje.AddDays(7);
+
+    return await context.Atendimentos
+        .AsNoTracking()
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.Paciente)
+        .Include(a => a.Prontuario)
+            .ThenInclude(p => p.PsicologoResponsavel)
+        .Where(a => a.Ativo 
+                    && a.DataHoraInicio >= hoje 
+                    && a.DataHoraInicio <= fimDaSemana)
+        .OrderBy(a => a.DataHoraInicio)
+        .ToListAsync();
     }
 
-    public Task<IEnumerable<AtendimentoModel>> GetByPacienteIdAsync(int pacienteId)
-    {
-        throw new NotImplementedException();
+    public async Task<bool> EditarAsync(AtendimentoModel atendimento)
+    {             
+    var linhasAfetadas = await context.SaveChangesAsync();
+    return linhasAfetadas > 0;
     }
 
-    public Task<IEnumerable<AtendimentoModel>> GetByStatusAsync(StatusAtendimentoEnum status)
+    public async Task<bool> ExcluirAsync(int id)
     {
-        throw new NotImplementedException();
-    }
+       var atendimento = await context.Atendimentos.FindAsync(id);
+        if (atendimento == null) return false;
 
-    public Task<AtendimentoModel> UpdateAsync(AtendimentoModel atendimento)
-    {
-        throw new NotImplementedException();
+      context.Atendimentos.Remove(atendimento);
+        await context.SaveChangesAsync();
+        return true;
     }
 }

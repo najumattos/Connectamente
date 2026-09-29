@@ -9,37 +9,59 @@ public class DocumentoClinicoConfiguration : IEntityTypeConfiguration<DocumentoC
     public void Configure(EntityTypeBuilder<DocumentoClinicoModel> builder)
     {
         builder.ToTable("DocumentosClinicos");
-        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.DataCriacao);
-        builder.Property(x => x.DataAtualizacao);
-        builder.Property(x => x.Ativo);
-        builder.Property(x => x.ProntuarioId);
-        builder.Property(x => x.PacienteId);
-        builder.Property(x => x.AtendimentoId);
-        builder.Property(x => x.CriadoPorUsuarioId);
-        builder.Property(x => x.TipoDocumentoClinico).HasConversion<int>();
-        builder.Property(x => x.StatusDocumento).HasConversion<int>();
-        builder.Property(x => x.Versao);
-        builder.Property(x => x.DataDocumento);
-        builder.Property(x => x.FinalizadoEm);
-        builder.Property(x => x.Observacoes);
-        builder.Property(x => x.ExcluidoLogicamente);
+        // Chave Primária (EntityBase)
+        builder.HasKey(d => d.Id);
+        builder.Property(d => d.Id).ValueGeneratedOnAdd();
 
-        builder.HasOne(x => x.Prontuario)
-            .WithMany(x => x.DocumentosClinicos)
-            .HasForeignKey(x => x.ProntuarioId)
-            .OnDelete(DeleteBehavior.Restrict);       
+        // Propriedades de EntityBase
+        builder.Property(d => d.DataCriacao).IsRequired().HasColumnType("datetime").ValueGeneratedOnAddOrUpdate();
+        builder.Property(d => d.DataAtualizacao).HasColumnType("datetime").ValueGeneratedOnAddOrUpdate();
+        builder.Property(d => d.Ativo).IsRequired().HasDefaultValue(true);
+        builder.Property(d => d.Observacoes).HasMaxLength(500).HasColumnType("varchar(500)");
 
-        builder.HasOne(x => x.Atendimento)
-            .WithMany(x => x.DocumentosClinicos)
-            .HasForeignKey(x => x.AtendimentoId)
+        builder.Property(d => d.UsuarioResponsavelId)
+            .IsRequired()
+            .HasMaxLength(150)
+            .HasColumnType("varchar(150)");
+
+        // Propriedade física da chave estrangeira (Adicionada na Model no passo anterior)
+        builder.Property(d => d.UsuarioResponsavelId)
+            .IsRequired();
+
+        builder.Property(d => d.TipoDocumentoClinico)
+            .HasConversion<string>()
+            .HasMaxLength(50)
+            .IsRequired()
+            .HasColumnType("varchar(50)");
+
+        builder.Property(d => d.NomeArquivo)
+            .IsRequired()
+            .HasMaxLength(255)
+            .HasColumnType("varchar(255)");
+
+        builder.Property(d => d.CaminhoArquivo)
+            .IsRequired()
+            .HasMaxLength(500)
+            .HasColumnType("varchar(500)");      
+
+        builder.HasOne(d => d.Atendimento)
+            .WithMany(a => a.DocumentosClinicos)
+            .HasForeignKey(d => d.AtendimentoId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.CriadoPorUsuario)
-            .WithMany(x => x.DocumentosCriados)
-            .HasForeignKey(x => x.CriadoPorUsuarioId)
+
+ builder.HasOne(d => d.Prontuario)
+            .WithMany(a => a.DocumentosClinicos)
+            .HasForeignKey(d => d.ProntuarioId)
             .OnDelete(DeleteBehavior.Restrict);
 
+
+        // Relacionamento com o Objeto de Usuário usando a FK física correta
+        builder.HasOne(d => d.Usuario)
+            .WithMany(u => u.DocumentosCriados)
+            .HasForeignKey(d => d.UsuarioResponsavelId) 
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

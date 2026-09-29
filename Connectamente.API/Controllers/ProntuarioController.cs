@@ -34,7 +34,7 @@ public class ProntuarioController(IProntuarioService service) : MainController
     [HttpGet("psicologo/{id}")] // 🛠️ CORREÇÃO: Removido o ':string' inválido. GET api/prontuarios/psicologo/guid-id
     public async Task<IActionResult> GetProntuariosPorPsicologo([FromRoute] string id)
     {
-        Result<IEnumerable<ProntuarioListaDto>> resposta = await service.BuscarTodosProntuariosDeUmPsicologoAsync(id);
+        Result<IEnumerable<ProntuarioListaDto>> resposta = await service.BuscarProntuariosPorIdPsicologoAsync(id);
 
         if (resposta.IsFailed)
         {

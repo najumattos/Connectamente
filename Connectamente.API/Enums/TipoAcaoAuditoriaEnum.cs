@@ -6,11 +6,13 @@ public enum TipoAcaoAuditoriaEnum
     Logout = 2,
     Insercao = 3,
     Atualizacao = 4,
-    ExclusaoLogica = 5,
+    Arquivacao = 5,
     Visualizacao = 6,
     LiberacaoAcesso = 7,
     RevogacaoAcesso = 8,
     FinalizacaoDocumento = 9,
     Download = 10,
-    Impressao = 11
+    Upload = 11,
+    ExclusaoFisica = 12,
+    VincularPsicologo = 13
 }

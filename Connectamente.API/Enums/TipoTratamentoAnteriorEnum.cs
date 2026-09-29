@@ -6,6 +6,5 @@ public enum TipoTratamentoAnteriorEnum
     Neurologico = 2,
     Psiquiatrico = 3,
     Cardiologico = 4,
-    Internacao = 5,
-    Outro = 6
+    Outro = 5
 }

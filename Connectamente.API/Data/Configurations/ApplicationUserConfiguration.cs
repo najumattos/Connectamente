@@ -8,36 +8,60 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 {
     public void Configure(EntityTypeBuilder<ApplicationUserModel> builder)
     {
-        builder.Property(x => x.NomeCompleto);
-        builder.Property(x => x.Cpf);
-        builder.Property(x => x.Matricula);
-        builder.Property(x => x.Crp);
-        builder.Property(x => x.TipoUsuario).HasConversion<int>();
-        builder.Property(x => x.Ativo);
 
-        builder.HasMany(x => x.DocumentosCriados)
-            .WithOne(x => x.CriadoPorUsuario)
-            .HasForeignKey(x => x.CriadoPorUsuarioId)
+        // Configuração das propriedades nativas e herdadas
+        builder.Property(u => u.NomeCompleto)
+            .IsRequired()
+            .HasMaxLength(150)
+            .HasColumnType("varchar(150)");
+
+        builder.Property(u => u.Cpf)
+            .HasMaxLength(11)
+            .IsFixedLength(false)
+            .HasColumnType("varchar(11)");
+
+        builder.Property(u => u.Matricula)
+            .HasMaxLength(20)
+            .HasColumnType("varchar(20)");
+
+        builder.Property(u => u.Crp)
+            .HasMaxLength(20)
+            .HasColumnType("varchar(20)");
+        
+        builder.Property(u => u.TipoUsuario)
+            .HasConversion<string>()
+            .HasMaxLength(30)
+            .IsRequired()
+            .HasColumnType("varchar(30)");
+        
+        builder.Property(u => u.Ativo)
+            .IsRequired()
+            .HasDefaultValue(true);
+
+        builder.Property(u => u.AssinouTermoResponsabilidadeEstagiario)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder.Property(u => u.DataCadastro)
+            .IsRequired()
+            .HasColumnType("datetime");
+
+        // Índices e Constraints
+        builder.HasIndex(u => u.Cpf)
+            .IsUnique()
+            .HasDatabaseName("IX_AspNetUsers_CPF");
+
+        // Relacionamentos 
+        // 1:N com DocumentoClinicoModel
+        builder.HasMany(u => u.DocumentosCriados)
+            .WithOne()
+            .HasForeignKey("UsuarioResponsavelId") 
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany(x => x.EvolucoesCriadas)
-            .WithOne(x => x.CriadoPorUsuario)
-            .HasForeignKey(x => x.CriadoPorUsuarioId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasMany(x => x.AnexosEnviados)
-            .WithOne(x => x.EnviadoPorUsuario)
-            .HasForeignKey(x => x.EnviadoPorUsuarioId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasMany(x => x.Auditorias)
-            .WithOne(x => x.Usuario)
-            .HasForeignKey(x => x.UsuarioId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(x => x.TermoResponsabilidade)
-            .WithOne(t => t.EstagiarioUsuario)
-            .HasForeignKey<TermoResponsabilidadeEstagiario>(t => t.EstagiarioUsuarioId)
+        // 1:N com AuditoriaModel
+        builder.HasMany(u => u.Auditorias)
+            .WithOne() 
+            .HasForeignKey("UsuarioId")
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

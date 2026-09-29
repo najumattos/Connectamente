@@ -1,24 +1,16 @@
-
 using Connectamente.API.Enums;
 
 namespace Connectamente.API.Models;
 
 public class DocumentoClinicoModel : EntityBase
 {
-    public int ProntuarioId { get; set; }
-    public int PacienteId { get; set; }
-    public int? AtendimentoId { get; set; }    
-    public string CriadoPorUsuarioId { get; set; } = string.Empty;   
-    public TipoDocumentoClinicoEnum TipoDocumentoClinico { get; set; }
-    public StatusDocumentoClinicoEnum StatusDocumento { get; set; } = StatusDocumentoClinicoEnum.Rascunho;
-    public int Versao { get; set; } = 1;
-    public DateTime DataDocumento { get; set; } = DateTime.UtcNow;
-    public DateTime? FinalizadoEm { get; set; }
-    public string? Observacoes { get; set; }
-    public bool ExcluidoLogicamente { get; set; }
-
+      public int ProntuarioId { get; set; } // FK Física
     public ProntuarioModel Prontuario { get; set; } = null!;
-    public PacienteModel Paciente { get; set; } = null!;
+    public int? AtendimentoId { get; set; }    
+    public string UsuarioResponsavelId { get; set; } = string.Empty;   
+    public TipoDocumentoClinicoEnum TipoDocumentoClinico { get; set; }
+  public string NomeArquivo { get; set; } = string.Empty;
+    public string CaminhoArquivo { get; set; } = string.Empty; // Onde o arquivo físico está armazenado
     public AtendimentoModel? Atendimento { get; set; }
-    public ApplicationUserModel CriadoPorUsuario { get; set; } = null!;
+    public ApplicationUserModel Usuario { get; set; } = null!;
 }

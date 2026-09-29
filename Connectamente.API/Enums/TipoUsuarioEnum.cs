@@ -2,6 +2,7 @@ namespace Connectamente.API.Enums;
 
 public enum TipoUsuarioEnum
 {
-    ProfessoraAdministradora = 1,
-    Aluno = 2
+    Professor = 1,
+    Aluno = 2,
+    Secretaria = 3
 }
