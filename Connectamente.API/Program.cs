@@ -8,6 +8,9 @@ using dotenv.net;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
 using Connectamente.API.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 DotEnv.Load();                            //Lê o arquivo .env
 // Procura por todas as classes que herdam de 'Profile' no projeto
@@ -51,8 +54,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUserModel, IdentityRole>(options =>
 {
     // Configurar Senha
-    options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequiredLength = 10;
+    options.Password.RequiredUniqueChars = 4;
 
     // Configurações de Bloqueio
     options.Lockout.MaxFailedAccessAttempts = 5;
@@ -65,7 +68,51 @@ builder.Services.AddIdentity<ApplicationUserModel, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// Adicionar a Autorização
+
+/* autenticacao
+    Prepara a chave que será usada para validar os JWTs que chegam na API.
+    A criação do token vai acontecer no JwtService.
+*/
+var jwtKey = builder.Configuration["JwtSettings:Key"];
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new Exception(
+        "A chave JWT não foi carregada"
+    );
+}
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    options.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+      ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+      ValidAudience = builder.Configuration["JwtSettings:Audience"],
+
+/* Transforma JWT_KEY em bytes 
+   Transforma os bytes em uma chave criptográfica
+   Essa chave será usada pelo JWT Bearer
+   para verificar a assinatura dos tokens recebidos
+*/
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtKey)
+        )
+    };
+});
+
+// autorizacao
 builder.Services.AddAuthorization();
 
 // Serviço de Arquivos

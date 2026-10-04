@@ -2,10 +2,12 @@ using Connectamente.API.DTOs.AuthDto;
 using Connectamente.API.DTOs.PacienteDto;
 using Connectamente.API.DTOs.PsicologoDto;
 using Connectamente.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
 
+[Authorize]
 public class PsicologosController(IPsicologoService service) : MainController
 {
 

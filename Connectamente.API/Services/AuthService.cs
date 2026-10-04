@@ -10,12 +10,9 @@ namespace Connectamente.API.Services;
 public class AuthService(
     UserManager<ApplicationUserModel> userManager,
     IMapper mapper,
-    ILogger<AuthService> logger) : IAuthService
+    ILogger<AuthService> logger, IJwtService jwtService) : IAuthService
 {
-    // Opcional: Se você não estiver mantendo sessões de cookies no backend, 
-    // o método de Logout em APIs baseadas em JWT serve apenas para invalidar tokens no Client-side,
-    // ou limpar tabelas de Refresh Tokens se houver.
-    public async Task Logout(CancellationToken cancellationToken = default)
+      public async Task Logout(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         await Task.CompletedTask;
@@ -60,10 +57,16 @@ public class AuthService(
         // Se a senha estiver correta, limpa o contador de tentativas falhas
         await userManager.ResetAccessFailedCountAsync(user);
 
-        var authDto = mapper.Map<AuthUserDto>(user);
-        
-        // É aqui que você gerará e injetará o Token JWT no DTO 
-        // para que o seu front-end consiga se autenticar nas rotas protegidas.
+
+        var authDto = mapper.Map<AuthUserDto>(user);        
+        var tokenResult = jwtService.GenerateToken(user);
+
+        if (tokenResult.IsFailed)
+{
+    return Result.Fail<AuthUserDto>(tokenResult.Errors);
+}
+
+authDto.Token = tokenResult.Value;        
         
         logger.LogInformation("Usuário {Email} autenticado com sucesso via validação de hash.", loginDto.Email);
         return Result.Ok(authDto);

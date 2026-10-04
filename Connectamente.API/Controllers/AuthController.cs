@@ -32,13 +32,14 @@ public class AuthController(
     }
 
     /// <summary>
-    /// Encerra a sessão do usuário ou invalida o token atual.
+    /// Encerra a sessão do usuário
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(CancellationToken cancellationToken)
     {
+        //é importante invalidar o token?
        await service.Logout(cancellationToken);      
        return NoContent();
     }        
