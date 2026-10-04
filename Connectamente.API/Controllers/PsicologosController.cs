@@ -9,8 +9,7 @@ namespace Connectamente.API.Controllers;
 public class PsicologosController(IPsicologoService service) : MainController
 {
 
-    /// <summary>
-    /// Busca Todos Psicologos
+    /// <summary Busca Todos Psicologos
     /// </summary>
     [ProducesResponseType(typeof(IEnumerable<PacienteListaDto>), StatusCodes.Status200OK)]
     [HttpGet("Buscar")]
@@ -26,8 +25,7 @@ public class PsicologosController(IPsicologoService service) : MainController
         };
     }
 
-    /// <summary>
-    /// Busca Psicologo Por Id
+    /// <summary> Busca Psicologo Por Id
     /// </summary>     
     [ProducesResponseType(typeof(PsicologoDetalhesDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
@@ -43,8 +41,7 @@ public class PsicologosController(IPsicologoService service) : MainController
         };
     }
 
-    /// <summary>
-    /// Desativa Psicologo
+    /// <summary> Desativa Psicologo
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpPatch("Desativar/{id}")]
