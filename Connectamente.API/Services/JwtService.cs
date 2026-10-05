@@ -21,7 +21,10 @@ public class JwtService(IConfiguration configuration) : IJwtService
         };
          //pega a Key configurada no program.cs
           var jwtKey = configuration["JwtSettings:Key"];
-        
+        if (string.IsNullOrEmpty(jwtKey))
+{
+    return Result.Fail<string>("A chave JWT não foi configurada.");
+}
         // transforma a chave em uma chave criptográfica
     var key = new SymmetricSecurityKey(
         Encoding.UTF8.GetBytes(jwtKey!)
