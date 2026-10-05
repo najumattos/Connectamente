@@ -1,9 +1,11 @@
 using Connectamente.API.DTOs.ProntuarioDto;
 using Connectamente.API.Services.Interfaces;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
+[Authorize]
 public class ProntuarioController(IProntuarioService service) : MainController
 {
     /// <summary>

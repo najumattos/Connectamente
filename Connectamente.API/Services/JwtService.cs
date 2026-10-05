@@ -15,7 +15,9 @@ public class JwtService(IConfiguration configuration) : IJwtService
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id),
-            new(ClaimTypes.Email, user.Email!)
+            new(ClaimTypes.Email, user.Email!),
+            new(ClaimTypes.Role, user.TipoUsuario.ToString()
+)
         };
          //pega a Key configurada no program.cs
           var jwtKey = configuration["JwtSettings:Key"];
@@ -40,8 +42,8 @@ var expiration = DateTime.UtcNow.AddMinutes(expirationMinutes);
 
         // objeto que representa o token que estamos montando
 var token = new JwtSecurityToken(
-    issuer: "Connectamente.API",//remetente 
-    audience: "Connectamente.API",//destinatario
+issuer: configuration["JwtSettings:Issuer"],//remetente
+audience: configuration["JwtSettings:Audience"],//destinatario
     expires: expiration,
     claims: claims,  // informações do usuário que serão colocadas no JWT
     signingCredentials: credentials //assinatura JWT

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Professor")]
 public class PsicologosController(IPsicologoService service) : MainController
 {
 
