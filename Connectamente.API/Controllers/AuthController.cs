@@ -37,10 +37,10 @@ public class AuthController(
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    public async Task<IActionResult> Logout()
     {
         //é importante invalidar o token?
-       await service.Logout(cancellationToken);      
+       await service.Logout();      
        return NoContent();
     }        
 }

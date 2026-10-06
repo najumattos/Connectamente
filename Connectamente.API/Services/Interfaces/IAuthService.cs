@@ -16,6 +16,6 @@ public interface IAuthService
     /// Encerra a sessão do usuário atual limpando os cookies de autenticação.
     /// </summary>
     /// <param name="cancellationToken">Token de cancelamento para interromper a operação assíncrona se a requisição for cancelada.</param>
-    Task Logout(CancellationToken cancellationToken = default);
+    Task Logout();
 
     }

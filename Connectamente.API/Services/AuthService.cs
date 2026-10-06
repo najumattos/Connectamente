@@ -12,9 +12,8 @@ public class AuthService(
     IMapper mapper,
     ILogger<AuthService> logger, IJwtService jwtService) : IAuthService
 {
-      public async Task Logout(CancellationToken cancellationToken = default)
+      public async Task Logout()
     {
-        cancellationToken.ThrowIfCancellationRequested();
         await Task.CompletedTask;
         logger.LogInformation("Solicitação de logout registrada.");
     }
@@ -42,7 +41,7 @@ public class AuthService(
             return Result.Fail<AuthUserDto>("Conta bloqueada temporariamente.");
         }
 
-        // Validação matemática pura do Hash da Senha contra o banco
+        // Verifica se a senha informada corresponde ao hash armazenado
         var senhaValida = await userManager.CheckPasswordAsync(user, loginDto.Senha);
 
         if (!senhaValida)
