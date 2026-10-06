@@ -29,28 +29,9 @@ public class AuthServiceTests
         _jwtServiceMock = new Mock<IJwtService>();
     }
 
-    [Fact] public async Task ValidateUserAsync_DeveRetornarUsuarioAutenticado()
-{
-    // Arrange
-    var user = new ApplicationUserModel
-    {
-        Id = "usuario-123",
-        Email = "teste@email.com"
-    };
+      private AuthService CriarService(LoginDto loginDto, ApplicationUserModel user, AuthUserDto authDto ){
 
-    var loginDto = new LoginDto
-    {
-        Email = "teste@email.com",
-        Senha = "SenhaValida123"
-    };
-
-    var authDto = new AuthUserDto
-    {
-        Id = user.Id,
-        Email = user.Email
-    };
-
-    _userManagerMock
+     _userManagerMock
         .Setup(x => x.FindByEmailAsync(loginDto.Email))
         .ReturnsAsync(user);
 
@@ -74,11 +55,45 @@ public class AuthServiceTests
         .Setup(x => x.GenerateToken(user))
         .Returns(Result.Ok("token-de-teste"));
 
-    var service = new AuthService(
+    return  new AuthService(
         _userManagerMock.Object,
         _mapperMock.Object,
         NullLogger<AuthService>.Instance,
         _jwtServiceMock.Object);
+}
+      private static ApplicationUserModel CriarUser()
+    {
+        return  new ApplicationUserModel
+    {
+        Id = "usuario-123",
+        Email = "teste@email.com"
+    };
+    }
+      private static LoginDto CriarLogin()
+    {
+        return new LoginDto
+    {
+        Email = "teste@email.com",
+        Senha = "SenhaValida123"
+    };
+    }
+      private static AuthUserDto CriarAuthUser(ApplicationUserModel user)
+    {
+        return new AuthUserDto
+    {
+        Id = user.Id,
+        Email = user.Email
+    };
+    }
+  
+    [Fact] public async Task ValidateUserAsync_DeveRetornarUsuarioAutenticado()
+{
+    // Arrange
+    var user = CriarUser();
+    var loginDto = CriarLogin();
+    var authDto = CriarAuthUser(user); 
+
+    var service = CriarService(loginDto, user, authDto);
 
     // Act
     var result = await service.ValidateUserAsync(loginDto);
@@ -91,12 +106,8 @@ public class AuthServiceTests
 
     [Fact] public async Task ValidateUserAsync_DeveFalhar_QuandoUsuarioNaoForEncontrado()
 {
-    // Arrange
-    var loginDto = new LoginDto
-    {
-        Email = "naoexiste@email.com",
-        Senha = "SenhaValida123"
-    };
+      // Arrange
+    var loginDto = CriarLogin();
 
     _userManagerMock
         .Setup(x => x.FindByEmailAsync(loginDto.Email))
@@ -119,17 +130,8 @@ public class AuthServiceTests
     [Fact] public async Task ValidateUserAsync_DeveFalhar_QuandoSenhaForIncorreta()
 {
     // Arrange
-    var user = new ApplicationUserModel
-    {
-        Id = "usuario-123",
-        Email = "teste@email.com"
-    };
-
-    var loginDto = new LoginDto
-    {
-        Email = user.Email,
-        Senha = "SenhaErrada"
-    };
+    var user = CriarUser();
+    var loginDto = CriarLogin();
 
     _userManagerMock
         .Setup(x => x.FindByEmailAsync(loginDto.Email))
@@ -167,5 +169,163 @@ public class AuthServiceTests
     _jwtServiceMock.Verify(
         x => x.GenerateToken(user),
         Times.Never);
+}
+    [Fact] public async Task ValidateUserAsync_DeveFalhar_QuandoUsuarioEstiverBloqueado()
+{
+    // Arrange
+    var user = CriarUser();
+    var loginDto = CriarLogin();
+
+    _userManagerMock
+        .Setup(x => x.FindByEmailAsync(loginDto.Email))
+        .ReturnsAsync(user);
+
+    _userManagerMock
+        .Setup(x => x.IsLockedOutAsync(user))
+        .ReturnsAsync(true);
+
+    var service = new AuthService(
+        _userManagerMock.Object,
+        _mapperMock.Object,
+        NullLogger<AuthService>.Instance,
+        _jwtServiceMock.Object);
+
+    // Act
+    var result = await service.ValidateUserAsync(loginDto);
+
+    // Assert
+    Assert.True(result.IsFailed);
+    Assert.Equal(
+        "Conta bloqueada temporariamente.",
+        result.Errors[0].Message);
+
+    _jwtServiceMock.Verify(
+        x => x.GenerateToken(user),
+        Times.Never);
+}
+
+    [Fact] public async Task ValidateUserAsync_DeveFalhar_QuandoLoginDtoForNulo()
+{
+    // Arrange
+    var service = new AuthService(
+        _userManagerMock.Object,
+        _mapperMock.Object,
+        NullLogger<AuthService>.Instance,
+        _jwtServiceMock.Object);
+
+    // Act
+    var result = await service.ValidateUserAsync(null);
+
+    // Assert
+    Assert.True(result.IsFailed);
+    Assert.Equal("Dados inválidos.", result.Errors[0].Message);
+}
+    [Fact] public async Task ValidateUserAsync_DeveFalhar_QuandoEmailForVazio()
+{
+    // Arrange
+    var loginDto = new LoginDto
+    {
+        Email = "",
+        Senha = "SenhaValida123"
+    };
+
+    var service = new AuthService(
+        _userManagerMock.Object,
+        _mapperMock.Object,
+        NullLogger<AuthService>.Instance,
+        _jwtServiceMock.Object);
+
+    // Act
+    var result = await service.ValidateUserAsync(loginDto);
+
+    // Assert
+    Assert.True(result.IsFailed);
+    Assert.Equal(
+        "Senha ou e-mail incorretos.",
+        result.Errors[0].Message);
+
+    _userManagerMock.Verify(
+        x => x.FindByEmailAsync(It.IsAny<string>()),
+        Times.Never);
+}
+
+    [Fact] public async Task ValidateUserAsync_DeveFalhar_QuandoSenhaForVazia()
+{
+    // Arrange
+    var loginDto = new LoginDto
+    {
+        Email = "teste@email.com",
+        Senha = ""
+    };
+
+    var service = new AuthService(
+        _userManagerMock.Object,
+        _mapperMock.Object,
+        NullLogger<AuthService>.Instance,
+        _jwtServiceMock.Object);
+
+    // Act
+    var result = await service.ValidateUserAsync(loginDto);
+
+    // Assert
+    Assert.True(result.IsFailed);
+    Assert.Equal(
+        "Senha ou e-mail incorretos.",
+        result.Errors[0].Message);
+
+    _userManagerMock.Verify(
+        x => x.FindByEmailAsync(It.IsAny<string>()),
+        Times.Never);
+}
+
+    [Fact]public async Task ValidateUserAsync_DeveFalhar_QuandoGeracaoDoTokenFalhar()
+{
+    // Arrange
+    var user = CriarUser();
+    var loginDto = CriarLogin();
+    var authDto = CriarAuthUser(user);
+
+    _userManagerMock
+        .Setup(x => x.FindByEmailAsync(loginDto.Email))
+        .ReturnsAsync(user);
+
+    _userManagerMock
+        .Setup(x => x.IsLockedOutAsync(user))
+        .ReturnsAsync(false);
+
+    _userManagerMock
+        .Setup(x => x.CheckPasswordAsync(user, loginDto.Senha))
+        .ReturnsAsync(true);
+
+    _userManagerMock
+        .Setup(x => x.ResetAccessFailedCountAsync(user))
+        .ReturnsAsync(IdentityResult.Success);
+
+    _mapperMock
+        .Setup(x => x.Map<AuthUserDto>(user))
+        .Returns(authDto);
+
+    _jwtServiceMock
+        .Setup(x => x.GenerateToken(user))
+        .Returns(Result.Fail<string>("Falha ao gerar token."));
+
+    var service = new AuthService(
+        _userManagerMock.Object,
+        _mapperMock.Object,
+        NullLogger<AuthService>.Instance,
+        _jwtServiceMock.Object);
+
+    // Act
+    var result = await service.ValidateUserAsync(loginDto);
+
+    // Assert
+    Assert.True(result.IsFailed);
+    Assert.Equal(
+        "Falha ao gerar token.",
+        result.Errors[0].Message);
+
+    _jwtServiceMock.Verify(
+        x => x.GenerateToken(user),
+        Times.Once);
 }
 }
