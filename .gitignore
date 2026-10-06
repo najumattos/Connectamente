@@ -34,3 +34,5 @@ yarn-error.log*
 thumbs.db
 .cache/
 .env
+/DocsGran/
+/IMPORTANTE.txt
