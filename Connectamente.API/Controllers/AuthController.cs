@@ -13,9 +13,7 @@ public class AuthController(
     /// <summary>
     /// Efetua a autenticação do usuário e retorna o token de acesso.
     /// </summary>
-    [ProducesResponseType(typeof(AuthUserDto), StatusCodes.Status200OK)] 
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPost("login")]
+   [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         // O ASP.NET Core API já valida o [ApiController] automaticamente, 
@@ -34,8 +32,6 @@ public class AuthController(
     /// <summary>
     /// Encerra a sessão do usuário
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
