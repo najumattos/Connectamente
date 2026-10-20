@@ -10,14 +10,20 @@ public static class UserRoleSeed
         builder.HasData(
             new IdentityUserRole<string>
             {
-                UserId = IdentityConstants.Admin.Id,
-                RoleId = IdentityConstants.Admin.RoleId
+                UserId = IdentityConstants.Professor.Id,
+                RoleId = IdentityConstants.Professor.RoleId
             },
             new IdentityUserRole<string>
             {
                 UserId = IdentityConstants.Aluno.Id,
                 RoleId = IdentityConstants.Aluno.RoleId
+            },
+              new IdentityUserRole<string>
+            {
+                UserId = IdentityConstants.Secretaria.Id,
+                RoleId = IdentityConstants.Secretaria.RoleId
             }
+
         );
     }
 }

@@ -2,7 +2,7 @@ namespace Connectamente.API.Data;
 
 public static class IdentityConstants
 {
-    public static class Admin
+    public static class Professor
     {
         public const string Id = "328b3ebd-50e0-4df8-945e-46540a064859";
         public const string Email = "mariana.admin@connectamente.com";
@@ -20,5 +20,15 @@ public static class IdentityConstants
         public const string Senha = "Aluno@Connect9";
         public const string HashSenha = "AQAAAAEAACcQAAAAECqmsN7h3bTCdvve7kCxD4rsONbfTJIkTx6zQLg9xsLKtB+MoWEZ0VcZJjuWlqpMng==";
         public const string RoleId = "role-0002-aluno-00-000000000002";
+    }
+
+        public static class Secretaria
+    {
+        public const string Id = "a489f241-4fad-4031-b458-6f6ce664f13d";
+        public const string Email = "ana.secretaria@connectamente.com";
+        public const string NormalizedEmail = "ANA.ALUNO@CONNECTAMENTE.COM";
+        public const string Senha = "Secretaria@Connect9";
+        public const string HashSenha = "AQAAAAEAACcQAAAAEBaLWoe8u2D3VTbHYh5Puil95h2FDKPyVzQ6nCEtjK6IsOR7xd8SUKsCgQoLWjKeTA==";
+        public const string RoleId = "role-0003-secretaria-00-000000000003";
     }
 }

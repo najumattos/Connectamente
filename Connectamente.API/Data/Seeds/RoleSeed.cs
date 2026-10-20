@@ -12,7 +12,7 @@ public static class RoleSeed
         builder.HasData(
             new IdentityRole
             {
-                Id = IdentityConstants.Admin.RoleId,
+                Id = IdentityConstants.Professor.RoleId,
                 Name = "Professor",
                 NormalizedName = "PROFESSOR",
                 ConcurrencyStamp = "a1b2c3d4-0001-0001-0001-000000000001"
@@ -23,6 +23,13 @@ public static class RoleSeed
                 Name = "Aluno",
                 NormalizedName = "ALUNO",
                 ConcurrencyStamp = "a1b2c3d4-0002-0002-0002-000000000002"
+            },
+             new IdentityRole
+            {
+                Id = IdentityConstants.Secretaria.RoleId,
+                Name = "Secretaria",
+                NormalizedName = "SECRETARIA",
+                ConcurrencyStamp = "a1b2c3d4-0003-0003-0003-000000000003"
             }
         );
     }

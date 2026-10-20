@@ -4,21 +4,27 @@ using System.Text;
 using Connectamente.API.Models;
 using Connectamente.API.Services.Interfaces;
 using FluentResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Connectamente.API.Services;
 
-public class JwtService(IConfiguration configuration) : IJwtService
+public class JwtService(IConfiguration configuration, UserManager<ApplicationUserModel> userManager) : IJwtService
 {
-    public Result<string> GenerateToken(ApplicationUserModel user)
+    public async Task<Result<string>> GenerateToken(ApplicationUserModel user)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id),
-            new(ClaimTypes.Email, user.Email!),
-            new(ClaimTypes.Role, user.TipoUsuario.ToString()
+            new(ClaimTypes.Email, user.Email!)
 )
         };
+          var roles = await userManager.GetRolesAsync(user);
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
          //pega a Key configurada no program.cs
           var jwtKey = configuration["JwtSettings:Key"];
         if (string.IsNullOrEmpty(jwtKey))

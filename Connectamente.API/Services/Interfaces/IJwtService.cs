@@ -5,5 +5,5 @@ namespace Connectamente.API.Services.Interfaces;
 
 public interface IJwtService
 {
-Result<string> GenerateToken(ApplicationUserModel user);
+Task<Result<string>> GenerateToken(ApplicationUserModel user);
 }

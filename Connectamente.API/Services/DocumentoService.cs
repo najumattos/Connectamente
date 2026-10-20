@@ -31,7 +31,7 @@ IMapper mapper,
              dto.AtendimentoId = atendimento.Id; 
              dto.ProntuarioId = atendimento.Prontuario.Id;
              dto.NumeroProntuario = atendimento.NumeroProntuario;
-             dto.UsuarioResponsavelId = IdentityConstants.Admin.Id;//alterar para o id do usuario logado
+             dto.UsuarioResponsavelId = IdentityConstants.Professor.Id;//alterar para o id do usuario logado
              
             var response = await repository.AddDocumentoClinicoAsync(mapper.Map<DocumentoClinicoModel>(dto));
             return Result.Ok();
