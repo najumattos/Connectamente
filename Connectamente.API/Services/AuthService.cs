@@ -57,8 +57,8 @@ public class AuthService(
         await userManager.ResetAccessFailedCountAsync(user);
 
 
-        var authDto = mapper.Map<AuthUserDto>(user);        
         var tokenResult = jwtService.GenerateToken(user);
+        var authDto = mapper.Map<AuthUserDto>(user);        
 
         if (tokenResult.IsFailed)
 {

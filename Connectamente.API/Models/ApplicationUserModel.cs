@@ -15,5 +15,5 @@ public class ApplicationUserModel : IdentityUser
     public DateTime DataCadastro { get; set; }   
     public ICollection<DocumentoClinicoModel> DocumentosCriados { get; set; } = [];
     public ICollection<AuditoriaModel> Auditorias { get; set; } = [];
-       public ICollection<ProntuarioModel> ProntuariosResponsavel { get; set; } = [];
+       public ICollection<VinculoPacientePsicologoModel> VinculosPacientePsicologo { get; set; } = [];
 }
