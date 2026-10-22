@@ -11,4 +11,5 @@ public class PacienteModel : EntityBase
     public ICollection<AtendimentoModel> Atendimentos { get; set; } = [];
     public ICollection<VinculoPacientePsicologoModel> VinculosPacientePsicologo { get; set; } = [];
     public ICollection<AuditoriaModel> Auditorias { get; set; } = [];
+    
 }

@@ -53,7 +53,7 @@ public class AuthServiceTests
 
     _jwtServiceMock
         .Setup(x => x.GenerateToken(user))
-        .Returns(Result.Ok("token-de-teste"));
+        .ReturnsAsync(Result.Ok("token-de-teste"));
 
     return  new AuthService(
         _userManagerMock.Object,
@@ -307,7 +307,7 @@ public class AuthServiceTests
 
     _jwtServiceMock
         .Setup(x => x.GenerateToken(user))
-        .Returns(Result.Fail<string>("Falha ao gerar token."));
+        .ReturnsAsync(Result.Fail<string>("Falha ao gerar token."));
 
     var service = new AuthService(
         _userManagerMock.Object,

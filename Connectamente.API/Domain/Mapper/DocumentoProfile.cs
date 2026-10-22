@@ -8,7 +8,16 @@ public class DocumentoProfile : Profile
 {
     public DocumentoProfile()
     {
-        CreateMap<DocumentoClinicoModel, DocumentoDetalhesDto>().ForMember(dest => dest.NomePsicologoResponsavel, opt => opt.MapFrom(src => src.Prontuario != null && src.Prontuario.PsicologoResponsavel != null ? src.Prontuario.PsicologoResponsavel.NomeCompleto : string.Empty));
+       CreateMap<DocumentoClinicoModel, DocumentoDetalhesDto>()
+    .ForMember(dest => dest.NomePsicologoResponsavel,
+        opt => opt.MapFrom(src =>
+            src.Prontuario != null &&
+            src.Prontuario.Paciente != null
+                ? src.Prontuario.Paciente.VinculosPacientePsicologo
+                    .Where(v => v.Ativo && v.DataEncerramento == null)
+                    .Select(v => v.PsicologoResponsavel.NomeCompleto)
+                    .FirstOrDefault() ?? string.Empty
+                : string.Empty));
        CreateMap<DocumentoClinicoModel, DocumentoListaDto>().ReverseMap();
 
         // Mapeamento de ENTRADA: DTO -> Banco (Para a Action de Salvar)

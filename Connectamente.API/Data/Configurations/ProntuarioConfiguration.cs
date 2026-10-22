@@ -52,12 +52,12 @@ public class ProntuarioConfiguration : IEntityTypeConfiguration<ProntuarioModel>
             .HasDatabaseName("IX_Prontuarios_NumeroProntuario");
 
             // RELACIONAMENTO 1:N - Um Psicólogo tem Vários Prontuários
-        builder.HasOne(p => p.PsicologoResponsavel)
+      /*  builder.HasOne(p => p.PsicologoResponsavel)
             .WithMany(u => u.ProntuariosResponsavel) 
             .HasForeignKey(p => p.PsicologoResponsavelId) 
             .OnDelete(DeleteBehavior.Restrict) 
             .IsRequired(false);
-            
+           */ 
     }
 
 }

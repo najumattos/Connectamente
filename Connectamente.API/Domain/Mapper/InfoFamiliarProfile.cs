@@ -10,7 +10,7 @@ public class InfoFamiliarProfile : Profile
     {
         CreateMap<FamiliarAdicionarDto, FamiliarModel>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.Prontuario, opt => opt.Ignore())
+            .ForMember(dest => dest.Paciente, opt => opt.Ignore())
            // .ForMember(dest => dest.EnderecoId, opt => opt.Ignore())
             .ReverseMap();
 

@@ -16,10 +16,10 @@ IProntuarioRepository prontuarioRepository,
     {
         if (dto == null)
             return Result.Fail("Tratamento inválido ou não informado.");      
-        bool prontuarioExiste = await prontuarioRepository.ExisteProntuarioAsync(dto.ProntuarioId);
+        bool prontuarioExiste = await prontuarioRepository.ExisteProntuarioAsync(dto.PacienteId);
         if (!prontuarioExiste)
         {
-            return Result.Fail($"Operação abortada: O prontuário com ID {dto.ProntuarioId} não foi encontrado.");
+            return Result.Fail($"Operação abortada: O prontuário com ID {dto.PacienteId} não foi encontrado.");
         }
         try
         {
@@ -29,7 +29,7 @@ IProntuarioRepository prontuarioRepository,
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Erro de infraestrutura ao tentar adicionar familiar no banco de dados. ProntuarioId: {ProntuarioId}", dto.ProntuarioId);
+            logger.LogError(ex, "Erro de infraestrutura ao tentar adicionar familiar no banco de dados. ProntuarioId: {ProntuarioId}", dto.PacienteId);
             return Result.Fail("Não foi possível salvar o familiar devido a uma falha interna no servidor.");
         }
     }

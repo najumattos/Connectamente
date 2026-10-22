@@ -8,19 +8,6 @@ namespace Connectamente.API.Repositories.Interfaces;
 public interface IProntuarioRepository
 {
     /// <summary>
-/// Obtém de forma assíncrona todos os prontuários ativos que não possuem nenhum vínculo ativo com um psicólogo.
-/// </summary>
-/// <param name="cancellationToken">Token de cancelamento para interromper a operação assíncrona, se necessário.</param>
-/// <returns>
-/// Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém uma coleção 
-/// de <see cref="ProntuarioModel"/> sem profissionais vinculados, incluindo os dados de seus respectivos pacientes.
-/// </returns>
-/// <remarks>
-/// Esta consulta utiliza <c>AsNoTracking</c> para otimização de performance (read-only) e filtra 
-/// os estados nulos da propriedade <c>Ativo</c> assumindo o valor padrão falso.
-/// </remarks>
-Task<IEnumerable<ProntuarioModel>> BuscarProntuariosSemPsicologoAsync(CancellationToken cancellationToken = default);
-    /// <summary>
     /// Recupera todos os prontuários registrados no banco de dados 
     /// </summary>
     /// <returns>Uma coleção de <see cref="ProntuarioModel"/> </returns>
@@ -38,13 +25,7 @@ Task<IEnumerable<ProntuarioModel>> BuscarProntuariosSemPsicologoAsync(Cancellati
     /// <returns>A instância populada de <see cref="ProntuarioModel"/> ou <see langword="null"/> se não for encontrado.</returns>
     Task<ProntuarioModel?> BuscarDetalhesAsync(int id);
 
-    /// <summary>
-    /// Busca os prontuários vinculados ativamente a um psicólogo responsável específico.
-    /// </summary>
-    /// <param name="psicologoId">O identificador único (GUID/string) do psicólogo no Identity.</param>
-    /// <returns>Uma coleção de <see cref="ProntuarioModel"/> associados ao profissional informado.</returns>
-    Task<IEnumerable<ProntuarioModel>> BuscarPorIdPsicologoAsync(string psicologoId);
-
+   
     /// <summary>
     /// Persiste as modificações de estado realizadas em um prontuário existente.
     /// </summary>
@@ -95,8 +76,4 @@ Task<IEnumerable<ProntuarioModel>> BuscarProntuariosSemPsicologoAsync(Cancellati
     /// <returns><see langword="true"/> se o registro foi removido com sucesso; caso contrário, <see langword="false"/>.</returns>
     Task<bool> ExcluirAsync(int id);
 
-        /// <summary>
-    /// Vincular Psicologo e Prontuario
-    /// </summary>
-     public Task<bool> VincularPsicologoProntuarioAsync(VinculoProntuarioPsicologoModel model);
 }

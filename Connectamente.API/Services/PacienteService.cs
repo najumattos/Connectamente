@@ -94,7 +94,7 @@ public class PacienteService(
             return Result.Fail("O identificador do psicólogo é inválido ou não foi informado.");
         }
 
-      var pacientes = await repository.BuscarPorIdPsicologoAsync(idPsicologo);
+      var pacientes = await repository.BuscarPacientesPorPsicologoAsync(idPsicologo);
          var pacientesDto = mapper.Map<IEnumerable<PacienteListaDto>>(pacientes);
     return Result.Ok(pacientesDto);
     }
@@ -134,4 +134,11 @@ public class PacienteService(
         return Result.Fail("Ocorreu uma falha interna ao salvar as alterações do paciente.");
     }
 }
+
+    public async Task<Result<IEnumerable<PacienteListaDto>>> BuscarPacientesSemPsicologoAsync()
+    {
+        var pacientes = repository.BuscarPacientesSemPsicologoAsync;
+        var pacientesDto = mapper.Map<IEnumerable<PacienteListaDto>>(pacientes);
+        return Result.Ok(pacientesDto);
+    }
 }

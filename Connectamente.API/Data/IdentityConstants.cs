@@ -26,7 +26,7 @@ public static class IdentityConstants
     {
         public const string Id = "a489f241-4fad-4031-b458-6f6ce664f13d";
         public const string Email = "ana.secretaria@connectamente.com";
-        public const string NormalizedEmail = "ANA.ALUNO@CONNECTAMENTE.COM";
+        public const string NormalizedEmail = "ANA.SECRETARIA@CONNECTAMENTE.COM";
         public const string Senha = "Secretaria@Connect9";
         public const string HashSenha = "AQAAAAEAACcQAAAAEBaLWoe8u2D3VTbHYh5Puil95h2FDKPyVzQ6nCEtjK6IsOR7xd8SUKsCgQoLWjKeTA==";
         public const string RoleId = "role-0003-secretaria-00-000000000003";

@@ -23,7 +23,7 @@ public class DocumentoClinicoRepository(AppDbContext context) : IDocumentoClinic
         return await context.Set<DocumentoClinicoModel>()
             .AsNoTracking()
             .Include(a => a.Prontuario)
-            .ThenInclude(p => p.PsicologoResponsavel)
+            .Include(p => p.Usuario)
            .FirstOrDefaultAsync(p => p.Id == id);
     }
 

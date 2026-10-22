@@ -51,9 +51,10 @@ public class AtendimentoConfiguration : IEntityTypeConfiguration<AtendimentoMode
             .HasDefaultValue(Enums.StatusAtendimentoEnum.Agendado);
 
         // Relacionamentos
-        builder.HasOne(a => a.Prontuario)
-            .WithMany(p => p.Atendimentos)
+        /*builder.HasOne(a => a.Prontuario)
+            .WithMany(p => p.)
             .HasForeignKey(a => a.ProntuarioId)
             .OnDelete(DeleteBehavior.Restrict);      
+            */
     }
 }

@@ -1,6 +1,5 @@
 using AutoMapper;
 using Connectamente.API.DTOs.AtendimentoDto;
-using Connectamente.API.Enums;
 using Connectamente.API.Models;
 using Connectamente.API.Repositories.Interfaces;
 using Connectamente.API.Services.Interfaces;
@@ -24,10 +23,10 @@ public class AtendimentoService(
         {
             return Result.Fail($"Operação abortada: O prontuário com ID {dto.ProntuarioId} não foi encontrado.");
         }
-         if (prontuarioEntidade.PsicologoResponsavelId == null)
+       /*  if (prontuarioEntidade.PsicologoResponsavelId == null)
         {
             return Result.Fail($"Operação abortada: O prontuário com ID {dto.ProntuarioId} não tem um psicologo vinculado");
-        }
+        }*/
         try
         {
             var atendimentoEntidade = mapper.Map<AtendimentoModel>(dto);
@@ -106,7 +105,7 @@ public async Task<Result> AtualizarAtendimentoAsync(AtendimentoAtualizarDto dto)
         StatusAtendimento = a.StatusAtendimento,
         NumeroProntuario = a.Prontuario?.NumeroProntuario ?? string.Empty,
         NomePaciente = a.Prontuario?.Paciente?.Identificacao?.NomeCompleto ?? string.Empty,
-        PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
+        //PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
     });
     return Result.Ok(atendimentosDto);
     }
@@ -123,7 +122,7 @@ public async Task<Result> AtualizarAtendimentoAsync(AtendimentoAtualizarDto dto)
         StatusAtendimento = a.StatusAtendimento,
         NumeroProntuario = a.Prontuario?.NumeroProntuario ?? string.Empty,
         NomePaciente = a.Prontuario?.Paciente?.Identificacao?.NomeCompleto ?? string.Empty,
-        PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
+       // PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
     });
 
     return Result.Ok(atendimentosDto);
@@ -139,7 +138,7 @@ public async Task<Result> AtualizarAtendimentoAsync(AtendimentoAtualizarDto dto)
         StatusAtendimento = a.StatusAtendimento,
         NumeroProntuario = a.Prontuario?.NumeroProntuario ?? string.Empty,
         NomePaciente = a.Prontuario?.Paciente?.Identificacao?.NomeCompleto ?? string.Empty,
-        PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
+     //   PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
     });
 
     return Result.Ok(atendimentosDto);

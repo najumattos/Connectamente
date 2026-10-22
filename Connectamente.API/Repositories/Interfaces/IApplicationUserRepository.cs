@@ -51,15 +51,6 @@ public interface IApplicationUserRepository
     /// <returns><see langword="true"/> se o comando de exclusão foi concluído com sucesso; caso contrário, <see langword="false"/>.</returns>
     Task<bool> ExcluirAsync(string id);
 
-	/// <summary>
-	/// Busca um usuário pelo CPF.
-	/// </summary>
-	/// <param name="cpf">CPF do usuário a ser localizado.</param>
-	/// <returns>
-	/// Uma tarefa assíncrona que retorna o usuário encontrado ou <c>null</c> quando não existir.
-	/// </returns>
-	Task<ApplicationUserModel> BuscarPorCpfAsync(string cpf);
-
     IQueryable<ApplicationUserModel> ObterQueryable();
     
     	

@@ -17,9 +17,7 @@ public class ProntuarioProfile : Profile
         //mapear para exibir detalhes
                 CreateMap<ProntuarioModel, ProntuarioDetalhesDto>()            
  .ForMember(dest => dest.PacienteNomeCompleto, 
-                opt => opt.MapFrom(src => src.Paciente.Identificacao.NomeCompleto))      
-            .ForMember(dest => dest.NomePsicologoResponsavel, 
-                opt => opt.MapFrom(src => src.PsicologoResponsavel != null ? src.PsicologoResponsavel.NomeCompleto : string.Empty));        
+                opt => opt.MapFrom(src => src.Paciente.Identificacao.NomeCompleto));        
         CreateMap<TratamentoAnteriorModel, TratamentoAnteriorListaDto>();
         CreateMap<AtendimentoModel, AtendimentoListaDto>();
         CreateMap<DocumentoClinicoModel, DocumentoListaDto>();
@@ -31,10 +29,8 @@ CreateMap<FamiliarModel, FamiliarListaDto>();
 //Mapear para Listar prontuarios
         CreateMap<ProntuarioModel, ProntuarioListaDto>()            
              .ForMember(dest => dest.NomeCompletoPaciente, 
-                opt => opt.MapFrom(src => src.Paciente.Identificacao.NomeCompleto))        
-            .ForMember(dest => dest.NomePsicologoResponsavel, 
-                opt => opt.MapFrom(src => src.PsicologoResponsavel != null ? src.PsicologoResponsavel.NomeCompleto : string.Empty));
-
+                opt => opt.MapFrom(src => src.Paciente.Identificacao.NomeCompleto));        
+           
         // Cadastro
         CreateMap<ProntuarioAdicionarDto, ProntuarioModel>()
     .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -45,8 +41,7 @@ CreateMap<FamiliarModel, FamiliarListaDto>();
     .ForMember(dest => dest.DataCriacao, opt => opt.Ignore())
     .ForMember(dest => dest.DataAtualizacao, opt => opt.Ignore())
     .ForMember(dest => dest.NumeroProntuario, opt => opt.Ignore())
-    .ForMember(dest => dest.PacienteId, opt => opt.Ignore())
-    .ForMember(dest => dest.PsicologoResponsavelId, opt => opt.Ignore());
+    .ForMember(dest => dest.PacienteId, opt => opt.Ignore());
             
     }
 }

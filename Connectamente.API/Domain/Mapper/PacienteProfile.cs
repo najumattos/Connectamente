@@ -16,8 +16,8 @@ public PacienteProfile()
             
   // 2. Mapeamento Familiar Principal
             .ForMember(dest => dest.ResponsavelLegal, opt => opt.MapFrom(src =>
-                src.Prontuario != null 
-                ? src.Prontuario.Familiares
+                src.Familiares != null 
+                ? src.Familiares
                     .Where(f => f.ResponsavelPrincipal)
                     .Select(f => f.Identificacao != null ? f.Identificacao.NomeCompleto : null)
                     .FirstOrDefault()
@@ -38,16 +38,16 @@ public PacienteProfile()
 
             // 2. Mapeamento do Contato de Emergência (Responsável Principal)
             .ForMember(dest => dest.ResponsavelLegal, opt => opt.MapFrom(src =>
-                src.Prontuario != null 
-                ? src.Prontuario.Familiares
+               src.Familiares != null 
+                ? src.Familiares
                     .Where(f => f.ResponsavelPrincipal)
                     .Select(f => f.Identificacao != null ? f.Identificacao.NomeCompleto : null)
                     .FirstOrDefault()
                 : null))
             // 3. Mapeamento do Telefone do Contato de Emergência
             .ForMember(dest => dest.TelefoneRecado, opt => opt.MapFrom(src =>
-                src.Prontuario != null 
-                ? src.Prontuario.Familiares
+                src.Familiares != null 
+                ? src.Familiares
                     .Where(f => f.ResponsavelPrincipal)
                     .Select(f => f.Identificacao != null ? f.Identificacao.TelefonePrincipal : null)
                     .FirstOrDefault()

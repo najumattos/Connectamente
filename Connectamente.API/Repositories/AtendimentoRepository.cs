@@ -37,16 +37,23 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
     var hoje = DateTime.UtcNow.Date;
     var fimDaSemana = hoje.AddDays(7);
 
-    return await context.Atendimentos
+     return await context.Atendimentos
         .AsNoTracking()
+        .Include(a => a.VinculoPacientePsicologo)
+            .ThenInclude(v => v.Paciente)
+                .ThenInclude(p => p.Identificacao)
+        .Include(a => a.VinculoPacientePsicologo)
+            .ThenInclude(v => v.PsicologoResponsavel)
         .Include(a => a.Prontuario)
             .ThenInclude(p => p.Paciente)
-        .Include(a => a.Prontuario)
-            .ThenInclude(p => p.PsicologoResponsavel)
-        .Where(a => a.Ativo
-                    && a.Prontuario.PsicologoResponsavelId == id
-                    && a.DataHoraInicio >= hoje
-                    && a.DataHoraInicio <= fimDaSemana)
+                .ThenInclude(p => p.Identificacao)
+        .Where(a =>
+            a.VinculoPacientePsicologo.PsicologoResponsavelId == id &&
+            a.VinculoPacientePsicologo.Ativo &&
+            a.VinculoPacientePsicologo.DataEncerramento == null &&
+            a.DataHoraInicio.HasValue &&
+            a.DataHoraInicio.Value >= hoje &&
+            a.DataHoraInicio.Value < fimDaSemana)
         .OrderBy(a => a.DataHoraInicio)
         .ToListAsync();
 }
@@ -57,7 +64,8 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
         .Include(a => a.Prontuario)
             .ThenInclude(p => p.Paciente)
         .Include(a => a.Prontuario)
-            .ThenInclude(p => p.PsicologoResponsavel) 
+            .ThenInclude(p => p.Paciente.VinculosPacientePsicologo)
+              .Where(p => p.VinculoPacientePsicologo.Ativo)
         .Include(a => a.DocumentosClinicos)
         .FirstOrDefaultAsync(a => a.Id == id);
 }
@@ -67,10 +75,11 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
         return await context.Atendimentos
             .AsNoTracking()
              .Include(a => a.Prontuario)
-            .ThenInclude(p => p.Paciente)
-        .Include(a => a.Prontuario)
-            .ThenInclude(p => p.PsicologoResponsavel)
-            .Where(a => a.Prontuario.PsicologoResponsavelId == psicologoId) 
+                 .ThenInclude(p => p.Paciente)
+            .Include(a => a.Prontuario)
+                .ThenInclude(p => p.Paciente.VinculosPacientePsicologo)
+                .Where(p => p.VinculoPacientePsicologo.Ativo &&
+                p.VinculoPacientePsicologo.PsicologoResponsavelId == psicologoId)                 
             .OrderByDescending(a => a.DataHoraInicio)
             .ToListAsync();
     }
@@ -82,7 +91,7 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
              .Include(a => a.Prontuario)
             .ThenInclude(p => p.Paciente)
         .Include(a => a.Prontuario)
-            .ThenInclude(p => p.PsicologoResponsavel)
+                .ThenInclude(p => p.Paciente.VinculosPacientePsicologo)
             .OrderByDescending(a => a.DataHoraInicio)
             .ToListAsync();
     }
@@ -96,8 +105,8 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
         .AsNoTracking()
         .Include(a => a.Prontuario)
             .ThenInclude(p => p.Paciente)
-        .Include(a => a.Prontuario)
-            .ThenInclude(p => p.PsicologoResponsavel)
+         .Include(a => a.Prontuario)
+                .ThenInclude(p => p.Paciente.VinculosPacientePsicologo)
         .Where(a => a.Ativo 
                     && a.DataHoraInicio >= hoje 
                     && a.DataHoraInicio <= fimDaSemana)

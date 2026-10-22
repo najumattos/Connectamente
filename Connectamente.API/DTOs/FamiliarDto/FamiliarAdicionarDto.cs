@@ -6,8 +6,8 @@ namespace Connectamente.API.DTOs.FamiliarDto;
 
 public class FamiliarAdicionarDto
 {
-        [Required(ErrorMessage = "O identificador do prontuário é obrigatório.")]
-    public int ProntuarioId { get; set; }
+        [Required(ErrorMessage = "O identificador do paciente é obrigatório.")]
+    public int PacienteId { get; set; }
     public IdentificacaoDto? Identificacao { get; set; }
     [Display(Name = "Data de Cadastro")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]

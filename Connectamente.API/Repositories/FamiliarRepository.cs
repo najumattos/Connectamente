@@ -22,12 +22,12 @@ public class FamiliarRepository(AppDbContext context) : IFamiliarRepository
     }
 
     // CORREÇÃO: Alterado de Guid para int para casar com a FK física da FamiliarModel
-    public async Task<IEnumerable<FamiliarModel>> BuscarPorProntuarioIdAsync(int prontuarioId)
+    public async Task<IEnumerable<FamiliarModel>> BuscarPorPacienteIdAsync(int pacienteId)
     {
         // CORREÇÃO: Removido EF.Property. Consulta direta na propriedade física da classe.
         return await context.Set<FamiliarModel>()
             .AsNoTracking()
-            .Where(f => f.ProntuarioId == prontuarioId)
+            .Where(f => f.PacienteId == pacienteId)
             .ToListAsync();
     }
 

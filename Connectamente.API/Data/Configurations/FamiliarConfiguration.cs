@@ -66,9 +66,9 @@ public class FamiliarConfiguration : IEntityTypeConfiguration<FamiliarModel>
             end.Property(e => e.Estado).IsRequired().HasMaxLength(2);
             end.Property(e => e.CEP).IsRequired().HasMaxLength(8);
         });
-  builder.HasOne(t => t.Prontuario)
+  builder.HasOne(t => t.Paciente)
             .WithMany(p => p.Familiares)
-            .HasForeignKey(t => t.ProntuarioId)
+            .HasForeignKey(t => t.PacienteId)
             .OnDelete(DeleteBehavior.Cascade);
         // Aplica a obrigatoriedade do objeto na raiz
         builder.ComplexProperty(f => f.Endereco).IsRequired();

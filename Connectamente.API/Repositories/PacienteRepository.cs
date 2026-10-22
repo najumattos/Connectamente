@@ -29,15 +29,15 @@ public async Task<IEnumerable<PacienteModel>> BuscarTodosAsync()
       return await context.Set<PacienteModel>()
         .AsNoTracking()
         .Include(p => p.Prontuario)
-            .ThenInclude(pr => pr.Familiares)
+        .Include(p => p.Familiares)
         .ToListAsync();
     }
 
     public async Task<PacienteModel?> BuscarDetalhesAsync(int id)
     {
        return await context.Set<PacienteModel>()
-        .Include(p => p.Prontuario)
-            .ThenInclude(pr => pr.Familiares)
+        .Include(p => p.Familiares)          
+        .Include(p => p.Atendimentos)  
         .FirstOrDefaultAsync(p => p.Id == id);
     }
 
@@ -69,15 +69,21 @@ public async Task<IEnumerable<PacienteModel>> BuscarTodosAsync()
         return true;
     }
 
-    public async Task<IEnumerable<PacienteModel>> BuscarPorIdPsicologoAsync(string psicologoId)
-    {
-         if (string.IsNullOrWhiteSpace(psicologoId))
-        {
-            return Enumerable.Empty<PacienteModel>();
-        }
-
-        return await context.Pacientes
-            .Where(p => p.Prontuario.PsicologoResponsavelId == psicologoId)
-            .ToListAsync();
-    }
+    public async Task<IEnumerable<PacienteModel>> BuscarPacientesPorPsicologoAsync(string psicologoId)
+{
+    return await context.Pacientes
+        .Where(p => p.VinculosPacientePsicologo
+            .Any(v =>
+                v.PsicologoResponsavelId == psicologoId &&
+                v.Ativo &&
+                v.DataEncerramento == null))
+        .ToListAsync();
+}
+       public async Task<IEnumerable<PacienteModel>> BuscarPacientesSemPsicologoAsync(CancellationToken cancellationToken = default)
+{
+    return await context.Pacientes
+        .Where(p => !p.VinculosPacientePsicologo
+            .Any(v => v.Ativo && v.DataEncerramento == null))
+        .ToListAsync();
+}
 }

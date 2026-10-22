@@ -12,11 +12,11 @@ public interface IFamiliarRepository
 	/// <summary>
 	/// Lista todos os familiares vinculados a um paciente específico.
 	/// </summary>
-	/// <param name="prontuarioId">Identificador do paciente usado no filtro.</param>
+	/// <param name="pacienteId">Identificador do paciente usado no filtro.</param>
 	/// <returns>
 	/// Uma tarefa assíncrona que retorna a lista de familiares associados ao paciente informado.
 	/// </returns>
-	Task<IEnumerable<FamiliarModel>> BuscarPorProntuarioIdAsync(int prontuarioId);
+	Task<IEnumerable<FamiliarModel>> BuscarPorPacienteIdAsync(int pacienteId);
 
 /// <summary>
     /// Recupera todas as informações de familiares registradas no banco de dados.

@@ -27,25 +27,7 @@ public class ProntuarioController(IProntuarioService service) : MainController
         return Ok(resposta.Value);
     }
 
-    /// <summary>
-    /// Busca todos os prontuários associados a um psicólogo específico.
-    /// </summary>
-    [ProducesResponseType(typeof(IEnumerable<ProntuarioListaDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpGet("psicologo/{id}")] // 🛠️ CORREÇÃO: Removido o ':string' inválido. GET api/prontuarios/psicologo/guid-id
-    public async Task<IActionResult> GetProntuariosPorPsicologo([FromRoute] string id)
-    {
-        Result<IEnumerable<ProntuarioListaDto>> resposta = await service.BuscarProntuariosPorIdPsicologoAsync(id);
-
-        if (resposta.IsFailed)
-        {
-            return TratarFalhas(resposta.ToResult());
-        }
-
-        return Ok(resposta.Value);
-    }
-
+   
     /// <summary>
     /// Busca o prontuário detalhado de um paciente pelo ID do prontuário.
     /// </summary>     

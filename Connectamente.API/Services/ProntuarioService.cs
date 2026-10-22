@@ -22,18 +22,6 @@ public class ProntuarioService(
         return Result.Ok(prontuariosDto);
     }
 
-    public async Task<Result<IEnumerable<ProntuarioListaDto>>> BuscarProntuariosPorIdPsicologoAsync(string idPsicologo)
-    {
-        if (string.IsNullOrWhiteSpace(idPsicologo))
-        {
-            return Result.Fail("O identificador do psicólogo é inválido ou não foi informado.");
-        }
-
-      var prontuarios = await repository.BuscarPorIdPsicologoAsync(idPsicologo);
-         var prontuariosDto = mapper.Map<IEnumerable<ProntuarioListaDto>>(prontuarios);
-    return Result.Ok(prontuariosDto);
-    }
-
     public async Task<Result<ProntuarioDetalhesDto>> BuscarProntuarioPorIdAsync(int id)
     {
         var prontuarioEntidade = await repository.BuscarDetalhesAsync(id);
@@ -93,13 +81,6 @@ public class ProntuarioService(
         }
     }
 
-    public async Task<Result<IEnumerable<ProntuarioListaDto>>> BuscarProntuariosSemPsicologoAsync()
-    {
-        var prontuarios = await repository.BuscarProntuariosSemPsicologoAsync();
-        var prontuariosDto = mapper.Map<IEnumerable<ProntuarioListaDto>>(prontuarios);
-        return Result.Ok(prontuariosDto);
-    }
-
      public async Task<Result<ProntuarioPsicologoVincularDto>> ObterDadosParaVinculoAsync(int prontuarioId)
 {
     var prontuarioResult = await BuscarProntuarioPorIdAsync(prontuarioId);
@@ -118,30 +99,6 @@ public class ProntuarioService(
     dto.PsicologosDisponiveis = psicologosResult.Value.ToList();
 
     return Result.Ok(dto);
-}
-
-public async Task<Result> VincularPsicologoAsync(VinculoProntuarioPsicologoDto dto)
-{   
-    try
-    {
-        var psicoProntuarioModel = mapper.Map<VinculoProntuarioPsicologoModel>(dto);
-        // 1. Executa a operação no repositório e avalia o retorno booleano
-        bool modificado = await repository.VincularPsicologoProntuarioAsync(psicoProntuarioModel);
-        
-        // 2. Se não foi modificado, significa que o ProntuarioId não foi encontrado
-        if (!modificado)
-        {
-            return Result.Fail("Não foi possível realizar o vínculo. Prontuário não encontrado.");
-        }
-        // 3. Sucesso total na operação
-        return Result.Ok();
-    }
-    catch (Exception ex)
-    {
-        // O bloco catch agora serve estritamente para falhas críticas de infraestrutura (banco fora, queda de rede, etc.)
-        logger.LogError(ex, "Ocorreu um erro interno ao persistir o vínculo no banco de dados. DTO: {@Dto}", dto);
-        return Result.Fail("Ocorreu um erro interno inesperado ao persistir o vínculo.");
-    }
 }
 
    public async Task<Result> EditarProntuarioAsync(ProntuarioEditarDto dto)

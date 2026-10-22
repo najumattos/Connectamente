@@ -15,11 +15,6 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
             .HasMaxLength(150)
             .HasColumnType("varchar(150)");
 
-        builder.Property(u => u.Cpf)
-            .HasMaxLength(11)
-            .IsFixedLength(false)
-            .HasColumnType("varchar(11)");
-
         builder.Property(u => u.Matricula)
             .HasMaxLength(20)
             .HasColumnType("varchar(20)");
@@ -27,12 +22,6 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
         builder.Property(u => u.Crp)
             .HasMaxLength(20)
             .HasColumnType("varchar(20)");
-        
-        builder.Property(u => u.TipoUsuario)
-            .HasConversion<string>()
-            .HasMaxLength(30)
-            .IsRequired()
-            .HasColumnType("varchar(30)");
         
         builder.Property(u => u.Ativo)
             .IsRequired()
@@ -46,11 +35,6 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
             .IsRequired()
             .HasColumnType("datetime");
 
-        // Índices e Constraints
-        builder.HasIndex(u => u.Cpf)
-            .IsUnique()
-            .HasDatabaseName("IX_AspNetUsers_CPF");
-
         // Relacionamentos 
         // 1:N com DocumentoClinicoModel
         builder.HasMany(u => u.DocumentosCriados)
@@ -62,6 +46,11 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
         builder.HasMany(u => u.Auditorias)
             .WithOne() 
             .HasForeignKey("UsuarioId")
+            .OnDelete(DeleteBehavior.Restrict);
+
+         builder.HasMany(u => u.VinculosPacientePsicologo)
+            .WithOne()
+            .HasForeignKey("PsicologoResponsavelId") 
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

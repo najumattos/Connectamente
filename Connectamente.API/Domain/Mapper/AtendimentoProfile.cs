@@ -26,7 +26,15 @@ public class AtendimentoProfile: Profile
   CreateMap<AtendimentoModel, AtendimentoListaDto>()
     .ForMember(dest => dest.NumeroProntuario, opt => opt.MapFrom(src => src.Prontuario != null ? src.Prontuario.NumeroProntuario : string.Empty))
             .ForMember(dest => dest.NomePaciente, opt => opt.MapFrom(src => src.Prontuario != null && src.Prontuario.Paciente != null ? src.Prontuario.Paciente.Identificacao.NomeCompleto : string.Empty))
-            .ForMember(dest => dest.PsicologoResponsavel, opt => opt.MapFrom(src => src.Prontuario != null && src.Prontuario.PsicologoResponsavel != null ? src.Prontuario.PsicologoResponsavel.NomeCompleto : string.Empty));
+            .ForMember(dest => dest.PsicologoResponsavel,
+    opt => opt.MapFrom(src =>
+        src.Prontuario != null &&
+        src.Prontuario.Paciente != null
+            ? src.Prontuario.Paciente.VinculosPacientePsicologo
+                .Where(v => v.Ativo && v.DataEncerramento == null)
+                .Select(v => v.PsicologoResponsavel.NomeCompleto)
+                .FirstOrDefault() ?? string.Empty
+            : string.Empty));
 
         CreateMap<AtendimentoAdicionarDto, AtendimentoModel>()
              .ForMember(dest => dest.Id, opt => opt.Ignore())

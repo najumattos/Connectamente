@@ -17,7 +17,6 @@ public class JwtService(IConfiguration configuration, UserManager<ApplicationUse
         {
             new(ClaimTypes.NameIdentifier, user.Id),
             new(ClaimTypes.Email, user.Email!)
-)
         };
           var roles = await userManager.GetRolesAsync(user);
 

@@ -25,15 +25,10 @@ public class ApplicationUserRepository(AppDbContext context) : IApplicationUserR
     public async Task<ApplicationUserModel?> BuscarDetalhesAsync(string id)
     {
         return await context.Set<ApplicationUserModel>()
+            .AsNoTracking()
             .Include(u => u.DocumentosCriados)
-            .Include(u => u.ProntuariosResponsavel)
+            .Include(u => u.VinculosPacientePsicologo)
             .FirstOrDefaultAsync(u => u.Id == id);
-    }
-
-    public async Task<ApplicationUserModel?> BuscarPorCpfAsync(string cpf)
-    {
-        return await context.Set<ApplicationUserModel>()
-            .FirstOrDefaultAsync(u => u.Cpf == cpf);
     }
 
     public async Task<IEnumerable<ApplicationUserModel>> BuscarTodosAsync()

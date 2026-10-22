@@ -14,8 +14,6 @@ public interface IPacienteRepository
     /// <returns>Uma lista contendo todos os registros de <see cref="PacienteModel"/>.</returns>
     Task<IEnumerable<PacienteModel>> BuscarTodosAsync();
 
-Task<IEnumerable<PacienteModel>> BuscarPorIdPsicologoAsync(string psicologoId);
-
     /// <summary>
     /// Obtém um paciente carregando avidamente seus objetos de valor internos (Identificacao, Endereco) e relacionamentos.
     /// </summary>
@@ -56,5 +54,27 @@ Task<IEnumerable<PacienteModel>> BuscarPorIdPsicologoAsync(string psicologoId);
     /// <param name="cpf">O CPF a ser validado.</param>
     /// <returns><see langword="true"/> se o CPF já estiver em uso; caso contrário, <see langword="false"/>.</returns>
     Task<bool> ExisteCpfAsync(string cpf);
+
+    /// <summary>
+/// Obtém de forma assíncrona todos os prontuários ativos que não possuem nenhum vínculo ativo com um psicólogo.
+/// </summary>
+/// <param name="cancellationToken">Token de cancelamento para interromper a operação assíncrona, se necessário.</param>
+/// <returns>
+/// Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém uma coleção 
+/// de <see cref="PacienteModel"/> sem profissionais vinculados, incluindo os dados de seus respectivos pacientes.
+/// </returns>
+/// <remarks>
+/// Esta consulta utiliza <c>AsNoTracking</c> para otimização de performance (read-only) e filtra 
+/// os estados nulos da propriedade <c>Ativo</c> assumindo o valor padrão falso.
+/// </remarks>   
+ Task<IEnumerable<PacienteModel>> BuscarPacientesSemPsicologoAsync(CancellationToken cancellationToken = default);
+
+  /// <summary>
+    /// Busca os pacientes vinculados ativamente a um psicólogo responsável específico.
+    /// </summary>
+    /// <param name="psicologoId">O identificador único (GUID/string) do psicólogo no Identity.</param>
+    /// <returns>Uma coleção de <see cref="PacienteModel"/> associados ao profissional informado.</returns>
+    Task<IEnumerable<PacienteModel>> BuscarPacientesPorPsicologoAsync(string psicologoId);
+ 
 
 }
