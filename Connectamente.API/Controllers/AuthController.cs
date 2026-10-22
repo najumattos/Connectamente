@@ -38,5 +38,14 @@ public class AuthController(
         //é importante invalidar o token?
        await service.Logout();      
        return NoContent();
-    }        
+    }  
+
+    /// <summary>
+    /// Consultar os dados do usuário autenticado
+    /// </summary>
+    [HttpGet("me")]
+    public async Task<IActionResult> Me()
+    {
+       return NoContent();
+    }  
 }

@@ -1,69 +1,72 @@
-using Connectamente.API.DTOs.ProntuarioDto;
-using Connectamente.API.Services.Interfaces;
-using FluentResults;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
-[Authorize]
-public class ProntuarioController(IProntuarioService service) : MainController
+
+[Route("api/prontuarios")]
+[ApiController]
+public class ProntuarioController : MainController
 {
     /// <summary>
-    /// Busca todos os prontuários de forma geral.
+    /// Listar prontuários permitidos
     /// </summary>
-    [ProducesResponseType(typeof(IEnumerable<ProntuarioListaDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpGet("Buscar")] // GET api/prontuarios
-    public async Task<IActionResult> GetProntuarios()
+    [HttpGet]
+    public IActionResult GetProntuarios()
     {
-        Result<IEnumerable<ProntuarioListaDto>> resposta = await service.BuscarTodosProntuariosAsync();
-
-        if (resposta.IsFailed)
-        {
-            return TratarFalhas(resposta.ToResult());
-        }
-
-        return Ok(resposta.Value);
-    }
-
-   
-    /// <summary>
-    /// Busca o prontuário detalhado de um paciente pelo ID do prontuário.
-    /// </summary>     
-    [ProducesResponseType(typeof(ProntuarioDetalhesDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpGet("{id:int}")] // GET api/prontuarios/5
-    public async Task<IActionResult> GetProntuarioPorId([FromRoute] int id)
-    {
-        Result<ProntuarioDetalhesDto> resposta = await service.BuscarProntuarioPorIdAsync(id);
-
-        if (resposta.IsFailed)
-        {
-            return TratarFalhas(resposta.ToResult());
-        }
-
-        return Ok(resposta.Value);
+        return StatusCode(StatusCodes.Status501NotImplemented);
     }
 
     /// <summary>
-    /// Arquiva logicamente um prontuário no sistema.
+    /// Consultar prontuário
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPatch("{id:int}/arquivar")] // PATCH api/prontuarios/5/arquivar
-    public async Task<IActionResult> ArquivarProntuario([FromRoute] int id)
+    [HttpGet("{id}")]
+    public IActionResult GetProntuarioById(int id)
     {
-        Result resposta = await service.ArquivarProntuarioAsync(id);
-
-        if (resposta.IsFailed)
-        {
-            return TratarFalhas(resposta);
-        }
-
-        return NoContent();
+        return StatusCode(StatusCodes.Status501NotImplemented);
     }
 
-  }
+    /// <summary>
+    /// Consultar prontuários arquivados
+    /// </summary>
+    [HttpGet("arquivados")]
+    public IActionResult GetArchivedProntuarios()
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
+
+    /// <summary>
+    /// Abrir prontuário a partir de um plantão
+    /// </summary>
+    [HttpPost("por-plantao/{plantaoId}")]
+    public IActionResult CreateProntuarioFromPlantao(int plantaoId)
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
+
+    /// <summary>
+    /// Atualizar campos permitidos do prontuário
+    /// </summary>
+    [HttpPut("{id}")]
+    public IActionResult UpdateProntuario(int id)
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
+
+    /// <summary>
+    /// Arquivar prontuário
+    /// </summary>
+    [HttpPatch("{id}/arquivar")]
+    public IActionResult ArchiveProntuario(int id)
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
+
+    /// <summary>
+    /// Restaurar prontuário
+    /// </summary>
+    [HttpPatch("{id}/restaurar")]
+    public IActionResult RestoreProntuario(int id)
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
+}
