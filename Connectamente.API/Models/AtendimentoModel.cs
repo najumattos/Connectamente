@@ -1,24 +1,11 @@
-
-
-using Connectamente.API.Enums;
-
 namespace Connectamente.API.Models;
 
-public class AtendimentoModel : EntityBase
+public class AtendimentoModel 
 {
-    public int VinculoPacientePsicologoId { get; set; }
-    public VinculoPacientePsicologoModel VinculoPacientePsicologo { get; set; } = null!;
+    //atendimento pode ter como PK a FK de Agendamento?
+       public int AgendamentoId { get; set; }
+    public AgendamentoModel Agendamento { get; set; } = null!;     
 
     public int ProntuarioId { get; set; }
     public ProntuarioModel Prontuario { get; set; } = null!;
-
-    public TipoAtendimentoEnum TipoAtendimento { get; set; }
-
-    public DateTime? DataHoraInicio { get; set; }
-    public DateTime? DataHoraFim { get; set; }
-
-    public StatusAtendimentoEnum StatusAtendimento { get; set; }
-        
-
-    public ICollection<DocumentoClinicoModel> DocumentosClinicos { get; set; } = [];
 }

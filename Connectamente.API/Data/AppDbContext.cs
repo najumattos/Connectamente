@@ -14,7 +14,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserSe
     public DbSet<FamiliarModel> Familiares => Set<FamiliarModel>();
     public DbSet<ProntuarioModel> Prontuarios => Set<ProntuarioModel>();
     public DbSet<TratamentoAnteriorModel> TratamentosAnteriores => Set<TratamentoAnteriorModel>();
-    public DbSet<AtendimentoModel> Atendimentos => Set<AtendimentoModel>();
+    public DbSet<AgendamentoModel> Atendimentos => Set<AgendamentoModel>();
     public DbSet<DocumentoClinicoModel> DocumentosClinicos => Set<DocumentoClinicoModel>();
     public DbSet<AuditoriaModel> Auditorias { get; set; }
 

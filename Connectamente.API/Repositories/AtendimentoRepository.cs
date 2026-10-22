@@ -7,7 +7,7 @@ namespace Connectamente.API.Repositories;
 
 public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepository
 {
-    public async Task<AtendimentoModel> AdicionarAsync(AtendimentoModel atendimento)
+    public async Task<AgendamentoModel> AdicionarAsync(AgendamentoModel atendimento)
     {
         if (atendimento.DataCriacao == default)
         {
@@ -32,7 +32,7 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
         return true;
     }
 
-    public async Task<IEnumerable<AtendimentoModel>> BuscarAtendimentosDaSemanaPorPsicologoAsync(string id)
+    public async Task<IEnumerable<AgendamentoModel>> BuscarAtendimentosDaSemanaPorPsicologoAsync(string id)
 {
     var hoje = DateTime.UtcNow.Date;
     var fimDaSemana = hoje.AddDays(7);
@@ -58,7 +58,7 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
         .ToListAsync();
 }
 
-   public async Task<AtendimentoModel?> BuscarDetalhesAsync(int id)
+   public async Task<AgendamentoModel?> BuscarDetalhesAsync(int id)
 {
     return await context.Atendimentos
         .Include(a => a.Prontuario)
@@ -70,7 +70,7 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
         .FirstOrDefaultAsync(a => a.Id == id);
 }
 
-    public async Task<IEnumerable<AtendimentoModel>> BuscarPorIdPsicologoAsync(string psicologoId)
+    public async Task<IEnumerable<AgendamentoModel>> BuscarPorIdPsicologoAsync(string psicologoId)
     {
         return await context.Atendimentos
             .AsNoTracking()
@@ -84,7 +84,7 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<AtendimentoModel>> BuscarTodosAsync()
+    public async Task<IEnumerable<AgendamentoModel>> BuscarTodosAsync()
     {
         return await context.Atendimentos
             .AsNoTracking()
@@ -96,7 +96,7 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<AtendimentoModel>> BuscarTodosAtendimentosDaSemanaAsync()
+    public async Task<IEnumerable<AgendamentoModel>> BuscarTodosAtendimentosDaSemanaAsync()
     {
        var hoje = DateTime.UtcNow.Date;
     var fimDaSemana = hoje.AddDays(7);
@@ -114,7 +114,7 @@ public class AtendimentoRepository(AppDbContext context) : IAtendimentoRepositor
         .ToListAsync();
     }
 
-    public async Task<bool> EditarAsync(AtendimentoModel atendimento)
+    public async Task<bool> EditarAsync(AgendamentoModel atendimento)
     {             
     var linhasAfetadas = await context.SaveChangesAsync();
     return linhasAfetadas > 0;

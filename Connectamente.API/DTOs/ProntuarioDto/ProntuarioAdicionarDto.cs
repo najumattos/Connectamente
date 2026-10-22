@@ -11,7 +11,7 @@ public class ProntuarioAdicionarDto{
     public string NumeroProntuario { get; set; } = string.Empty;
 
     [Display(Name = "Situação do Prontuário")]
-    public SituacaoEnum SituacaoProntuario { get; set; }
+    public SituacaoPacienteEnum SituacaoProntuario { get; set; }
 
     [Display(Name = "Data de Cadastro")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]

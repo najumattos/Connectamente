@@ -2,8 +2,6 @@ namespace Connectamente.API.Enums;
 
 public enum TipoAtendimentoEnum
 {
-    SessaoIndividual = 1,
-    PlantaoPsicologico = 2, 
-    Triagem = 4,
-    Outro = 5
+    Evolucao = 1,
+    Plantao = 2 //nao gera atendimento
 }

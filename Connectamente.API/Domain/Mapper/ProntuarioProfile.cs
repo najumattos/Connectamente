@@ -19,7 +19,7 @@ public class ProntuarioProfile : Profile
  .ForMember(dest => dest.PacienteNomeCompleto, 
                 opt => opt.MapFrom(src => src.Paciente.Identificacao.NomeCompleto));        
         CreateMap<TratamentoAnteriorModel, TratamentoAnteriorListaDto>();
-        CreateMap<AtendimentoModel, AtendimentoListaDto>();
+        CreateMap<AgendamentoModel, AtendimentoListaDto>();
         CreateMap<DocumentoClinicoModel, DocumentoListaDto>();
         CreateMap<FamiliarModel, FamiliarListaDto>();               
 

@@ -8,7 +8,7 @@ public class ProntuarioEditarDto
 public int Id { get; set; }
     
     [Display(Name = "Situação do Prontuário")]
-    public SituacaoEnum SituacaoProntuario { get; set; }
+    public SituacaoPacienteEnum SituacaoProntuario { get; set; }
 
     [Display(Name = "Observações Gerais")]
     [DataType(DataType.MultilineText)]

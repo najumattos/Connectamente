@@ -17,15 +17,15 @@ public class ProntuarioListaDto
     public string NumeroProntuario { get; init; } = string.Empty;
 
     [Display(Name = "Status do Prontuário")]
-    public SituacaoEnum SituacaoProntuario { get; init; }
+    public SituacaoPacienteEnum SituacaoProntuario { get; init; }
 
     /// <summary>
     /// Propriedade utilitária para renderização de badges HTML estilizadas (Bootstrap / Tailwind) baseadas no Enum.
     /// </summary>
     public string ClassCorStatus => SituacaoProntuario switch
     {
-        SituacaoEnum.Ativo => "badge-success",
-        SituacaoEnum.Arquivado => "badge-secondary",
+        SituacaoPacienteEnum.Ativo => "badge-success",
+        SituacaoPacienteEnum.Arquivado => "badge-secondary",
         _ => "badge-info"
     };
 }

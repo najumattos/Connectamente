@@ -10,31 +10,31 @@ public interface IAtendimentoRepository
     /// <summary>
     /// Obtém a listagem completa de todos os atendimentos cadastrados na clínica.
     /// </summary>
-    Task<IEnumerable<AtendimentoModel>> BuscarTodosAsync();
+    Task<IEnumerable<AgendamentoModel>> BuscarTodosAsync();
 
     /// <summary>
     /// Filtra as sessões de atendimento vinculadas a prontuários que pertencem a um psicólogo específico.
     /// </summary>
     /// <param name="psicologoId">O ID do psicólogo logado ou responsável.</param>
-    Task<IEnumerable<AtendimentoModel>> BuscarPorIdPsicologoAsync(string psicologoId);
+    Task<IEnumerable<AgendamentoModel>> BuscarPorIdPsicologoAsync(string psicologoId);
 
     /// <summary>
     /// Retorna os detalhes de um atendimento com os dados do Prontuário, Paciente e Documentos Clínicos gerados.
     /// </summary>
     /// <param name="id">O ID do atendimento.</param>
-    Task<AtendimentoModel?> BuscarDetalhesAsync(int id);
+    Task<AgendamentoModel?> BuscarDetalhesAsync(int id);
 
     /// <summary>
     /// Modifica o estado ou informações de um atendimento (ex: alterar status para Realizado ou Cancelado).
     /// </summary>
     /// <param name="atendimento">O objeto modificado.</param>
-    Task<bool> EditarAsync(AtendimentoModel atendimento);
+    Task<bool> EditarAsync(AgendamentoModel atendimento);
 
     /// <summary>
     /// Reserva ou agenda um novo atendimento no sistema.
     /// </summary>
     /// <param name="atendimento">Os dados do novo agendamento.</param>
-    Task<AtendimentoModel> AdicionarAsync(AtendimentoModel atendimento);
+    Task<AgendamentoModel> AdicionarAsync(AgendamentoModel atendimento);
 
     /// <summary>
     /// Executa o cancelamento ou arquivamento do atendimento mudando seu estado interno.
@@ -48,6 +48,6 @@ public interface IAtendimentoRepository
     /// <param name="id">O ID do atendimento.</param>
     Task<bool> ExcluirAsync(int id);
 
-    Task<IEnumerable<AtendimentoModel>> BuscarTodosAtendimentosDaSemanaAsync();
-   Task<IEnumerable<AtendimentoModel>> BuscarAtendimentosDaSemanaPorPsicologoAsync(string id);
+    Task<IEnumerable<AgendamentoModel>> BuscarTodosAtendimentosDaSemanaAsync();
+   Task<IEnumerable<AgendamentoModel>> BuscarAtendimentosDaSemanaPorPsicologoAsync(string id);
 }

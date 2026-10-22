@@ -11,7 +11,7 @@ public class AtendimentoAdicionarDto
     public int ProntuarioId { get; set; }
     [Required(ErrorMessage = "O tipo de atendimento é obrigatório.")]
     [Display(Name = "Tipo de Atendimento")]
-    public TipoAtendimentoEnum TipoAtendimento { get; set; }
+    public TipoAgendamentoEnum TipoAtendimento { get; set; }
 
     [Required(ErrorMessage = "A data e hora de início são obrigatórias.")]
     [DataType(DataType.DateTime)]

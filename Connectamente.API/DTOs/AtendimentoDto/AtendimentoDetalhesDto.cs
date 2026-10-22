@@ -9,7 +9,7 @@ public class AtendimentoDetalhesDto : EntityBaseDetalhesDto
     public int Id { get; set; }
  public string? NumeroProntuario { get; set; }  = string.Empty;
   public string? NomePaciente { get; set; }  = string.Empty;
-    public TipoAtendimentoEnum TipoAtendimento { get; set; }
+    public TipoAgendamentoEnum TipoAtendimento { get; set; }
     public DateTime? DataHoraInicio { get; set; }
     public DateTime? DataHoraFim { get; set; }
     public StatusAtendimentoEnum StatusAtendimento { get; set; } = StatusAtendimentoEnum.Agendado;

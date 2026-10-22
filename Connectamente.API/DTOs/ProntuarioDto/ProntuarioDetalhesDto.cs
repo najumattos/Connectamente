@@ -16,7 +16,7 @@ namespace Connectamente.API.DTOs.ProntuarioDto;
     public string NumeroProntuario { get; set; } = string.Empty; 
 
     [Display(Name = "Situação do Prontuário")]
-    public SituacaoEnum SituacaoProntuario { get; set; } 
+    public SituacaoPacienteEnum SituacaoProntuario { get; set; } 
     // Dados do Paciente Vinculado
     [Required]
     public int PacienteId { get; set; }

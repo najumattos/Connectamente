@@ -8,13 +8,13 @@ public class AtendimentoProfile: Profile
 {
     public AtendimentoProfile()
     {        
-               CreateMap<AtendimentoModel, AtendimentoDetalhesDto>()
+               CreateMap<AgendamentoModel, AtendimentoDetalhesDto>()
             .ForMember(dest => dest.NumeroProntuario, opt => opt.MapFrom(src => src.Prontuario != null ? src.Prontuario.NumeroProntuario : string.Empty))
             .ForMember(dest => dest.NomePaciente, opt => opt.MapFrom(src => src.Prontuario != null && src.Prontuario.Paciente != null ? src.Prontuario.Paciente.Identificacao.NomeCompleto : string.Empty))
             .ForMember(dest => dest.DocumentosClinicos, opt => opt.MapFrom(src => src.DocumentosClinicos));
 
 
-      CreateMap<AtendimentoAtualizarDto, AtendimentoModel>()
+      CreateMap<AtendimentoAtualizarDto, AgendamentoModel>()
             .ForMember(dest => dest.Observacoes, opt => opt.MapFrom(src => src.DadosAuditaveis != null ? src.DadosAuditaveis.Observacoes : null))
             .ForMember(dest => dest.Ativo, opt => opt.MapFrom(src => src.DadosAuditaveis != null ? src.DadosAuditaveis.Ativo : true))    
             .ForMember(dest => dest.DataCriacao, opt => opt.Ignore())
@@ -23,7 +23,7 @@ public class AtendimentoProfile: Profile
             .ForMember(dest => dest.Prontuario, opt => opt.Ignore())
             .ForMember(dest => dest.DocumentosClinicos, opt => opt.Ignore());
 
-  CreateMap<AtendimentoModel, AtendimentoListaDto>()
+  CreateMap<AgendamentoModel, AtendimentoListaDto>()
     .ForMember(dest => dest.NumeroProntuario, opt => opt.MapFrom(src => src.Prontuario != null ? src.Prontuario.NumeroProntuario : string.Empty))
             .ForMember(dest => dest.NomePaciente, opt => opt.MapFrom(src => src.Prontuario != null && src.Prontuario.Paciente != null ? src.Prontuario.Paciente.Identificacao.NomeCompleto : string.Empty))
             .ForMember(dest => dest.PsicologoResponsavel,
@@ -36,7 +36,7 @@ public class AtendimentoProfile: Profile
                 .FirstOrDefault() ?? string.Empty
             : string.Empty));
 
-        CreateMap<AtendimentoAdicionarDto, AtendimentoModel>()
+        CreateMap<AtendimentoAdicionarDto, AgendamentoModel>()
              .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Prontuario, opt => opt.Ignore())
             .ForMember(dest => dest.DocumentosClinicos, opt => opt.Ignore())

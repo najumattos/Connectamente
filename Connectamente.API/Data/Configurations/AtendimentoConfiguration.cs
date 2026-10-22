@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Connectamente.API.Data.Configurations;
 
-public class AtendimentoConfiguration : IEntityTypeConfiguration<AtendimentoModel>
+public class AtendimentoConfiguration : IEntityTypeConfiguration<AgendamentoModel>
 {
-    public void Configure(EntityTypeBuilder<AtendimentoModel> builder)
+    public void Configure(EntityTypeBuilder<AgendamentoModel> builder)
     {
         builder.ToTable("Atendimentos");
 

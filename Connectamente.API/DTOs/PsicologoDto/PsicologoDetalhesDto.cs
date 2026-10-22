@@ -9,7 +9,7 @@ public class PsicologoDetalhesDto : EntityBaseDetalhesDto
     public string? Cpf { get; set; }
     public string? Matricula { get; set; }
     public string? Crp { get; set; }
-    public TipoUsuarioEnum TipoUsuario { get; set; }
+    public StatusVinculoEnum TipoUsuario { get; set; }
     public bool Ativo { get; set; } = true;
     public bool AssinouTermoResponsabilidadeEstagiario { get; set; } = false;   
     public DateTime DataCadastro { get; set; } 

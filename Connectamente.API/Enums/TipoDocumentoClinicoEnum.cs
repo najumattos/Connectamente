@@ -8,4 +8,5 @@ public enum TipoDocumentoClinicoEnum
     TermoEstagiario = 4,
     Anamnese = 5,
     EvolucaoAtendimento = 6,
+    RelatoioPlantao = 7
 }

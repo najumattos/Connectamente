@@ -43,10 +43,10 @@ public class ProntuarioService(
     if (prontuario == null)
         return Result.Fail($"Prontuário com o ID {id} não encontrado.");
 
-    if (prontuario.SituacaoProntuario == SituacaoEnum.Arquivado)
+    if (prontuario.SituacaoProntuario == SituacaoPacienteEnum.Arquivado)
         return Result.Fail("Este prontuário já se encontra arquivado no sistema.");
 
-    prontuario.SituacaoProntuario = SituacaoEnum.Arquivado;
+    prontuario.SituacaoProntuario = SituacaoPacienteEnum.Arquivado;
     prontuario.DataAtualizacao = DateTime.UtcNow;
 
     await repository.EditarAsync(prontuario);

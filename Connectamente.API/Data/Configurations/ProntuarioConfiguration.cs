@@ -37,7 +37,7 @@ public class ProntuarioConfiguration : IEntityTypeConfiguration<ProntuarioModel>
             .HasConversion<string>()
             .HasMaxLength(30)
             .IsRequired()
-            .HasDefaultValue(Enums.SituacaoEnum.Ativo)
+            .HasDefaultValue(Enums.SituacaoPacienteEnum.Ativo)
             .HasColumnType("varchar(30)");
 
         // Configuração do relacionamento 1:1 com PacienteModel

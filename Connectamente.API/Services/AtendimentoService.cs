@@ -29,7 +29,7 @@ public class AtendimentoService(
         }*/
         try
         {
-            var atendimentoEntidade = mapper.Map<AtendimentoModel>(dto);
+            var atendimentoEntidade = mapper.Map<AgendamentoModel>(dto);
             await repository.AdicionarAsync(atendimentoEntidade);
                  return Result.Ok();
         }
