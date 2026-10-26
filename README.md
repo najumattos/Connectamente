@@ -1,3 +1,4 @@
+points
 
 # Connectamente 🧠
 
@@ -120,61 +121,144 @@ Essa abordagem permite manter um histórico das alterações realizadas sobre os
 
 ---
 
-## 📚 Principais funcionalidades
+## 📚 Endpoints
 
-### Pacientes
+### AuthController
 
-* cadastro;
-* edição;
-* consulta;
-* visualização de informações;
-* associação ao prontuário.
+| Endpoint                 | Função                                            | Autorização        |
+| ------------------------ | --------------------------------------------------- | -------------------- |
+| `POST /api/auth/login` | Autenticar usuário e emitir token JWT.             | Público             |
+| `GET /api/auth/me`     | Retornar informações básicas do usuário logado. | Usuário autenticado |
 
-### Prontuários
+### ApplicationUserController
 
-* criação;
-* edição;
-* consulta;
-* visualização de detalhes;
-* arquivamento;
-* associação com psicólogos.
+| Endpoint                               | Função                                                                        | Autorização                 |
+| -------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------- |
+| `GET /api/usuarios`                  | Listar usuários.                                                               | Professor, Secretaria (ADMIN) |
+| `GET /api/usuarios/arquivados`       | Listar usuários inativos ou arquivados.                                        | Professor, Secretaria (ADMIN) |
+| `GET /api/usuarios/{id}`             | Buscar usuário por ID.                                                         | Professor, Secretaria (ADMIN) |
+| `POST /api/usuarios`                 | Cadastrar usuário.                                                             | Professor, Secretaria (ADMIN) |
+| `PUT /api/usuarios/{id}`             | Atualizar dados do usuário, respeitando os campos permitidos para cada perfil. | Professor, Secretaria (ADMIN) |
+| `PATCH /api/usuarios/{id}/arquivar`  | Desativar ou arquivar usuário, sem exclusão física.                          | Professor                     |
+| `PATCH /api/usuarios/{id}/restaurar` | Reativar usuário arquivado.                                                    | Professor                     |
 
-### Atendimentos
+### AtendimentoController
 
-* registro de atendimentos;
-* atualização;
-* consulta;
-* acompanhamento do histórico.
+| Endpoint                                   | Função                                                            | Autorização              | Observação                                           |
+| ------------------------------------------ | ------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------ |
+| `GET /api/atendimentos`                  | Listar atendimentos dentro do escopo autorizado.                    | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/atendimentos/{id}`             | Buscar atendimento por ID, validando o acesso do aluno ao paciente. | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `POST /api/atendimentos`                 | Registrar atendimento.                                              | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PUT /api/atendimentos/{id}`             | Atualizar atendimento.                                              | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/atendimentos/arquivados`       | Listar atendimentos arquivados.                                     | Professor                  |                                                        |
+| `PATCH /api/atendimentos/{id}/arquivar`  | Arquivar atendimento.                                               | Professor                  |                                                        |
+| `PATCH /api/atendimentos/{id}/restaurar` | Restaurar atendimento arquivado.                                    | Professor                  |                                                        |
 
-### Documentos clínicos
+### AgendamentoController
 
-* cadastro;
-* consulta;
-* associação ao prontuário.
+| Endpoint                                   | Função                         | Autorização                 | Observação                                           |
+| ------------------------------------------ | -------------------------------- | ----------------------------- | ------------------------------------------------------ |
+| `GET /api/agendamentos`                  | Listar todos agendamentos        | Professor, Secretaria, Aluno  | Aluno só tem acesso aos agendamentos vinculados a ele |
+| `GET /api/agendamentos/{id}`             | Buscar agendamento por ID        | Professor, Secretaria, Aluno  | Aluno só tem acesso aos agendamentos vinculados a ele |
+| `GET /api/agendamentos/arquivados`       | Listar agendamentos arquivados.  | Professor, Secretaria (ADMIN) |                                                        |
+| `POST /api/agendamentos`                 | Criar agendamento.               | Professor, Secretaria (ADMIN) |                                                        |
+| `PUT /api/agendamentos/{id}`             | Atualizar agendamento.           | Professor, Secretaria (ADMIN) |                                                        |
+| `PATCH /api/agendamentos/{id}/arquivar`  | Arquivar agendamento.            | Professor, Secretaria (ADMIN) |                                                        |
+| `PATCH /api/agendamentos/{id}/restaurar` | Restaurar agendamento arquivado. | Professor, Secretaria (ADMIN) |                                                        |
 
-### Tratamentos anteriores
+### DocumentoClinicoController
 
-* registro;
-* consulta;
-* associação ao paciente.
+| Endpoint                                                   | Função                                   | Autorização              | Observação                                           |
+| ---------------------------------------------------------- | ------------------------------------------ | -------------------------- | ------------------------------------------------------ |
+| `GET /api/documentos-clinicos`                           | Listar documentos clínicos                | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/documentos-clinicos/{id}`                      | Buscar documento por ID                    | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/documentos-clinicos/por-paciente/{pacienteId}` | Listar documentos clínicos de um paciente | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `POST /api/documentos-clinicos`                          | Criar documento clínico                   | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PUT /api/documentos-clinicos/{id}`                      | Atualizar documento                        | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PATCH /api/documentos-clinicos/{id}/arquivar`           | Arquivar documento clínico.               | Professor                  |                                                        |
+| `PATCH /api/documentos-clinicos/{id}/restaurar`          | Restaurar documento clínico arquivado.    | Professor                  |                                                        |
+| `GET /api/documentos-clinicos/arquivados`                | Listar documentos clínicos arquivados.    | Professor                  |                                                        |
 
-### Familiares
+### FamiliarController
 
-* cadastro;
-* consulta;
-* vínculo com pacientes.
+| Endpoint                                 | Função                      | Autorização                 | Observação                                           |
+| ---------------------------------------- | ----------------------------- | ----------------------------- | ------------------------------------------------------ |
+| `GET /api/familiares`                  | Listar familiares             | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/familiares/{id}`             | Buscar familiar por ID        | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `POST /api/familiares`                 | Cadastrar familiar            | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PUT /api/familiares/{id}`             | Atualizar dados do familiar   | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/familiares/arquivados`       | Listar familiares arquivados. | Professor, Secretaria (ADMIN) |                                                        |
+| `PATCH /api/familiares/{id}/arquivar`  | Arquivar familiar.            | Professor                     |                                                        |
+| `PATCH /api/familiares/{id}/restaurar` | Restaurar familiar arquivado. | Professor                     |                                                        |
 
-### Psicólogos
+### PacienteController
 
-* cadastro e consulta;
-* gerenciamento de vínculos com prontuários.
+| Endpoint                                | Função                      | Autorização                 | Observação                                           |
+| --------------------------------------- | ----------------------------- | ----------------------------- | ------------------------------------------------------ |
+| `GET /api/pacientes`                  | Listar pacientes;             | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/pacientes/{id}`             | Buscar paciente por ID        | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PUT /api/pacientes/{id}`             | Atualizar dados do paciente.  | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `POST /api/pacientes`                 | Cadastrar paciente.           | Professor, Secretaria (ADMIN) |                                                        |
+| `PATCH /api/pacientes/{id}/arquivar`  | Arquivar paciente.            | Professor                     |                                                        |
+| `PATCH /api/pacientes/{id}/restaurar` | Restaurar paciente arquivado. | Professor                     |                                                        |
+| `GET /api/pacientes/arquivados`       | Listar pacientes arquivados.  | Professor                     |                                                        |
 
-### Autenticação
+### ProntuarioController
 
-* login;
-* validação de credenciais;
-* geração de JWT;
-* autenticação das requisições.
+| Endpoint                                          | Função                                              | Autorização              | Observação                                           |
+| ------------------------------------------------- | ----------------------------------------------------- | -------------------------- | ------------------------------------------------------ |
+| `GET /api/prontuarios`                          | Listar prontuários                                   | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/prontuarios/{id}`                     | Buscar prontuário por ID                             | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `POST /api/prontuarios/por-plantao/{plantaoId}` | Criar prontuário a partir de um plantão autorizado. | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PUT /api/prontuarios/{id}`                     | Atualizar prontuário                                 | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PATCH /api/prontuarios/{id}/arquivar`          | Arquivar prontuário.                                 | Professor                  |                                                        |
+| `PATCH /api/prontuarios/{id}/restaurar`         | Restaurar prontuário arquivado.                      | Professor                  |                                                        |
+| `GET /api/prontuarios/arquivados`               | Listar prontuários arquivados.                       | Professor                  |                                                        |
+
+### TratamentoAnteriorController
+
+| Endpoint                                             | Função                                  | Autorização              | Observação                                           |
+| ---------------------------------------------------- | ----------------------------------------- | -------------------------- | ------------------------------------------------------ |
+| `GET /api/tratamentos-anteriores`                  | Listar tratamentos anteriores             | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/tratamentos-anteriores/{id}`             | Buscar tratamento anterior por ID.        | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `POST /api/tratamentos-anteriores`                 | Registrar tratamento anterior             | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PUT /api/tratamentos-anteriores/{id}`             | Atualizar tratamento anterior             | Professor, Aluno (CLINICO) | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `PATCH /api/tratamentos-anteriores/{id}/arquivar`  | Arquivar tratamento anterior.             | Professor                  |                                                        |
+| `PATCH /api/tratamentos-anteriores/{id}/restaurar` | Restaurar tratamento anterior arquivado.  | Professor                  |                                                        |
+| `GET /api/tratamentos-anteriores/arquivados`       | Listar tratamentos anteriores arquivados. | Professor                  |                                                        |
+
+### VinculoPacientePsicologoController
+
+| Endpoint                                                 | Função                                      | Autorização                 | Observação                                           |
+| -------------------------------------------------------- | --------------------------------------------- | ----------------------------- | ------------------------------------------------------ |
+| `GET /api/vinculos-paciente-psicologo`                 | Listar vínculos                              | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `GET /api/vinculos-paciente-psicologo/{id}`            | Buscar vínculo por ID                        | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele |
+| `POST /api/vinculos-paciente-psicologo`                | Criar vínculo entre paciente e profissional. | Professor, Secretaria (ADMIN) |                                                        |
+| `PUT /api/vinculos-paciente-psicologo/{id}`            | Atualizar dados permitidos do vínculo.       | Professor, Secretaria (ADMIN) |                                                        |
+| `PATCH /api/vinculos-paciente-psicologo/{id}/encerrar` | Encerrar vínculo.                            | Professor, Secretaria (ADMIN) |                                                        |
+| `PATCH /api/vinculos-paciente-psicologo/{id}/revogar`  | Revogar vínculo.                             | Professor, Secretaria (ADMIN) |                                                        |
+
+### PlantaoController
+
+| Endpoint                               | Função                      | Autorização                 | Observação                                                                                                                 |
+| -------------------------------------- | ----------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/plantoes`                  | Listar plantões              | Professor, Secretaria, Aluno  | Aluno só tem acesso aos atendimentos vinculados a ele                                                                       |
+| `GET /api/plantoes/{id}`             | Buscar plantão por ID        | Professor, Secretaria, Aluno  | `sem expor o conteúdo do relatório clínico à Secretaria.` e `Aluno só tem acesso aos atendimentos vinculados a ele` |
+| `PUT /api/plantoes/{id}`             | Atualizar dados do plantão   | Professor, Secretaria, Aluno  | `sem expor o conteúdo do relatório clínico à Secretaria.` e `Aluno só tem acesso aos atendimentos vinculados a ele` |
+| `GET /api/plantoes/arquivados`       | Listar plantões arquivados.  | Professor, Secretaria (ADMIN) |                                                                                                                              |
+| `POST /api/plantoes`                 | Criar plantão                | Professor, Secretaria (ADMIN) |                                                                                                                              |
+| `PATCH /api/plantoes/{id}/arquivar`  | Arquivar plantão.            | Professor, Secretaria (ADMIN) |                                                                                                                              |
+| `PATCH /api/plantoes/{id}/restaurar` | Restaurar plantão arquivado. | Professor, Secretaria (ADMIN) |                                                                                                                              |
+
+### AuditoriaController (PROFESSOR)
+
+| Endpoint                                        | Função                                                     |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| `GET /api/auditorias`                         | Listar registros de auditoria.                               |
+| `GET /api/auditorias/{id}`                    | Buscar registro de auditoria por ID.                         |
+| `GET /api/auditorias/por-usuario/{usuarioId}` | Consultar registros de auditoria relacionados a um usuário. |
+| `GET /api/auditorias/por-entidade`            | Consultar registros de auditoria por entidade.               |
+
 
 ---
 

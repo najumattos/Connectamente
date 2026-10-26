@@ -113,7 +113,9 @@ builder.Services.AddAuthentication(options =>
 });
 
 // autorizacao
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+                  .AddPolicy("ADMIN", policy => policy.RequireRole("Professor", "Secretaria"))
+                  .AddPolicy("CLINICO", policy => policy.RequireRole("Professor", "Aluno"));
 
 // Serviço de Arquivos
 builder.Services.AddHttpContextAccessor();

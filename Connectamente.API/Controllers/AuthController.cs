@@ -44,6 +44,7 @@ public class AuthController(
     /// Consultar os dados do usuário autenticado
     /// </summary>
     [HttpGet("me")]
+    [Authorize]
     public async Task<IActionResult> Me()
     {
        return NoContent();

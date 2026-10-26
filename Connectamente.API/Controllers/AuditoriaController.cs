@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
 
 [Route("api/auditoria")]
+[Authorize(Roles="Professor")]
 [ApiController]
 public class AuditoriaController : MainController
 {
