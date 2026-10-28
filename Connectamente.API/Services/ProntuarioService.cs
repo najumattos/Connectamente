@@ -1,7 +1,6 @@
 using AutoMapper;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.ProntuarioDto;
-using Connectamente.API.Enums;
 using Connectamente.API.Models;
 using Connectamente.API.Repositories.Interfaces;
 using Connectamente.API.Services.Interfaces;
@@ -43,11 +42,10 @@ public class ProntuarioService(
     if (prontuario == null)
         return Result.Fail($"Prontuário com o ID {id} não encontrado.");
 
-    if (prontuario.SituacaoProntuario == SituacaoPacienteEnum.Arquivado)
-        return Result.Fail("Este prontuário já se encontra arquivado no sistema.");
+    //if (prontuario.SituacaoProntuario == SituacaoPacienteEnum.Arquivado)
+     //   return Result.Fail("Este prontuário já se encontra arquivado no sistema.");
 
-    prontuario.SituacaoProntuario = SituacaoPacienteEnum.Arquivado;
-    prontuario.DataAtualizacao = DateTime.UtcNow;
+     prontuario.DataAtualizacao = DateTime.UtcNow;
 
     await repository.EditarAsync(prontuario);
     return Result.Ok();
@@ -111,7 +109,7 @@ public class ProntuarioService(
         if (prontuario == null)
             return Result.Fail("O registro do prontuário não foi localizado no sistema.");
 
-        prontuario.SituacaoProntuario = dto.SituacaoProntuario;
+      
         prontuario.Ativo = dto.Ativo;
         prontuario.Observacoes = dto.Observacoes;
 

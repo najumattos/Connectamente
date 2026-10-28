@@ -36,8 +36,7 @@ public async Task<IEnumerable<PacienteModel>> BuscarTodosAsync()
     public async Task<PacienteModel?> BuscarDetalhesAsync(int id)
     {
        return await context.Set<PacienteModel>()
-        .Include(p => p.Familiares)          
-        .Include(p => p.Atendimentos)  
+        .Include(p => p.Familiares)      
         .FirstOrDefaultAsync(p => p.Id == id);
     }
 

@@ -23,6 +23,58 @@ namespace Connectamente.API.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("Connectamente.API.Models.AgendamentoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DataAtualizacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DataHoraFim")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DataHoraInicio")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Observacoes")
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("StatusAtendimento")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)")
+                        .HasDefaultValue("Agendado");
+
+                    b.Property<string>("TipoAtendimento")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("VinculoPacientePsicologoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VinculoPacientePsicologoId");
+
+                    b.ToTable("Atendimentos", (string)null);
+                });
+
             modelBuilder.Entity("Connectamente.API.Models.ApplicationUserModel", b =>
                 {
                     b.Property<string>("Id")
@@ -44,11 +96,6 @@ namespace Connectamente.API.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
-
-                    b.Property<string>("Cpf")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)")
-                        .IsFixedLength(false);
 
                     b.Property<string>("Crp")
                         .HasMaxLength(20)
@@ -99,11 +146,6 @@ namespace Connectamente.API.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("TipoUsuario")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -112,10 +154,6 @@ namespace Connectamente.API.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Cpf")
-                        .IsUnique()
-                        .HasDatabaseName("IX_AspNetUsers_CPF");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -134,7 +172,6 @@ namespace Connectamente.API.Migrations
                             AssinouTermoResponsabilidadeEstagiario = false,
                             Ativo = true,
                             ConcurrencyStamp = "ef7a1510-9177-4c44-b0cf-5b12da6bf121",
-                            Cpf = "12345678901",
                             Crp = "06/12345-6",
                             DataCadastro = new DateTime(2026, 5, 29, 10, 0, 0, 0, DateTimeKind.Utc),
                             Email = "mariana.admin@connectamente.com",
@@ -148,7 +185,6 @@ namespace Connectamente.API.Migrations
                             PhoneNumber = "14999009858",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "ef7a1510-9177-4c44-b0cf-5b12da6bf121",
-                            TipoUsuario = "Professor",
                             TwoFactorEnabled = false,
                             UserName = "mariana.admin@connectamente.com"
                         },
@@ -159,7 +195,6 @@ namespace Connectamente.API.Migrations
                             AssinouTermoResponsabilidadeEstagiario = false,
                             Ativo = true,
                             ConcurrencyStamp = "bc3101aa-2831-4e44-88aa-cc1234567890",
-                            Cpf = "98765432100",
                             DataCadastro = new DateTime(2026, 5, 29, 11, 0, 0, 0, DateTimeKind.Utc),
                             Email = "gabriel.aluno@connectamente.com",
                             EmailConfirmed = true,
@@ -172,70 +207,46 @@ namespace Connectamente.API.Migrations
                             PhoneNumber = "14999193077",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "bc3101aa-2831-4e44-88aa-cc1234567890",
-                            TipoUsuario = "Aluno",
                             TwoFactorEnabled = false,
                             UserName = "gabriel.aluno@connectamente.com"
+                        },
+                        new
+                        {
+                            Id = "a489f241-4fad-4031-b458-6f6ce664f13d",
+                            AccessFailedCount = 0,
+                            AssinouTermoResponsabilidadeEstagiario = false,
+                            Ativo = true,
+                            ConcurrencyStamp = "a5c92e41-7b83-4d60-9f12-6e4a8b3c5670",
+                            DataCadastro = new DateTime(2026, 5, 29, 11, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ana.secretaria@connectamente.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            Matricula = "AL202666",
+                            NomeCompleto = "Ana Julia Mattos",
+                            NormalizedEmail = "ANA.SECRETARIA@CONNECTAMENTE.COM",
+                            NormalizedUserName = "ANA.SECRETARIA@CONNECTAMENTE.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBaLWoe8u2D3VTbHYh5Puil95h2FDKPyVzQ6nCEtjK6IsOR7xd8SUKsCgQoLWjKeTA==",
+                            PhoneNumber = "14999193088",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d8a71c32-4f65-4e91-a2b3-7c6d9e0f1234",
+                            TwoFactorEnabled = false,
+                            UserName = "ana.secretaria@connectamente.com"
                         });
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.AtendimentoModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("AgendamentoId")
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
-
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("DataAtualizacao"));
-
-                    b.Property<DateTime>("DataCriacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("DataCriacao"));
-
-                    b.Property<DateTime?>("DataHoraFim")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("DataHoraInicio")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Observacoes")
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
 
                     b.Property<int>("ProntuarioId")
                         .HasColumnType("int");
 
-                    b.Property<string>("StatusAtendimento")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)")
-                        .HasDefaultValue("Agendado");
-
-                    b.Property<string>("TipoAtendimento")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("Id");
+                    b.HasKey("AgendamentoId");
 
                     b.HasIndex("ProntuarioId");
 
-                    b.ToTable("Atendimentos", (string)null);
+                    b.ToTable("AtendimentosRealizados", (string)null);
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.AuditoriaModel", b =>
@@ -271,7 +282,6 @@ namespace Connectamente.API.Migrations
                         .HasColumnType("varchar(30)");
 
                     b.Property<string>("UsuarioEmail")
-                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
@@ -307,9 +317,7 @@ namespace Connectamente.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("CaminhoArquivo")
                         .IsRequired()
@@ -317,16 +325,10 @@ namespace Connectamente.API.Migrations
                         .HasColumnType("varchar(500)");
 
                     b.Property<DateTime?>("DataAtualizacao")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("DataAtualizacao"));
 
                     b.Property<DateTime>("DataCriacao")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("DataCriacao"));
 
                     b.Property<string>("NomeArquivo")
                         .IsRequired()
@@ -336,6 +338,9 @@ namespace Connectamente.API.Migrations
                     b.Property<string>("Observacoes")
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
+
+                    b.Property<int?>("PlantaoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProntuarioId")
                         .HasColumnType("int");
@@ -354,6 +359,8 @@ namespace Connectamente.API.Migrations
 
                     b.HasIndex("AtendimentoId");
 
+                    b.HasIndex("PlantaoId");
+
                     b.HasIndex("ProntuarioId");
 
                     b.HasIndex("UsuarioResponsavelId");
@@ -370,9 +377,7 @@ namespace Connectamente.API.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("DataAtualizacao")
                         .ValueGeneratedOnAddOrUpdate()
@@ -381,25 +386,22 @@ namespace Connectamente.API.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("DataAtualizacao"));
 
                     b.Property<DateTime>("DataCriacao")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("DataCriacao"));
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Observacoes")
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<int>("Parentesco")
+                    b.Property<int>("PacienteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProntuarioId")
+                    b.Property<int>("Parentesco")
                         .HasColumnType("int");
 
                     b.Property<bool>("ResponsavelPrincipal")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("TermoAutorizacaoMenor")
+                    b.Property<bool?>("TermoAutorizacaoMenor")
                         .HasColumnType("tinyint(1)");
 
                     b.ComplexProperty<Dictionary<string, object>>("Endereco", "Connectamente.API.Models.FamiliarModel.Endereco#Endereco", b1 =>
@@ -452,17 +454,17 @@ namespace Connectamente.API.Migrations
                                 .HasMaxLength(150)
                                 .HasColumnType("varchar(150)");
 
-                            b1.Property<int>("Escolaridade")
+                            b1.Property<int?>("Escolaridade")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("EstadoCivil")
+                            b1.Property<int?>("EstadoCivil")
                                 .HasColumnType("int");
 
                             b1.Property<string>("EstadoNascimento")
                                 .HasMaxLength(2)
                                 .HasColumnType("varchar(2)");
 
-                            b1.Property<int>("Genero")
+                            b1.Property<int?>("Genero")
                                 .HasColumnType("int");
 
                             b1.Property<string>("Naturalidade")
@@ -498,7 +500,7 @@ namespace Connectamente.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProntuarioId");
+                    b.HasIndex("PacienteId");
 
                     b.ToTable("Familiares", (string)null);
                 });
@@ -512,9 +514,7 @@ namespace Connectamente.API.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("DataAtualizacao")
                         .ValueGeneratedOnAddOrUpdate()
@@ -523,14 +523,14 @@ namespace Connectamente.API.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("DataAtualizacao"));
 
                     b.Property<DateTime>("DataCriacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("DataCriacao"));
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Observacoes")
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
+
+                    b.Property<int>("SituacaoPaciente")
+                        .HasColumnType("int");
 
                     b.ComplexProperty<Dictionary<string, object>>("Endereco", "Connectamente.API.Models.PacienteModel.Endereco#Endereco", b1 =>
                         {
@@ -582,17 +582,17 @@ namespace Connectamente.API.Migrations
                                 .HasMaxLength(150)
                                 .HasColumnType("varchar(150)");
 
-                            b1.Property<int>("Escolaridade")
+                            b1.Property<int?>("Escolaridade")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("EstadoCivil")
+                            b1.Property<int?>("EstadoCivil")
                                 .HasColumnType("int");
 
                             b1.Property<string>("EstadoNascimento")
                                 .HasMaxLength(2)
                                 .HasColumnType("varchar(2)");
 
-                            b1.Property<int>("Genero")
+                            b1.Property<int?>("Genero")
                                 .HasColumnType("int");
 
                             b1.Property<string>("Naturalidade")
@@ -631,6 +631,47 @@ namespace Connectamente.API.Migrations
                     b.ToTable("Pacientes", (string)null);
                 });
 
+            modelBuilder.Entity("Connectamente.API.Models.PlantaoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DataAtualizacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Observacoes")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int>("PacienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusPlantao")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<int>("VinculoPacientePsicologoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PacienteId");
+
+                    b.HasIndex("VinculoPacientePsicologoId");
+
+                    b.ToTable("Plantoes", (string)null);
+                });
+
             modelBuilder.Entity("Connectamente.API.Models.ProntuarioModel", b =>
                 {
                     b.Property<int>("Id")
@@ -640,9 +681,7 @@ namespace Connectamente.API.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("DataAtualizacao")
                         .ValueGeneratedOnAddOrUpdate()
@@ -651,13 +690,13 @@ namespace Connectamente.API.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("DataAtualizacao"));
 
                     b.Property<DateTime>("DataCriacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("DataCriacao"));
+                    b.Property<DateTime?>("DataFim")
+                        .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("DataPrimeiraConsulta")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("NumeroProntuario")
                         .IsRequired()
@@ -671,15 +710,8 @@ namespace Connectamente.API.Migrations
                     b.Property<int>("PacienteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PsicologoResponsavelId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("SituacaoProntuario")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasDefaultValue("Ativo");
+                    b.Property<int>("PlantaoId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -690,7 +722,7 @@ namespace Connectamente.API.Migrations
                     b.HasIndex("PacienteId")
                         .IsUnique();
 
-                    b.HasIndex("PsicologoResponsavelId");
+                    b.HasIndex("PlantaoId");
 
                     b.ToTable("Prontuarios", (string)null);
                 });
@@ -704,21 +736,13 @@ namespace Connectamente.API.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("DataAtualizacao")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("DataAtualizacao"));
 
                     b.Property<DateTime>("DataCriacao")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("DataCriacao"));
 
                     b.Property<bool>("Internacao")
                         .ValueGeneratedOnAdd()
@@ -746,6 +770,52 @@ namespace Connectamente.API.Migrations
                     b.HasIndex("ProntuarioId");
 
                     b.ToTable("TratamentosAnteriores", (string)null);
+                });
+
+            modelBuilder.Entity("Connectamente.API.Models.VinculoPacientePsicologoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DataAtualizacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DataEncerramento")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Observacoes")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int>("PacienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PsicologoResponsavelId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("varchar(450)");
+
+                    b.Property<string>("StatusVinculo")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PacienteId");
+
+                    b.HasIndex("PsicologoResponsavelId");
+
+                    b.ToTable("VinculosPacientePsicologo", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -787,6 +857,13 @@ namespace Connectamente.API.Migrations
                             ConcurrencyStamp = "a1b2c3d4-0002-0002-0002-000000000002",
                             Name = "Aluno",
                             NormalizedName = "ALUNO"
+                        },
+                        new
+                        {
+                            Id = "role-0003-secretaria-00-000000000003",
+                            ConcurrencyStamp = "a1b2c3d4-0003-0003-0003-000000000003",
+                            Name = "Secretaria",
+                            NormalizedName = "SECRETARIA"
                         });
                 });
 
@@ -886,6 +963,11 @@ namespace Connectamente.API.Migrations
                         {
                             UserId = "b29fbcde-2222-53c2-c5fb-5c9d1d56ebbb",
                             RoleId = "role-0002-aluno-00-000000000002"
+                        },
+                        new
+                        {
+                            UserId = "a489f241-4fad-4031-b458-6f6ce664f13d",
+                            RoleId = "role-0003-secretaria-00-000000000003"
                         });
                 });
 
@@ -908,13 +990,32 @@ namespace Connectamente.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Connectamente.API.Models.AgendamentoModel", b =>
+                {
+                    b.HasOne("Connectamente.API.Models.VinculoPacientePsicologoModel", "VinculoPacientePsicologo")
+                        .WithMany("Agendamentos")
+                        .HasForeignKey("VinculoPacientePsicologoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("VinculoPacientePsicologo");
+                });
+
             modelBuilder.Entity("Connectamente.API.Models.AtendimentoModel", b =>
                 {
+                    b.HasOne("Connectamente.API.Models.AgendamentoModel", "Agendamento")
+                        .WithOne()
+                        .HasForeignKey("Connectamente.API.Models.AtendimentoModel", "AgendamentoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Connectamente.API.Models.ProntuarioModel", "Prontuario")
-                        .WithMany("Atendimentos")
+                        .WithMany()
                         .HasForeignKey("ProntuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Agendamento");
 
                     b.Navigation("Prontuario");
                 });
@@ -938,8 +1039,13 @@ namespace Connectamente.API.Migrations
             modelBuilder.Entity("Connectamente.API.Models.DocumentoClinicoModel", b =>
                 {
                     b.HasOne("Connectamente.API.Models.AtendimentoModel", "Atendimento")
-                        .WithMany("DocumentosClinicos")
+                        .WithMany()
                         .HasForeignKey("AtendimentoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Connectamente.API.Models.PlantaoModel", null)
+                        .WithMany("DocumentosClinicos")
+                        .HasForeignKey("PlantaoId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Connectamente.API.Models.ProntuarioModel", "Prontuario")
@@ -963,13 +1069,32 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Connectamente.API.Models.FamiliarModel", b =>
                 {
-                    b.HasOne("Connectamente.API.Models.ProntuarioModel", "Prontuario")
+                    b.HasOne("Connectamente.API.Models.PacienteModel", "Paciente")
                         .WithMany("Familiares")
-                        .HasForeignKey("ProntuarioId")
+                        .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Prontuario");
+                    b.Navigation("Paciente");
+                });
+
+            modelBuilder.Entity("Connectamente.API.Models.PlantaoModel", b =>
+                {
+                    b.HasOne("Connectamente.API.Models.PacienteModel", "Paciente")
+                        .WithMany()
+                        .HasForeignKey("PacienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Connectamente.API.Models.VinculoPacientePsicologoModel", "VinculoPacientePsicologo")
+                        .WithMany()
+                        .HasForeignKey("VinculoPacientePsicologoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Paciente");
+
+                    b.Navigation("VinculoPacientePsicologo");
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.ProntuarioModel", b =>
@@ -980,14 +1105,15 @@ namespace Connectamente.API.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Connectamente.API.Models.ApplicationUserModel", "PsicologoResponsavel")
-                        .WithMany("ProntuariosResponsavel")
-                        .HasForeignKey("PsicologoResponsavelId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("Connectamente.API.Models.PlantaoModel", "Plantao")
+                        .WithMany()
+                        .HasForeignKey("PlantaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Paciente");
 
-                    b.Navigation("PsicologoResponsavel");
+                    b.Navigation("Plantao");
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.TratamentoAnteriorModel", b =>
@@ -999,6 +1125,25 @@ namespace Connectamente.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Prontuario");
+                });
+
+            modelBuilder.Entity("Connectamente.API.Models.VinculoPacientePsicologoModel", b =>
+                {
+                    b.HasOne("Connectamente.API.Models.PacienteModel", "Paciente")
+                        .WithMany("VinculosPacientePsicologo")
+                        .HasForeignKey("PacienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Connectamente.API.Models.ApplicationUserModel", "PsicologoResponsavel")
+                        .WithMany("VinculosPacientePsicologo")
+                        .HasForeignKey("PsicologoResponsavelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Paciente");
+
+                    b.Navigation("PsicologoResponsavel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1058,32 +1203,37 @@ namespace Connectamente.API.Migrations
 
                     b.Navigation("DocumentosCriados");
 
-                    b.Navigation("ProntuariosResponsavel");
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.AtendimentoModel", b =>
-                {
-                    b.Navigation("DocumentosClinicos");
+                    b.Navigation("VinculosPacientePsicologo");
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.PacienteModel", b =>
                 {
                     b.Navigation("Auditorias");
 
+                    b.Navigation("Familiares");
+
                     b.Navigation("Prontuario");
+
+                    b.Navigation("VinculosPacientePsicologo");
+                });
+
+            modelBuilder.Entity("Connectamente.API.Models.PlantaoModel", b =>
+                {
+                    b.Navigation("DocumentosClinicos");
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.ProntuarioModel", b =>
                 {
-                    b.Navigation("Atendimentos");
-
                     b.Navigation("Auditorias");
 
                     b.Navigation("DocumentosClinicos");
 
-                    b.Navigation("Familiares");
-
                     b.Navigation("TratamentosAnteriores");
+                });
+
+            modelBuilder.Entity("Connectamente.API.Models.VinculoPacientePsicologoModel", b =>
+                {
+                    b.Navigation("Agendamentos");
                 });
 #pragma warning restore 612, 618
         }

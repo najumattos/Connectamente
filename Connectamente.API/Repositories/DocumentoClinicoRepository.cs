@@ -63,7 +63,6 @@ public class DocumentoClinicoRepository(AppDbContext context) : IDocumentoClinic
     var documento = await context.Set<DocumentoClinicoModel>().FindAsync(id);
     if (documento is null) return false;
 
-    documento.Ativo = true; 
 
     return await context.SaveChangesAsync() > 0;
 }

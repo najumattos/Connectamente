@@ -15,8 +15,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserSe
     public DbSet<ProntuarioModel> Prontuarios => Set<ProntuarioModel>();
     public DbSet<TratamentoAnteriorModel> TratamentosAnteriores => Set<TratamentoAnteriorModel>();
     public DbSet<AgendamentoModel> Atendimentos => Set<AgendamentoModel>();
+    public DbSet<AtendimentoModel> AtendimentosRealizados => Set<AtendimentoModel>();
+    public DbSet<PlantaoModel> Plantoes => Set<PlantaoModel>();
+    public DbSet<VinculoPacientePsicologoModel> VinculosPacientePsicologo => Set<VinculoPacientePsicologoModel>();
     public DbSet<DocumentoClinicoModel> DocumentosClinicos => Set<DocumentoClinicoModel>();
-    public DbSet<AuditoriaModel> Auditorias { get; set; }
+    public DbSet<AuditoriaModel> Auditorias => Set<AuditoriaModel>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

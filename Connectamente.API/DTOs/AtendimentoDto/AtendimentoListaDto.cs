@@ -9,8 +9,6 @@ public class AtendimentoListaDto
     [Display(Name = "Número do Prontuario")]
     public string? NumeroProntuario { get; set; } = string.Empty;
 
-    [Display(Name = "Tipo Atendimento")]
-    public TipoAgendamentoEnum TipoAtendimento { get; set; }
     [Display(Name = "Data")]
     public DateTime? DataHoraInicio { get; set; }
     [Display(Name = "Status")]

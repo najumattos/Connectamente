@@ -10,18 +10,15 @@ public class TratamentoAnteriorConfiguration : IEntityTypeConfiguration<Tratamen
     {
       builder.ToTable("TratamentosAnteriores");
 
-        // Chave Primária (EntityBase)
         builder.HasKey(t => t.Id);
         builder.Property(t => t.Id).ValueGeneratedOnAdd();
 
-        // Propriedades de EntityBase
-        builder.Property(t => t.DataCriacao).IsRequired().HasColumnType("datetime").ValueGeneratedOnAddOrUpdate();
-        builder.Property(t => t.DataAtualizacao).HasColumnType("datetime").ValueGeneratedOnAddOrUpdate();
-        builder.Property(t => t.Ativo).IsRequired().HasDefaultValue(true);
+       builder.Property(t => t.DataCriacao).IsRequired().HasColumnType("datetime");
+        builder.Property(t => t.DataAtualizacao).HasColumnType("datetime");
+        builder.Property(t => t.Ativo).IsRequired();
         builder.Property(t => t.Observacoes).HasMaxLength(500).HasColumnType("varchar(500)");
 
-        // Propriedades Nativas
-        builder.Property(t => t.TipoTratamento)
+    builder.Property(t => t.TipoTratamento)
             .HasConversion<string>()
             .HasMaxLength(50)
             .IsRequired()

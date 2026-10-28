@@ -1,6 +1,5 @@
 using Connectamente.API.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Connectamente.API.Data.Configurations;
@@ -10,21 +9,12 @@ public class AtendimentoConfiguration : IEntityTypeConfiguration<AgendamentoMode
     public void Configure(EntityTypeBuilder<AgendamentoModel> builder)
     {
         builder.ToTable("Atendimentos");
-
-        // Chave Primária (EntityBase)
-        builder.HasKey(a => a.Id);
+   builder.HasKey(a => a.Id);
         builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
-        // Propriedades de EntityBase
-       builder.Property(p => p.DataCriacao)
-        .ValueGeneratedOnAdd() 
-        .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
-
-        builder.Property(p => p.DataAtualizacao).ValueGeneratedOnAddOrUpdate();
-
-        builder.Property(a => a.Ativo)
-            .IsRequired()
-            .HasDefaultValue(true);
+       builder.Property(a => a.DataCriacao).IsRequired().HasColumnType("datetime");
+        builder.Property(a => a.DataAtualizacao).HasColumnType("datetime");
+        builder.Property(a => a.Ativo).IsRequired();
 
         builder.Property(a => a.Observacoes)
             .HasMaxLength(500)
@@ -50,11 +40,9 @@ public class AtendimentoConfiguration : IEntityTypeConfiguration<AgendamentoMode
             .IsRequired()
             .HasDefaultValue(Enums.StatusAtendimentoEnum.Agendado);
 
-        // Relacionamentos
-        /*builder.HasOne(a => a.Prontuario)
-            .WithMany(p => p.)
-            .HasForeignKey(a => a.ProntuarioId)
-            .OnDelete(DeleteBehavior.Restrict);      
-            */
+        builder.HasOne(a => a.VinculoPacientePsicologo)
+            .WithMany(v => v.Agendamentos)
+            .HasForeignKey(a => a.VinculoPacientePsicologoId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

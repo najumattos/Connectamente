@@ -100,13 +100,9 @@ public async Task<Result> AtualizarAtendimentoAsync(AtendimentoAtualizarDto dto)
          var atendimentosDto = atendimentos.Select(a => new AtendimentoListaDto
     {
         Id = a.Id,
-        TipoAtendimento = a.TipoAtendimento,
-        DataHoraInicio = a.DataHoraInicio,
+         DataHoraInicio = a.DataHoraInicio,
         StatusAtendimento = a.StatusAtendimento,
-        NumeroProntuario = a.Prontuario?.NumeroProntuario ?? string.Empty,
-        NomePaciente = a.Prontuario?.Paciente?.Identificacao?.NomeCompleto ?? string.Empty,
-        //PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
-    });
+        });
     return Result.Ok(atendimentosDto);
     }
 
@@ -117,13 +113,9 @@ public async Task<Result> AtualizarAtendimentoAsync(AtendimentoAtualizarDto dto)
       var atendimentosDto = atendimentos.Select(a => new AtendimentoListaDto
     {
         Id = a.Id,
-        TipoAtendimento = a.TipoAtendimento,
         DataHoraInicio = a.DataHoraInicio,
         StatusAtendimento = a.StatusAtendimento,
-        NumeroProntuario = a.Prontuario?.NumeroProntuario ?? string.Empty,
-        NomePaciente = a.Prontuario?.Paciente?.Identificacao?.NomeCompleto ?? string.Empty,
-       // PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
-    });
+         });
 
     return Result.Ok(atendimentosDto);
     }
@@ -133,13 +125,9 @@ public async Task<Result> AtualizarAtendimentoAsync(AtendimentoAtualizarDto dto)
     var atendimentos = await repository.BuscarTodosAtendimentosDaSemanaAsync();  var atendimentosDto = atendimentos.Select(a => new AtendimentoListaDto
     {
         Id = a.Id,
-        TipoAtendimento = a.TipoAtendimento,
         DataHoraInicio = a.DataHoraInicio,
         StatusAtendimento = a.StatusAtendimento,
-        NumeroProntuario = a.Prontuario?.NumeroProntuario ?? string.Empty,
-        NomePaciente = a.Prontuario?.Paciente?.Identificacao?.NomeCompleto ?? string.Empty,
-     //   PsicologoResponsavel = a.Prontuario?.PsicologoResponsavel?.NomeCompleto ?? string.Empty
-    });
+         });
 
     return Result.Ok(atendimentosDto);
 }

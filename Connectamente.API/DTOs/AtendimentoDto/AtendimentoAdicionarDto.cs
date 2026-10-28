@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Connectamente.API.Enums;
-using Connectamente.API.Models;
 
 namespace Connectamente.API.DTOs.AtendimentoDto;
 
@@ -9,9 +8,7 @@ public class AtendimentoAdicionarDto
    [Required(ErrorMessage = "O prontuário é obrigatório.")]
     [Display(Name = "Prontuário")]
     public int ProntuarioId { get; set; }
-    [Required(ErrorMessage = "O tipo de atendimento é obrigatório.")]
-    [Display(Name = "Tipo de Atendimento")]
-    public TipoAgendamentoEnum TipoAtendimento { get; set; }
+    
 
     [Required(ErrorMessage = "A data e hora de início são obrigatórias.")]
     [DataType(DataType.DateTime)]

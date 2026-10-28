@@ -10,24 +10,18 @@ public class DocumentoClinicoConfiguration : IEntityTypeConfiguration<DocumentoC
     {
         builder.ToTable("DocumentosClinicos");
 
-        // Chave Primária (EntityBase)
         builder.HasKey(d => d.Id);
         builder.Property(d => d.Id).ValueGeneratedOnAdd();
 
-        // Propriedades de EntityBase
-        builder.Property(d => d.DataCriacao).IsRequired().HasColumnType("datetime").ValueGeneratedOnAddOrUpdate();
-        builder.Property(d => d.DataAtualizacao).HasColumnType("datetime").ValueGeneratedOnAddOrUpdate();
-        builder.Property(d => d.Ativo).IsRequired().HasDefaultValue(true);
+         builder.Property(d => d.DataCriacao).IsRequired().HasColumnType("datetime");
+        builder.Property(d => d.DataAtualizacao).HasColumnType("datetime");
+        builder.Property(d => d.Ativo).IsRequired();
         builder.Property(d => d.Observacoes).HasMaxLength(500).HasColumnType("varchar(500)");
 
         builder.Property(d => d.UsuarioResponsavelId)
             .IsRequired()
             .HasMaxLength(150)
             .HasColumnType("varchar(150)");
-
-        // Propriedade física da chave estrangeira (Adicionada na Model no passo anterior)
-        builder.Property(d => d.UsuarioResponsavelId)
-            .IsRequired();
 
         builder.Property(d => d.TipoDocumentoClinico)
             .HasConversion<string>()
@@ -45,15 +39,19 @@ public class DocumentoClinicoConfiguration : IEntityTypeConfiguration<DocumentoC
             .HasMaxLength(500)
             .HasColumnType("varchar(500)");      
 
-        builder.HasOne(d => d.Atendimento)
+        builder.HasOne(d => d.Prontuario)
             .WithMany(a => a.DocumentosClinicos)
+            .HasForeignKey(d => d.ProntuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(d => d.Atendimento)
+            .WithMany()
             .HasForeignKey(d => d.AtendimentoId)
             .OnDelete(DeleteBehavior.Restrict);
 
-
- builder.HasOne(d => d.Prontuario)
-            .WithMany(a => a.DocumentosClinicos)
-            .HasForeignKey(d => d.ProntuarioId)
+        builder.HasOne<PlantaoModel>()
+            .WithMany(p => p.DocumentosClinicos)
+            .HasForeignKey("PlantaoId")
             .OnDelete(DeleteBehavior.Restrict);
 
 

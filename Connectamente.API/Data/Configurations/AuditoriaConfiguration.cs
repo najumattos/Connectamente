@@ -10,12 +10,10 @@ public class AuditoriaConfiguration : IEntityTypeConfiguration<AuditoriaModel>
     {
         builder.ToTable("Auditorias");
 
-        // Chave Primária bigint
-        builder.HasKey(a => a.Id);
+         builder.HasKey(a => a.Id);
         builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
         builder.Property(a => a.UsuarioEmail)
-            .IsRequired()
             .HasMaxLength(150)
             .HasColumnType("varchar(150)");
 
@@ -38,5 +36,8 @@ public class AuditoriaConfiguration : IEntityTypeConfiguration<AuditoriaModel>
         builder.Property(a => a.DataHora)
             .IsRequired()
             .HasColumnType("datetime");
+
+        builder.Property(a => a.ValoresAntigos).HasColumnType("longtext");
+        builder.Property(a => a.ValoresNovos).HasColumnType("longtext");
     }
 }

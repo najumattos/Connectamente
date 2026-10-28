@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using FluentResults;
 using Connectamente.API.Services.Interfaces;
 using Connectamente.API.DTOs.AuthDto;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Connectamente.API.Controllers;
 

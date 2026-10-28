@@ -8,8 +8,6 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 {
     public void Configure(EntityTypeBuilder<ApplicationUserModel> builder)
     {
-
-        // Configuração das propriedades nativas e herdadas
         builder.Property(u => u.NomeCompleto)
             .IsRequired()
             .HasMaxLength(150)
@@ -38,8 +36,8 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
         // Relacionamentos 
         // 1:N com DocumentoClinicoModel
         builder.HasMany(u => u.DocumentosCriados)
-            .WithOne()
-            .HasForeignKey("UsuarioResponsavelId") 
+            .WithOne(d => d.Usuario)
+            .HasForeignKey(d => d.UsuarioResponsavelId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // 1:N com AuditoriaModel
@@ -48,9 +46,9 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
             .HasForeignKey("UsuarioId")
             .OnDelete(DeleteBehavior.Restrict);
 
-         builder.HasMany(u => u.VinculosPacientePsicologo)
-            .WithOne()
-            .HasForeignKey("PsicologoResponsavelId") 
+        builder.HasMany(u => u.VinculosPacientePsicologo)
+            .WithOne(v => v.PsicologoResponsavel)
+            .HasForeignKey(v => v.PsicologoResponsavelId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
