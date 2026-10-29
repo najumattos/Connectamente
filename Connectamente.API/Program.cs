@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using dotenv.net;
 using Connectamente.API.Data;
+using Connectamente.API.Data.Seeds;
 using Connectamente.API.Models;
 using Connectamente.API.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,6 +49,15 @@ var versao = ServerVersion.AutoDetect(conexao);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(conexao, versao)
+        .UseSeeding((context, _) =>
+        {
+            DatabaseSeeder.Seed((AppDbContext)context);
+        })
+        .UseAsyncSeeding(async (context, _, cancellationToken) =>
+        {
+           await DatabaseSeeder.SeedAsync(
+            (AppDbContext)context, cancellationToken);
+        })
 );
 
 // Serviço de Autenticação e Autorização - Identity
