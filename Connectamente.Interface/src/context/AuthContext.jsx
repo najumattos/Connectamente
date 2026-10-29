@@ -1,39 +1,39 @@
 import { createContext, useState, useEffect } from "react"
+import AuthService from "../services/AuthService"
 
 export const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null)
 
-  // manter usuário logado ao recarregar página
   useEffect(() => {
-    const usuarioSalvo = JSON.parse(localStorage.getItem("usuarioLogado"))
-
-    if (usuarioSalvo) {
-      setUsuario(usuarioSalvo)
+    try {
+      const usuarioSalvo = JSON.parse(localStorage.getItem("usuarioLogado"))
+      if (usuarioSalvo && localStorage.getItem("token")) setUsuario(usuarioSalvo)
+    } catch {
+      localStorage.removeItem("usuarioLogado")
+      localStorage.removeItem("token")
     }
   }, [])
 
-  // LOGIN
-  function login(email, senha) {
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
-
-    const usuarioEncontrado = usuarios.find(
-      (u) => u.email === email && u.senha === senha
-    )
-
-    if (usuarioEncontrado) {
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioEncontrado))
-      setUsuario(usuarioEncontrado)
-      return true
+  async function login(email, senha) {
+    const resposta = await AuthService.login({ email, senha })
+    const usuarioAutenticado = {
+      id: resposta.id,
+      nome: resposta.nomeCompleto,
+      email: resposta.email,
+      perfil: resposta.role
     }
 
-    return false
+    localStorage.setItem("token", resposta.token)
+    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioAutenticado))
+    setUsuario(usuarioAutenticado)
+    return usuarioAutenticado
   }
 
-  // LOGOUT
   function logout() {
     localStorage.removeItem("usuarioLogado")
+    localStorage.removeItem("token")
     setUsuario(null)
   }
 

@@ -1,32 +1,32 @@
 import { Route } from "react-router-dom";
-import DashboardCoordenador from "../pages/coordenador/DashboardCoordenador";
-import CriarPaciente from "../pages/coordenador/GestaoPacientes/Criar"
-import EditarPaciente from "../pages/coordenador/GestaoPacientes/Editar"
-import VisualizarPaciente from "../pages/coordenador/GestaoPacientes/Visualizar"
-import PacientesArquivados from "../pages/coordenador/GestaoPacientes/Arquivados"
-import CriarPsicologo from "../pages/coordenador/GestaoPsicologos/Criar"
-import EditarPsicologo from "../pages/coordenador/GestaoPsicologos/Editar"
-import VisualizarPsicologo from "../pages/coordenador/GestaoPsicologos/Visualizar"
-import PsicologosDesativados from "../pages/coordenador/GestaoPsicologos/Desativados"
-import CriarConsulta from "../pages/coordenador/GestaoConsultas/Criar"
-import EditarConsulta from "../pages/coordenador/GestaoConsultas/Editar"
-import VisualizarConsulta from "../pages/coordenador/GestaoConsultas/Visualizar"
-import ConsultasArquivadas from "../pages/coordenador/GestaoConsultas/Arquivados"
-import CriarProntuario from "../pages/coordenador/GestaoProntuarios/Criar"
-import EditarProntuario from "../pages/coordenador/GestaoProntuarios/Editar"
-import VisualizarProntuario from "../pages/coordenador/GestaoProntuarios/Visualizar"
-import ProntuariosArquivados from "../pages/coordenador/GestaoProntuarios/Arquivados"
+import DashboardProfessor from "../pages/Professor/DashboardProfessor";
+import CriarPaciente from "../pages/Professor/GestaoPacientes/Criar"
+import EditarPaciente from "../pages/Professor/GestaoPacientes/Editar"
+import VisualizarPaciente from "../pages/Professor/GestaoPacientes/Visualizar"
+import PacientesArquivados from "../pages/Professor/GestaoPacientes/Arquivados"
+import CriarPsicologo from "../pages/Professor/GestaoPsicologos/Criar"
+import EditarPsicologo from "../pages/Professor/GestaoPsicologos/Editar"
+import VisualizarPsicologo from "../pages/Professor/GestaoPsicologos/Visualizar"
+import PsicologosDesativados from "../pages/Professor/GestaoPsicologos/Desativados"
+import CriarConsulta from "../pages/Professor/GestaoConsultas/Criar"
+import EditarConsulta from "../pages/Professor/GestaoConsultas/Editar"
+import VisualizarConsulta from "../pages/Professor/GestaoConsultas/Visualizar"
+import ConsultasArquivadas from "../pages/Professor/GestaoConsultas/Arquivados"
+import CriarProntuario from "../pages/Professor/GestaoProntuarios/Criar"
+import EditarProntuario from "../pages/Professor/GestaoProntuarios/Editar"
+import VisualizarProntuario from "../pages/Professor/GestaoProntuarios/Visualizar"
+import ProntuariosArquivados from "../pages/Professor/GestaoProntuarios/Arquivados"
 // Importando com apelidos para não dar conflito
-import IndexPacientes from "../pages/coordenador/GestaoPacientes/index"
-import IndexPsicologos from "../pages/coordenador/GestaoPsicologos/index"
-import IndexConsultas from "../pages/coordenador/GestaoConsultas/index"
-import IndexProntuarios from "../pages/coordenador/GestaoProntuarios/index"
+import IndexPacientes from "../pages/Professor/GestaoPacientes/index"
+import IndexPsicologos from "../pages/Professor/GestaoPsicologos/index"
+import IndexConsultas from "../pages/Professor/GestaoConsultas/index"
+import IndexProntuarios from "../pages/Professor/GestaoProntuarios/index"
 
-export const CoordenadorRoutes = (
-  <Route path="" element={<DashboardCoordenador />}>
+export const ProfessorRoutes = (
+  <Route path="" element={<DashboardProfessor />}>
 
     {/* Home do Dashboard */}
-    <Route index element={<div>Home do Coordenador</div>} />
+    <Route index element={<div>Home do Professor</div>} />
 
     {/* Gestão de Pacientes */}
     <Route path="gestao-pacientes">

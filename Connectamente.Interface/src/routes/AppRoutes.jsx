@@ -4,14 +4,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/auth/Login";
 import Cadastro from "../pages/auth/Cadastro";
-import Perfil from "../pages/auth/Perfil";
 
 // Import dos componentes de proteção
 import PrivateRoute from "./PrivateRoute";
 
 // Import dos módulos de rotas que eu criei
-import { CoordenadorRoutes } from "./CoordenadorRoutes";
+import { ProfessorRoutes } from "./ProfessorRoutes";
 import { AlunoRoutes } from "./AlunoRoutes";
+import { SecretariaRoutes } from "./SecretariaRoutes";
 
 function AppRoutes() {
   return (
@@ -22,16 +22,21 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
 
-        {/* --- MÓDULO DO COORDENADOR --- */}
-        {/* Envolvemos o módulo inteiro na proteção de tipo "coordenador" */}
-        <Route path="coordenador" element={<PrivateRoute tipoPermitido="coordenador" />}>
-          {CoordenadorRoutes}
+        {/* --- MÓDULO DO PROFESSOR --- */}
+        {/* Envolvemos o módulo inteiro na proteção de perfil "professor" */}
+        <Route path="professor" element={<PrivateRoute perfilPermitido="professor" />}>
+          {ProfessorRoutes}
         </Route>
 
         {/* --- MÓDULO DO ALUNO --- */}
-        {/* Envolvemos o módulo inteiro na proteção de tipo "aluno" */}
-        <Route path="aluno" element={<PrivateRoute tipoPermitido="aluno" />}>
+        {/* Envolvemos o módulo inteiro na proteção de perfil "aluno" */}
+        <Route path="aluno" element={<PrivateRoute perfilPermitido="aluno" />}>
           {AlunoRoutes}
+        </Route>  
+         {/* --- MÓDULO DA SECRETARIA --- */}
+        {/* Envolvemos o módulo inteiro na proteção de perfil "secretaria" */}
+        <Route path="secretaria" element={<PrivateRoute perfilPermitido="secretaria" />}>
+          {SecretariaRoutes}
         </Route>        
 
         {/* Rota para 404 */}

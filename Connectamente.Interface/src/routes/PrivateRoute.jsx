@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom"; // Importe o Outlet aqui
 import { AuthContext } from "../context/AuthContext";
 
-function PrivateRoute({ tipoPermitido }) { // Não precisa mais do children aqui
+function PrivateRoute({ perfilPermitido }) { // Não precisa mais do children aqui
    const { usuario } = useContext(AuthContext);
 
    // Se não estiver logado
@@ -10,12 +10,11 @@ function PrivateRoute({ tipoPermitido }) { // Não precisa mais do children aqui
      return <Navigate to="/login" replace />;
    }
 
-   // Se tiver tipo permitido e for diferente
-   if (tipoPermitido && usuario.tipo !== tipoPermitido) {
+   if (perfilPermitido && usuario.perfil !== perfilPermitido) {
      return <Navigate to="/login" replace />;
    }
 
-   // IMPORTANTE: Use o Outlet para renderizar as rotas filhas (CoordenadorRoutes)
+   // IMPORTANTE: Use o Outlet para renderizar as rotas filhas (ProfessorRoutes)
    return <Outlet />; 
 }
 

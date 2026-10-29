@@ -25,7 +25,7 @@ function Cadastro() {
       senha,
       tipo,
       ...(tipo === "aluno" && { idade, telefone }),
-      ...(tipo === "coordenador" && { crp, especialidade })
+      ...(tipo === "Professor" && { crp, especialidade })
     }
 
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
@@ -77,7 +77,7 @@ function Cadastro() {
           >
             <option value="">Tipo de usuário</option>
             <option value="aluno">Aluno</option>
-            <option value="coordenador">Coordenador</option>
+            <option value="Professor">Professor</option>
           </select>
 
           {tipo === "aluno" && (
@@ -100,7 +100,7 @@ function Cadastro() {
             </>
           )}
 
-          {tipo === "coordenador" && (
+          {tipo === "Professor" && (
             <>
               <input
                 type="text"

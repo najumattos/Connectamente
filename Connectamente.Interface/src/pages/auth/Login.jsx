@@ -6,26 +6,39 @@ import "./auth.css"
 function Login() {
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
-
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
+  const [erro, setErro] = useState("")
+  const [carregando, setCarregando] = useState(false)
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault()
+    setErro("")
+    setCarregando(true)
 
-    const sucesso = login(email, senha)
+    try {
+      const usuario = await login(email, senha)
+     switch (usuario.perfil?.toLowerCase()) {
+  case "professor":
+    navigate("/professor");
+    break;
 
-    if (sucesso) {
-      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"))
-// A barra "/" resetar o caminho da URL
-      if (usuario.tipo === "coordenador") {
-        navigate("/coordenador")
-      } else {
-        // Com "/" -> caminho em absoluto(do inicio) Sem "/" caminho relativo(da onde está)
-        navigate("/aluno")
-      }
-    } else {
-      alert("Email ou senha inválidos")
+  case "aluno":
+    navigate("/aluno");
+    break;
+
+  case "secretaria":
+    navigate("/secretaria");
+    break;
+
+   default:
+      setErro("Perfil de usuário inválido.")
+      break
+    } 
+    } catch (error) {
+      setErro(error.response?.data?.message || "Não foi possível entrar. Verifique seu e-mail e senha.")
+    } finally {
+      setCarregando(false)
     }
   }
 
@@ -41,7 +54,7 @@ function Login() {
             placeholder="Seu email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            
+            required
           />
 
           <input
@@ -49,10 +62,13 @@ function Login() {
             placeholder="Sua senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            
+            required
           />
 
-          <button type="submit">Entrar</button>
+          {erro && <p role="alert">{erro}</p>}
+          <button type="submit" disabled={carregando}>
+            {carregando ? "Entrando..." : "Entrar"}
+          </button>
         </form>
 
         <div className="auth-footer">

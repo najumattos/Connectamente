@@ -225,7 +225,7 @@ namespace Connectamente.API.Migrations
                             NomeCompleto = "Ana Julia Mattos",
                             NormalizedEmail = "ANA.SECRETARIA@CONNECTAMENTE.COM",
                             NormalizedUserName = "ANA.SECRETARIA@CONNECTAMENTE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBaLWoe8u2D3VTbHYh5Puil95h2FDKPyVzQ6nCEtjK6IsOR7xd8SUKsCgQoLWjKeTA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJloWmlKfbRt9FF0Vy9gsowjNEV/ex7MuElmj3hIm4Zst97B621qkGzt2HuZjEs+ZA==",
                             PhoneNumber = "14999193088",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "d8a71c32-4f65-4e91-a2b3-7c6d9e0f1234",

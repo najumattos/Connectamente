@@ -4,7 +4,7 @@ O que sabemos?
 - Os alunos de psicologia do último ano prestam atendimentos clínicos sob supervisão;
 - Os alunos não podem ter acesso a esse site sem supervisão;
 - Existem no minimo DOIS prontuario.tipoProntuario (prontuario.Infantil e prontuario.Adulto);
-- Existem DOIS usuario.tipoUsuario (usuario.estudantePsicologia, usuario.coordenador)
+- Existem DOIS usuario.tipoUsuario (usuario.estudantePsicologia, usuario.Professor)
 
 ## 🛠️ Funcionalidades
 
@@ -68,12 +68,12 @@ A tab Home de ambos pode ser uma lista com todos os agendamentos do dia
    //estudante nao pode se registrar
    ```
 
-2. **O que os coordenadores podem fazer além disso?** *(Renata)*
+2. **O que os Professores podem fazer além disso?** *(Renata)*
    
    **tab Prontuários**
    ```bash
    //VISUALIZAR LISTA de todos os prontuarios de todos estudantes de psicologia
-   GET: BuscarTodosProntuariosEstudantes(int usuario.coordenador); 
+   GET: BuscarTodosProntuariosEstudantes(int usuario.Professor); 
 
    //ARQUIVAR todos prontuarios
    PATCH:ArquivarProntuario(int tipoProntuario, string idProntuario); 
@@ -94,20 +94,20 @@ A tab Home de ambos pode ser uma lista com todos os agendamentos do dia
          // ARQUIVAR novo estudante de psicologia
    PATCH: ArquivarEstudantePsicologia(string idEstudantePsicologia);       
    ```
-      **tab Perfil**      Tabela Usuarios e (N EXISTE AINDA Tabela CoordenadorPsicologia)
+      **tab Perfil**      Tabela Usuarios e (N EXISTE AINDA Tabela ProfessorPsicologia)
     ```bash
-        //VISUALIZAR DETALHES do perfil Usuario + dadosDeCoordenador
+        //VISUALIZAR DETALHES do perfil Usuario + dadosDeProfessor
    GET: VisualizarPerfil(string idUsuario);
 
         //EDITAR DETALHES do perfil
    PUT: AtualizarInformacoesUsuario(UsuarioUpdateDto, string idUsuario, string idQuemTaEditando)
-   PUT: AtualizarInformacoesCoordenador(CoordenadorUpdateDto, string idCoordenadorPsicologia)
+   PUT: AtualizarInformacoesProfessor(ProfessorUpdateDto, string idProfessorPsicologia)
 
         //Arquivar Perfil
-   PATCH: ArquivarPerfil(string idCoordenadorPsicologia)
+   PATCH: ArquivarPerfil(string idProfessorPsicologia)
 
-        //ADICIONAR NOVO COORDENADOR
-   PUT: AdicionarCoordenador(RegistroCoordenadorDto, string idQuemTaAdicionando)
+        //ADICIONAR NOVO Professor
+   PUT: AdicionarProfessor(RegistroProfessorDto, string idQuemTaAdicionando)
    ```
 
    Ainda tem a parte das consultas mas vamos com calma

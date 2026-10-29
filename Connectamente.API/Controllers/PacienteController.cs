@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Connectamente.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,18 +7,28 @@ namespace Connectamente.API.Controllers;
 
 [Route("api/pacientes")]
 [ApiController]
-public class PacienteController : MainController
+public class PacienteController(IPacienteRepository repository) : MainController
 {
     /// <summary>
     /// Listar pacientes permitidos
     /// </summary>
     [Authorize]
     [HttpGet]
-    public IActionResult GetPacientes()
+    public async  Task<IActionResult> GetPacientes()
     {
-          var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (usuarioId is null) return Unauthorized();
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var aluno = User.IsInRole("Aluno");
+        if(aluno == true)
+        {
+            var pacientesPorAluno = await repository.BuscarPacientesPorPsicologoAsync(usuarioId);
+            return Ok(pacientesPorAluno);
+        }
+
+        var pacientes = await repository.BuscarTodosAsync();
+            return Ok(pacientes);
+
+
     }
 
     /// <summary>

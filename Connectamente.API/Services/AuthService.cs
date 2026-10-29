@@ -65,8 +65,10 @@ public class AuthService(
     return Result.Fail<AuthUserDto>(tokenResult.Errors);
 }
 
-authDto.Token = tokenResult.Value;        
-        
+authDto.Token = tokenResult.Value;      
+var roles = await userManager.GetRolesAsync(user);
+authDto.Role = roles.FirstOrDefault();
+
         logger.LogInformation("Usuário {Email} autenticado com sucesso via validação de hash.", loginDto.Email);
         return Result.Ok(authDto);
     }
