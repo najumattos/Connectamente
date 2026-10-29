@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
       id: resposta.id,
       nome: resposta.nomeCompleto,
       email: resposta.email,
-      perfil: resposta.role
+      perfil: resposta.role?.toLowerCase()
     }
 
     localStorage.setItem("token", resposta.token)

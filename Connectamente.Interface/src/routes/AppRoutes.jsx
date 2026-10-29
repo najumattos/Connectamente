@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Import das páginas comuns
 import Home from "../pages/Home";
-import Login from "../pages/auth/Login";
-import Cadastro from "../pages/auth/Cadastro";
+import Login from "../features/auth/Login";
+import Cadastro from "../features/auth/Cadastro";
 
 // Import dos componentes de proteção
 import PrivateRoute from "./PrivateRoute";
